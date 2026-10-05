@@ -257,10 +257,10 @@
       position: absolute;
       inset: 0;
       pointer-events: none;
-      mix-blend-mode: color-dodge;
+      mix-blend-mode: screen;
       opacity: 0;
       background: #ff1100;
-      transition: opacity 0.15s ease;
+      transition: opacity 0.1s ease;
     }
 
     /* 5. PERFECT CENTERED ALARM SCREEN */
@@ -394,7 +394,7 @@
   </div>
 
   <script>
-    // --- 1. PROCEDURAL AUDIO SYNTHESIZER ---
+    // --- 1. PROCEDURAL CINEMATIC AUDIO SYNTHESIZER ---
     const AudioEngine = {
       ctx: null,
       init() {
@@ -522,13 +522,13 @@
 
       setTimeout(() => {
         showScene("scene-blackhole");
-        startNaturalBlackHole();
+        startHollywoodBlackHole();
       }, 3000);
     }
 
-    // --- STEP 2: ACCRETION DISK BLACK HOLE (NATURAL BLEND) ---
+    // --- STEP 2: HIGH-FIDELITY VOLUMETRIC PLASMA ACCRETION BLACK HOLE ---
     let bhId;
-    function startNaturalBlackHole() {
+    function startHollywoodBlackHole() {
       AudioEngine.playBlackHoleVacuum();
       const canvas = document.getElementById("blackHoleCanvas");
       const ctx = canvas.getContext("2d");
@@ -537,88 +537,104 @@
 
       const cx = canvas.width / 2;
       const cy = canvas.height / 2;
-      const rHole = Math.min(canvas.width, canvas.height) * 0.16;
+      const rHole = Math.min(canvas.width, canvas.height) * 0.18;
       let startTime = Date.now();
 
-      // Continuous thermodynamic particles
-      const particles = [];
-      for (let i = 0; i < 2800; i++) {
-        const radius = rHole * 1.1 + Math.pow(Math.random(), 2.2) * Math.max(canvas.width, canvas.height) * 0.75;
-        particles.push({
+      // Dense glowing filaments
+      const streamCount = 2200;
+      const streams = [];
+      for (let i = 0; i < streamCount; i++) {
+        const rad = rHole * 1.05 + Math.pow(Math.random(), 2.0) * Math.max(canvas.width, canvas.height) * 0.7;
+        streams.push({
           angle: Math.random() * Math.PI * 2,
-          radius: radius,
-          speed: 0.02 + (1 / (radius * 0.08 + 1)) * 0.06,
-          fallSpeed: 1.4 + Math.random() * 2.6,
-          size: Math.random() * 2.2 + 0.6,
-          isHalo: Math.random() > 0.55
+          radius: rad,
+          speed: 0.025 + (1 / (rad * 0.05 + 1)) * 0.08,
+          fallSpeed: 1.2 + Math.random() * 2.2,
+          size: Math.random() * 2.4 + 0.6,
+          isArc: Math.random() > 0.5,
+          colorOffset: Math.random()
         });
       }
 
       function loop() {
         const elapsed = (Date.now() - startTime) / 1000;
-        let suckFactor = 1.0;
+        let suckMult = 1.0;
         if (elapsed > 1.8) {
-          suckFactor += Math.pow((elapsed - 1.8) * 3, 2.2);
+          suckMult += Math.pow((elapsed - 1.8) * 3, 2.2);
         }
 
+        ctx.globalCompositeOperation = "source-over";
         ctx.fillStyle = "rgba(0, 0, 0, 0.28)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         ctx.save();
         ctx.translate(cx, cy);
 
-        // Core Gravitational Lensing Glow
-        const glow = ctx.createRadialGradient(0, 0, rHole * 0.95, 0, 0, rHole * 3.2);
+        // Volumetric additive glow for organic plasma
+        ctx.globalCompositeOperation = "lighter";
+
+        // Accretion halo glow
+        const glow = ctx.createRadialGradient(0, 0, rHole * 0.95, 0, 0, rHole * 3.4);
         glow.addColorStop(0, "rgba(0,0,0,1)");
-        glow.addColorStop(0.12, "rgba(255, 230, 160, 0.95)");
-        glow.addColorStop(0.3, "rgba(255, 120, 20, 0.65)");
-        glow.addColorStop(0.65, "rgba(180, 40, 0, 0.25)");
+        glow.addColorStop(0.08, "rgba(255, 240, 200, 0.9)");
+        glow.addColorStop(0.25, "rgba(255, 120, 20, 0.6)");
+        glow.addColorStop(0.65, "rgba(180, 40, 0, 0.15)");
         glow.addColorStop(1, "transparent");
         ctx.fillStyle = glow;
         ctx.beginPath();
-        ctx.arc(0, 0, rHole * 3.2, 0, Math.PI * 2);
+        ctx.arc(0, 0, rHole * 3.4, 0, Math.PI * 2);
         ctx.fill();
 
-        // Particles
-        particles.forEach(p => {
-          p.angle += p.speed * suckFactor;
-          p.radius -= p.fallSpeed * suckFactor;
+        // Continuous smooth curved streams
+        streams.forEach(s => {
+          s.angle += s.speed * suckMult;
+          s.radius -= s.fallSpeed * suckMult;
 
-          if (p.radius <= rHole * 0.98) {
-            p.radius = Math.max(canvas.width, canvas.height) * 0.65;
-            p.angle = Math.random() * Math.PI * 2;
+          if (s.radius <= rHole * 0.98) {
+            s.radius = Math.max(canvas.width, canvas.height) * 0.65;
+            s.angle = Math.random() * Math.PI * 2;
           }
 
-          // Smooth thermodynamic coloring (Hot white/yellow inner, orange/red outer)
-          const normDist = (p.radius - rHole) / (Math.max(canvas.width, canvas.height) * 0.5);
-          if (normDist < 0.15) ctx.fillStyle = "#ffffff";
-          else if (normDist < 0.35) ctx.fillStyle = "#ffcc33";
-          else if (normDist < 0.65) ctx.fillStyle = "#ff5500";
-          else ctx.fillStyle = "#b32400";
+          const norm = (s.radius - rHole) / (Math.max(canvas.width, canvas.height) * 0.5);
+          if (norm < 0.1) ctx.strokeStyle = "rgba(255, 255, 255, 0.85)";
+          else if (norm < 0.3) ctx.strokeStyle = "rgba(255, 200, 50, 0.7)";
+          else if (norm < 0.6) ctx.strokeStyle = "rgba(255, 80, 10, 0.5)";
+          else ctx.strokeStyle = "rgba(180, 20, 0, 0.25)";
 
-          let px, py;
-          if (p.isHalo) {
-            // Upper and lower vertical Einstein rings
-            px = Math.cos(p.angle) * p.radius;
-            py = Math.sin(p.angle) * (p.radius * 0.32) - (rHole * 0.5);
+          let px, py, tailX, tailY;
+          const tilt = 0.35;
+          if (s.isArc) {
+            // Gravitational lens arc over and under event horizon
+            const arcBend = (1 - s.radius / (canvas.width * 0.6)) * (rHole * 0.7);
+            const side = Math.sin(s.angle) > 0 ? 1 : -1;
+            px = Math.cos(s.angle) * s.radius;
+            py = Math.sin(s.angle) * (s.radius * tilt) + (side * arcBend);
+            tailX = Math.cos(s.angle - 0.08) * (s.radius + s.fallSpeed * suckMult * 2.5);
+            tailY = Math.sin(s.angle - 0.08) * ((s.radius + s.fallSpeed * suckMult * 2.5) * tilt) + (side * arcBend);
           } else {
-            // Main equatorial accretion plane
-            px = Math.cos(p.angle) * p.radius;
-            py = Math.sin(p.angle) * (p.radius * 0.26);
+            // Equatorial disk
+            px = Math.cos(s.angle) * s.radius;
+            py = Math.sin(s.angle) * (s.radius * 0.25);
+            tailX = Math.cos(s.angle - 0.08) * (s.radius + s.fallSpeed * suckMult * 2.5);
+            tailY = Math.sin(s.angle - 0.08) * ((s.radius + s.fallSpeed * suckMult * 2.5) * 0.25);
           }
 
-          const tailX = px - Math.sin(p.angle) * (p.fallSpeed * suckFactor * 2.2);
-          const tailY = py + Math.cos(p.angle) * (p.fallSpeed * suckFactor * 0.7);
-
-          ctx.strokeStyle = ctx.fillStyle;
-          ctx.lineWidth = p.size;
+          ctx.lineWidth = s.size;
           ctx.beginPath();
           ctx.moveTo(px, py);
           ctx.lineTo(tailX, tailY);
           ctx.stroke();
         });
 
-        // Event Horizon (Solid Pitch Black Singularity)
+        // Razor-sharp photon ring right at event horizon
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = "rgba(255, 255, 240, 0.95)";
+        ctx.beginPath();
+        ctx.arc(0, 0, rHole + 1, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Pure black singularity shadow (masks out behind)
+        ctx.globalCompositeOperation = "source-over";
         ctx.fillStyle = "#000000";
         ctx.beginPath();
         ctx.arc(0, 0, rHole, 0, Math.PI * 2);
@@ -637,7 +653,7 @@
       loop();
     }
 
-    // --- STEP 3: PHONE CHAT (CLEAN VIEWPORT) ---
+    // --- STEP 3: PHONE CHAT (CLEAN NATIVE VIEWPORT) ---
     function triggerChatMessages() {
       const delays = [600, 1900, 3200, 4400];
       const elements = ["msg1", "msg2", "msg3", "voiceMsg"];
@@ -671,16 +687,16 @@
 
       const audio1 = new Audio("01.mp3");
       audio1.play().catch(e => {
-        console.log("01.mp3 fallback:", e);
-        setTimeout(startAnimeItachiEye, 2000);
+        console.log("01.mp3 playback failed:", e);
+        setTimeout(startAuthenticItachiEye, 2000);
       });
 
-      audio1.onended = startAnimeItachiEye;
+      audio1.onended = startAuthenticItachiEye;
     }
 
-    // --- STEP 5: AUTHENTIC ANIME ITACHI MANGEKYO EYE (02.mp3) ---
+    // --- STEP 5: AUTHENTIC ITACHI MANGEKYO SHARINGAN (02.mp3) ---
     let shId;
-    function startAnimeItachiEye() {
+    function startAuthenticItachiEye() {
       showScene("scene-sharingan");
 
       const audio2 = new Audio("02.mp3");
@@ -697,15 +713,25 @@
       let angle = 0;
       let zoom = 0.55;
 
-      // Authentic Curved Tomoe Blade Geometry (Itachi's Pinwheel)
-      function drawItachiTomoe(rot, r) {
+      // Authentic Curved Itachi Pinwheel Tomoe Geometry
+      function drawItachiTomoeBlade(rotAngle, radius) {
         ctx.save();
-        ctx.rotate(rot);
+        ctx.rotate(rotAngle);
         ctx.beginPath();
+        // Starts narrow at center pupil
         ctx.moveTo(0, 0);
-        // Hooked curve extending out to the iris perimeter
-        ctx.bezierCurveTo(r * 0.22, -r * 0.28, r * 0.55, -r * 0.65, 0, -r * 0.94);
-        ctx.bezierCurveTo(-r * 0.28, -r * 0.65, -r * 0.16, -r * 0.28, 0, 0);
+        // Outer broad sweeping curve
+        ctx.bezierCurveTo(
+          radius * 0.22, -radius * 0.32,
+          radius * 0.65, -radius * 0.68,
+          radius * 0.28, -radius * 0.98
+        );
+        // Tapered return hook curving back toward center
+        ctx.bezierCurveTo(
+          radius * 0.05, -radius * 0.75,
+          -radius * 0.18, -radius * 0.35,
+          0, 0
+        );
         ctx.fillStyle = "#000000";
         ctx.fill();
         ctx.restore();
@@ -719,7 +745,7 @@
           zoom += (1.35 - zoom) * 0.06;
         } else {
           zoom += Math.pow((elapsed - 2.0) * 4.8, 2.5) * 0.12;
-          document.getElementById("genjutsuOverlay").style.opacity = Math.random() * 0.75;
+          document.getElementById("genjutsuOverlay").style.opacity = Math.random() * 0.85;
         }
 
         ctx.fillStyle = "#000000";
@@ -729,53 +755,53 @@
         ctx.translate(cx, cy);
         ctx.scale(zoom, zoom);
 
-        const rIris = 135;
+        const rIris = 140;
 
-        // 1. Anime Sclera (Eye Slit Shape with Eyelid Shading)
+        // 1. Anime Sclera Eye Slit (Human Almond Eye Contour)
         ctx.save();
         ctx.beginPath();
-        ctx.moveTo(-280, 0);
-        ctx.quadraticCurveTo(0, -170, 280, 0);
-        ctx.quadraticCurveTo(0, 170, -280, 0);
-        ctx.fillStyle = "#e5dfda";
+        ctx.moveTo(-290, 0);
+        ctx.quadraticCurveTo(0, -175, 290, 0);
+        ctx.quadraticCurveTo(0, 175, -290, 0);
+        ctx.fillStyle = "#e2dcd7";
         ctx.fill();
-        ctx.clip(); // Keep eye elements inside the human eyelid contour
+        ctx.clip(); // Keeps eye elements inside eyelid boundary
 
-        // Upper Eyelid Deep Anime Shadow
-        const lidShadow = ctx.createLinearGradient(0, -170, 0, 0);
-        lidShadow.addColorStop(0, "rgba(20, 15, 15, 0.85)");
-        lidShadow.addColorStop(1, "transparent");
-        ctx.fillStyle = lidShadow;
+        // Upper eyelid gradient shadow
+        const lidGrad = ctx.createLinearGradient(0, -175, 0, 0);
+        lidGrad.addColorStop(0, "rgba(25, 15, 15, 0.9)");
+        lidGrad.addColorStop(1, "transparent");
+        ctx.fillStyle = lidGrad;
         ctx.fillRect(-300, -180, 600, 200);
 
-        // Fine Crimson Blood Vessels
-        ctx.strokeStyle = "rgba(180, 0, 0, 0.4)";
-        ctx.lineWidth = 1.4;
+        // Fine blood vessel veins
+        ctx.strokeStyle = "rgba(180, 0, 0, 0.35)";
+        ctx.lineWidth = 1.2;
         ctx.beginPath();
-        ctx.moveTo(-250, 0); ctx.lineTo(-160, -25);
-        ctx.moveTo(-240, 20); ctx.lineTo(-170, 10);
-        ctx.moveTo(250, 0); ctx.lineTo(165, 20);
+        ctx.moveTo(-260, 0); ctx.lineTo(-170, -25);
+        ctx.moveTo(-250, 20); ctx.lineTo(-180, 10);
+        ctx.moveTo(260, 0); ctx.lineTo(170, 20);
         ctx.stroke();
 
         // 2. Rich Crimson Iris
-        const irisGrad = ctx.createRadialGradient(0, 0, 20, 0, 0, rIris);
-        irisGrad.addColorStop(0, "#ff1a1a");
+        const irisGrad = ctx.createRadialGradient(0, 0, 15, 0, 0, rIris);
+        irisGrad.addColorStop(0, "#ff1111");
         irisGrad.addColorStop(0.65, "#b30000");
-        irisGrad.addColorStop(0.95, "#400000");
+        irisGrad.addColorStop(0.92, "#400000");
         irisGrad.addColorStop(1, "#000000");
         ctx.fillStyle = irisGrad;
         ctx.beginPath();
         ctx.arc(0, 0, rIris, 0, Math.PI * 2);
         ctx.fill();
 
-        // Iris Muscle Striations (Anime Detail)
-        ctx.strokeStyle = "rgba(255, 70, 70, 0.35)";
-        ctx.lineWidth = 1.5;
-        for (let i = 0; i < 36; i++) {
-          const a = (i * Math.PI) / 18;
+        // Organic Iris Muscle Striations
+        ctx.strokeStyle = "rgba(255, 60, 60, 0.3)";
+        ctx.lineWidth = 1.4;
+        for (let i = 0; i < 48; i++) {
+          const a = (i * Math.PI) / 24;
           ctx.beginPath();
           ctx.moveTo(Math.cos(a) * 32, Math.sin(a) * 32);
-          ctx.lineTo(Math.cos(a) * rIris, Math.sin(a) * rIris);
+          ctx.lineTo(Math.cos(a) * (rIris - 4), Math.sin(a) * (rIris - 4));
           ctx.stroke();
         }
 
@@ -784,39 +810,39 @@
         ctx.strokeStyle = "#000000";
         ctx.stroke();
 
-        // 3. Itachi 3-Blade Mangekyo Pinwheel
+        // 3. Exact Itachi 3-Blade Mangekyo Pinwheel
         ctx.save();
         ctx.rotate(angle);
-        drawItachiTomoe(0, rIris);
-        drawItachiTomoe((Math.PI * 2) / 3, rIris);
-        drawItachiTomoe((Math.PI * 4) / 3, rIris);
+        drawItachiTomoeBlade(0, rIris);
+        drawItachiTomoeBlade((Math.PI * 2) / 3, rIris);
+        drawItachiTomoeBlade((Math.PI * 4) / 3, rIris);
         ctx.restore();
 
         // 4. Central Pupil
         ctx.fillStyle = "#000000";
         ctx.beginPath();
-        ctx.arc(0, 0, 22, 0, Math.PI * 2);
+        ctx.arc(0, 0, 24, 0, Math.PI * 2);
         ctx.fill();
 
-        // 5. Specular Glare (Anime Cornea Highlight)
+        // 5. Specular Glare (Sharp Anime Highlight)
         ctx.fillStyle = "rgba(255, 255, 255, 0.85)";
         ctx.beginPath();
-        ctx.arc(-42, -45, 14, 0, Math.PI * 2);
+        ctx.arc(-42, -45, 12, 0, Math.PI * 2);
         ctx.fill();
 
-        ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+        ctx.fillStyle = "rgba(255, 255, 255, 0.45)";
         ctx.beginPath();
-        ctx.arc(38, 42, 7, 0, Math.PI * 2);
+        ctx.arc(38, 42, 6, 0, Math.PI * 2);
         ctx.fill();
 
         ctx.restore(); // Exit Sclera Clip
 
-        // Thick Anime Eyeliner / Eyelashes
+        // Thick Anime Eyeliner Rim
         ctx.strokeStyle = "#120a0a";
         ctx.lineWidth = 9;
         ctx.beginPath();
-        ctx.moveTo(-285, 0);
-        ctx.quadraticCurveTo(0, -175, 285, 0);
+        ctx.moveTo(-295, 0);
+        ctx.quadraticCurveTo(0, -180, 295, 0);
         ctx.stroke();
 
         ctx.restore();
@@ -836,7 +862,7 @@
     function triggerWakeUpAlarm() {
       const audio3 = new Audio("03.mp3");
       audio3.loop = true;
-      audio3.play().catch(e => console.log("03.mp3 error:", e));
+      audio3.play().catch(e => console.log("03.mp3 playback error:", e));
     }
   </script>
 </body>
