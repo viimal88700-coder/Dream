@@ -114,8 +114,8 @@
       opacity: 1;
     }
 
-    /* 2. CANVASES */
-    #scene-blackhole, #scene-sharingan {
+    /* 2. CANVASES (STARS & SHARINGAN VOID) */
+    #scene-stars, #scene-sharingan {
       background: #000;
     }
     .full-canvas {
@@ -348,9 +348,9 @@
     <div class="lens-bloom" id="lensBloom"></div>
   </div>
 
-  <!-- SCENE 2: ACCRETION DISK BLACK HOLE -->
-  <div id="scene-blackhole" class="scene">
-    <canvas id="blackHoleCanvas" class="full-canvas"></canvas>
+  <!-- SCENE 2: BINARY STARS COLLISION & BIG BANG -->
+  <div id="scene-stars" class="scene">
+    <canvas id="starsCanvas" class="full-canvas"></canvas>
   </div>
 
   <!-- SCENE 3: DIRECT PHONE CHAT UI -->
@@ -377,7 +377,7 @@
     </div>
   </div>
 
-  <!-- SCENE 4: ANIME ITACHI MANGEKYO SHARINGAN -->
+  <!-- SCENE 4: DEEP INSIDE THE SHARINGAN VOID (NO EYELIDS) -->
   <div id="scene-sharingan" class="scene">
     <canvas id="sharinganCanvas" class="full-canvas"></canvas>
     <div class="genjutsu-overlay" id="genjutsuOverlay"></div>
@@ -412,7 +412,6 @@
         const latchGain = this.ctx.createGain();
         latch.type = "square";
         latch.frequency.setValueAtTime(260, now);
-        latch.frequency.exponentialRampToValueAtTime(60, now + 0.12);
         latchGain.gain.setValueAtTime(0.35, now);
         latchGain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
         latch.connect(latchGain);
@@ -446,42 +445,39 @@
         sub.stop(now + 2.2);
       },
 
-      playBlackHoleVacuum() {
+      playStarSpinAndBang() {
         this.init();
         const now = this.ctx.currentTime;
+
+        // Rising vortex pitch as stars accelerate
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
-        osc.type = "sine";
-        osc.frequency.setValueAtTime(140, now);
-        osc.frequency.exponentialRampToValueAtTime(28, now + 3.8);
-        gain.gain.setValueAtTime(0.65, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 3.8);
+        osc.type = "sawtooth";
+        osc.frequency.setValueAtTime(80, now);
+        osc.frequency.exponentialRampToValueAtTime(750, now + 2.6);
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.linearRampToValueAtTime(0.4, now + 2.6);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 2.7);
         osc.connect(gain);
         gain.connect(this.ctx.destination);
         osc.start(now);
-        osc.stop(now + 3.8);
+        osc.stop(now + 2.7);
 
-        const bufLen = this.ctx.sampleRate * 3.5;
-        const buf = this.ctx.createBuffer(1, bufLen, this.ctx.sampleRate);
-        const data = buf.getChannelData(0);
-        for (let i = 0; i < bufLen; i++) data[i] = Math.random() * 2 - 1;
-        const noise = this.ctx.createBufferSource();
-        noise.buffer = buf;
-
-        const filter = this.ctx.createBiquadFilter();
-        filter.type = "lowpass";
-        filter.frequency.setValueAtTime(750, now);
-        filter.frequency.exponentialRampToValueAtTime(70, now + 3.5);
-
-        const nGain = this.ctx.createGain();
-        nGain.gain.setValueAtTime(0.35, now);
-        nGain.gain.exponentialRampToValueAtTime(0.001, now + 3.5);
-
-        noise.connect(filter);
-        filter.connect(nGain);
-        nGain.connect(this.ctx.destination);
-        noise.start(now);
-        noise.stop(now + 3.5);
+        // Sub-bass detonation when stars collide
+        setTimeout(() => {
+          const bangNow = this.ctx.currentTime;
+          const bangOsc = this.ctx.createOscillator();
+          const bangGain = this.ctx.createGain();
+          bangOsc.type = "sine";
+          bangOsc.frequency.setValueAtTime(180, bangNow);
+          bangOsc.frequency.exponentialRampToValueAtTime(20, bangNow + 1.8);
+          bangGain.gain.setValueAtTime(0.85, bangNow);
+          bangGain.gain.exponentialRampToValueAtTime(0.001, bangNow + 1.8);
+          bangOsc.connect(bangGain);
+          bangGain.connect(this.ctx.destination);
+          bangOsc.start(bangNow);
+          bangOsc.stop(bangNow + 1.8);
+        }, 2600);
       },
 
       playNotificationChime() {
@@ -506,7 +502,7 @@
       document.getElementById(id).classList.add("active");
     }
 
-    // --- STEP 1: DOOR OPEN ---
+    // --- 1. DOOR INTERACTION ---
     function triggerDoor() {
       AudioEngine.playDoorOpen();
       document.getElementById("openDoorBtn").style.display = "none";
@@ -521,131 +517,133 @@
       }, 1600);
 
       setTimeout(() => {
-        showScene("scene-blackhole");
-        startHollywoodBlackHole();
-      }, 3000);
+        showScene("scene-stars");
+        startBinaryStarsCollision();
+      }, 2900);
     }
 
-    // --- STEP 2: HIGH-FIDELITY VOLUMETRIC PLASMA ACCRETION BLACK HOLE ---
-    let bhId;
-    function startHollywoodBlackHole() {
-      AudioEngine.playBlackHoleVacuum();
-      const canvas = document.getElementById("blackHoleCanvas");
+    // --- 2. TWO STARS SPINNING & BIG BANG COLLISION ---
+    let starAnimId;
+    function startBinaryStarsCollision() {
+      AudioEngine.playStarSpinAndBang();
+      const canvas = document.getElementById("starsCanvas");
       const ctx = canvas.getContext("2d");
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
 
       const cx = canvas.width / 2;
       const cy = canvas.height / 2;
-      const rHole = Math.min(canvas.width, canvas.height) * 0.18;
       let startTime = Date.now();
 
-      // Dense glowing filaments
-      const streamCount = 2200;
-      const streams = [];
-      for (let i = 0; i < streamCount; i++) {
-        const rad = rHole * 1.05 + Math.pow(Math.random(), 2.0) * Math.max(canvas.width, canvas.height) * 0.7;
-        streams.push({
-          angle: Math.random() * Math.PI * 2,
-          radius: rad,
-          speed: 0.025 + (1 / (rad * 0.05 + 1)) * 0.08,
-          fallSpeed: 1.2 + Math.random() * 2.2,
-          size: Math.random() * 2.4 + 0.6,
-          isArc: Math.random() > 0.5,
-          colorOffset: Math.random()
+      // Cosmic background stars
+      const bgStars = [];
+      for (let i = 0; i < 200; i++) {
+        bgStars.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          size: Math.random() * 2,
+          alpha: Math.random() * 0.8 + 0.2
         });
+      }
+
+      // Swirling plasma trail memory
+      const trails = [];
+
+      function drawStar(x, y, radius, colorInner, colorOuter) {
+        ctx.save();
+        ctx.globalCompositeOperation = "lighter";
+        const grad = ctx.createRadialGradient(x, y, 0, x, y, radius * 3.5);
+        grad.addColorStop(0, "#ffffff");
+        grad.addColorStop(0.25, colorInner);
+        grad.addColorStop(0.7, colorOuter);
+        grad.addColorStop(1, "transparent");
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(x, y, radius * 3.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
       }
 
       function loop() {
         const elapsed = (Date.now() - startTime) / 1000;
-        let suckMult = 1.0;
-        if (elapsed > 1.8) {
-          suckMult += Math.pow((elapsed - 1.8) * 3, 2.2);
-        }
 
         ctx.globalCompositeOperation = "source-over";
-        ctx.fillStyle = "rgba(0, 0, 0, 0.28)";
+        ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        ctx.save();
-        ctx.translate(cx, cy);
-
-        // Volumetric additive glow for organic plasma
-        ctx.globalCompositeOperation = "lighter";
-
-        // Accretion halo glow
-        const glow = ctx.createRadialGradient(0, 0, rHole * 0.95, 0, 0, rHole * 3.4);
-        glow.addColorStop(0, "rgba(0,0,0,1)");
-        glow.addColorStop(0.08, "rgba(255, 240, 200, 0.9)");
-        glow.addColorStop(0.25, "rgba(255, 120, 20, 0.6)");
-        glow.addColorStop(0.65, "rgba(180, 40, 0, 0.15)");
-        glow.addColorStop(1, "transparent");
-        ctx.fillStyle = glow;
-        ctx.beginPath();
-        ctx.arc(0, 0, rHole * 3.4, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Continuous smooth curved streams
-        streams.forEach(s => {
-          s.angle += s.speed * suckMult;
-          s.radius -= s.fallSpeed * suckMult;
-
-          if (s.radius <= rHole * 0.98) {
-            s.radius = Math.max(canvas.width, canvas.height) * 0.65;
-            s.angle = Math.random() * Math.PI * 2;
-          }
-
-          const norm = (s.radius - rHole) / (Math.max(canvas.width, canvas.height) * 0.5);
-          if (norm < 0.1) ctx.strokeStyle = "rgba(255, 255, 255, 0.85)";
-          else if (norm < 0.3) ctx.strokeStyle = "rgba(255, 200, 50, 0.7)";
-          else if (norm < 0.6) ctx.strokeStyle = "rgba(255, 80, 10, 0.5)";
-          else ctx.strokeStyle = "rgba(180, 20, 0, 0.25)";
-
-          let px, py, tailX, tailY;
-          const tilt = 0.35;
-          if (s.isArc) {
-            // Gravitational lens arc over and under event horizon
-            const arcBend = (1 - s.radius / (canvas.width * 0.6)) * (rHole * 0.7);
-            const side = Math.sin(s.angle) > 0 ? 1 : -1;
-            px = Math.cos(s.angle) * s.radius;
-            py = Math.sin(s.angle) * (s.radius * tilt) + (side * arcBend);
-            tailX = Math.cos(s.angle - 0.08) * (s.radius + s.fallSpeed * suckMult * 2.5);
-            tailY = Math.sin(s.angle - 0.08) * ((s.radius + s.fallSpeed * suckMult * 2.5) * tilt) + (side * arcBend);
-          } else {
-            // Equatorial disk
-            px = Math.cos(s.angle) * s.radius;
-            py = Math.sin(s.angle) * (s.radius * 0.25);
-            tailX = Math.cos(s.angle - 0.08) * (s.radius + s.fallSpeed * suckMult * 2.5);
-            tailY = Math.sin(s.angle - 0.08) * ((s.radius + s.fallSpeed * suckMult * 2.5) * 0.25);
-          }
-
-          ctx.lineWidth = s.size;
-          ctx.beginPath();
-          ctx.moveTo(px, py);
-          ctx.lineTo(tailX, tailY);
-          ctx.stroke();
+        // Draw background starfield
+        ctx.fillStyle = "#ffffff";
+        bgStars.forEach(s => {
+          ctx.globalAlpha = s.alpha;
+          ctx.fillRect(s.x, s.y, s.size, s.size);
         });
+        ctx.globalAlpha = 1.0;
 
-        // Razor-sharp photon ring right at event horizon
-        ctx.lineWidth = 3;
-        ctx.strokeStyle = "rgba(255, 255, 240, 0.95)";
-        ctx.beginPath();
-        ctx.arc(0, 0, rHole + 1, 0, Math.PI * 2);
-        ctx.stroke();
+        if (elapsed < 2.6) {
+          // Accelerating inward orbital spiral
+          const orbitRadius = Math.max(0, (1 - elapsed / 2.6) * (Math.min(canvas.width, canvas.height) * 0.38));
+          const angle = Math.pow(elapsed, 2.2) * 9.5;
 
-        // Pure black singularity shadow (masks out behind)
-        ctx.globalCompositeOperation = "source-over";
-        ctx.fillStyle = "#000000";
-        ctx.beginPath();
-        ctx.arc(0, 0, rHole, 0, Math.PI * 2);
-        ctx.fill();
+          const s1x = cx + Math.cos(angle) * orbitRadius;
+          const s1y = cy + Math.sin(angle) * (orbitRadius * 0.65);
+          const s2x = cx + Math.cos(angle + Math.PI) * orbitRadius;
+          const s2y = cy + Math.sin(angle + Math.PI) * (orbitRadius * 0.65);
 
-        ctx.restore();
+          trails.push({ x: s1x, y: s1y, color: "#ffaa00", alpha: 1.0 });
+          trails.push({ x: s2x, y: s2y, color: "#00ddff", alpha: 1.0 });
 
-        if (elapsed < 3.8) {
-          bhId = requestAnimationFrame(loop);
+          // Render plasma tail streaks
+          ctx.save();
+          ctx.globalCompositeOperation = "lighter";
+          for (let i = trails.length - 1; i >= 0; i--) {
+            const t = trails[i];
+            t.alpha -= 0.035;
+            if (t.alpha <= 0) {
+              trails.splice(i, 1);
+              continue;
+            }
+            ctx.fillStyle = t.color;
+            ctx.globalAlpha = t.alpha;
+            ctx.beginPath();
+            ctx.arc(t.x, t.y, 4, 0, Math.PI * 2);
+            ctx.fill();
+          }
+          ctx.restore();
+
+          // Star 1 (Solar Gold) & Star 2 (Neutron Cyan-White)
+          const starSize = Math.max(10, 24 - elapsed * 4);
+          drawStar(s1x, s1y, starSize, "#ffaa00", "#ff4400");
+          drawStar(s2x, s2y, starSize, "#00eeff", "#0055ff");
+
         } else {
-          cancelAnimationFrame(bhId);
+          // BIG BANG DETONATION EXPANSION
+          const bangElapsed = elapsed - 2.6;
+          const shockRadius = bangElapsed * Math.max(canvas.width, canvas.height) * 1.8;
+
+          ctx.save();
+          ctx.globalCompositeOperation = "lighter";
+
+          // Expanding supernova shockwave
+          const shock = ctx.createRadialGradient(cx, cy, 0, cx, cy, shockRadius);
+          shock.addColorStop(0, "#ffffff");
+          shock.addColorStop(0.3, "#ffeedd");
+          shock.addColorStop(0.65, "#ff3300");
+          shock.addColorStop(1, "transparent");
+          ctx.fillStyle = shock;
+          ctx.beginPath();
+          ctx.arc(cx, cy, shockRadius, 0, Math.PI * 2);
+          ctx.fill();
+
+          // Screen flash out
+          ctx.fillStyle = `rgba(255, 255, 255, ${Math.min(1, bangElapsed * 2)})`;
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.restore();
+        }
+
+        if (elapsed < 3.6) {
+          starAnimId = requestAnimationFrame(loop);
+        } else {
+          cancelAnimationFrame(starAnimId);
           showScene("scene-phone");
           triggerChatMessages();
         }
@@ -653,7 +651,7 @@
       loop();
     }
 
-    // --- STEP 3: PHONE CHAT (CLEAN NATIVE VIEWPORT) ---
+    // --- 3. PHONE CHAT (CLEAN VIEWPORT) ---
     function triggerChatMessages() {
       const delays = [600, 1900, 3200, 4400];
       const elements = ["msg1", "msg2", "msg3", "voiceMsg"];
@@ -675,7 +673,7 @@
       });
     }
 
-    // --- STEP 4: FRIEND VOICE NOTE (01.mp3) ---
+    // --- 4. FRIEND VOICE NOTE (01.mp3) ---
     let voicePlayed = false;
     function playVoiceNote() {
       if (voicePlayed) return;
@@ -687,20 +685,20 @@
 
       const audio1 = new Audio("01.mp3");
       audio1.play().catch(e => {
-        console.log("01.mp3 playback failed:", e);
-        setTimeout(startAuthenticItachiEye, 2000);
+        console.log("01.mp3 missing/blocked:", e);
+        setTimeout(startDeepSharinganVoid, 2000);
       });
 
-      audio1.onended = startAuthenticItachiEye;
+      audio1.onended = startDeepSharinganVoid;
     }
 
-    // --- STEP 5: AUTHENTIC ITACHI MANGEKYO SHARINGAN (02.mp3) ---
-    let shId;
-    function startAuthenticItachiEye() {
+    // --- 5. DEEP INSIDE THE EYE: TSUKUYOMI CRIMSON VOID (02.mp3) ---
+    let voidAnimId;
+    function startDeepSharinganVoid() {
       showScene("scene-sharingan");
 
       const audio2 = new Audio("02.mp3");
-      audio2.play().catch(e => console.log("02.mp3 playback error:", e));
+      audio2.play().catch(e => console.log("02.mp3 error:", e));
 
       const canvas = document.getElementById("sharinganCanvas");
       const ctx = canvas.getContext("2d");
@@ -711,25 +709,33 @@
       const cy = canvas.height / 2;
       let startTime = Date.now();
       let angle = 0;
-      let zoom = 0.55;
 
-      // Authentic Curved Itachi Pinwheel Tomoe Geometry
-      function drawItachiTomoeBlade(rotAngle, radius) {
+      // Ash/ember particles floating in the iris cosmos
+      const embers = [];
+      for (let i = 0; i < 350; i++) {
+        embers.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          radius: Math.random() * 2.5 + 0.8,
+          speedY: -(Math.random() * 2 + 0.5),
+          alpha: Math.random() * 0.7 + 0.3
+        });
+      }
+
+      // Mathematical Itachi Curved Tomoe Blade
+      function drawItachiBlade(rot, scale) {
         ctx.save();
-        ctx.rotate(rotAngle);
+        ctx.rotate(rot);
         ctx.beginPath();
-        // Starts narrow at center pupil
         ctx.moveTo(0, 0);
-        // Outer broad sweeping curve
         ctx.bezierCurveTo(
-          radius * 0.22, -radius * 0.32,
-          radius * 0.65, -radius * 0.68,
-          radius * 0.28, -radius * 0.98
+          scale * 0.28, -scale * 0.35,
+          scale * 0.68, -scale * 0.72,
+          scale * 0.32, -scale * 0.98
         );
-        // Tapered return hook curving back toward center
         ctx.bezierCurveTo(
-          radius * 0.05, -radius * 0.75,
-          -radius * 0.18, -radius * 0.35,
+          scale * 0.06, -scale * 0.76,
+          -scale * 0.18, -scale * 0.35,
           0, 0
         );
         ctx.fillStyle = "#000000";
@@ -739,118 +745,78 @@
 
       function loop() {
         const elapsed = (Date.now() - startTime) / 1000;
-        angle += 0.09 + (elapsed * 0.08);
+        angle += 0.12 + Math.pow(elapsed, 2) * 0.08;
 
-        if (elapsed < 2.0) {
-          zoom += (1.35 - zoom) * 0.06;
-        } else {
-          zoom += Math.pow((elapsed - 2.0) * 4.8, 2.5) * 0.12;
-          document.getElementById("genjutsuOverlay").style.opacity = Math.random() * 0.85;
-        }
-
-        ctx.fillStyle = "#000000";
+        // 1. Deep Crimson Cosmic Background (Inside the Iris)
+        const voidGrad = ctx.createRadialGradient(cx, cy, 30, cx, cy, Math.max(canvas.width, canvas.height) * 0.8);
+        voidGrad.addColorStop(0, "#ff1100");
+        voidGrad.addColorStop(0.35, "#aa0000");
+        voidGrad.addColorStop(0.7, "#440000");
+        voidGrad.addColorStop(1, "#0a0000");
+        ctx.fillStyle = voidGrad;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+        // 2. Swirling Iris Striations & Shockwaves
         ctx.save();
         ctx.translate(cx, cy);
-        ctx.scale(zoom, zoom);
-
-        const rIris = 140;
-
-        // 1. Anime Sclera Eye Slit (Human Almond Eye Contour)
-        ctx.save();
-        ctx.beginPath();
-        ctx.moveTo(-290, 0);
-        ctx.quadraticCurveTo(0, -175, 290, 0);
-        ctx.quadraticCurveTo(0, 175, -290, 0);
-        ctx.fillStyle = "#e2dcd7";
-        ctx.fill();
-        ctx.clip(); // Keeps eye elements inside eyelid boundary
-
-        // Upper eyelid gradient shadow
-        const lidGrad = ctx.createLinearGradient(0, -175, 0, 0);
-        lidGrad.addColorStop(0, "rgba(25, 15, 15, 0.9)");
-        lidGrad.addColorStop(1, "transparent");
-        ctx.fillStyle = lidGrad;
-        ctx.fillRect(-300, -180, 600, 200);
-
-        // Fine blood vessel veins
-        ctx.strokeStyle = "rgba(180, 0, 0, 0.35)";
-        ctx.lineWidth = 1.2;
-        ctx.beginPath();
-        ctx.moveTo(-260, 0); ctx.lineTo(-170, -25);
-        ctx.moveTo(-250, 20); ctx.lineTo(-180, 10);
-        ctx.moveTo(260, 0); ctx.lineTo(170, 20);
-        ctx.stroke();
-
-        // 2. Rich Crimson Iris
-        const irisGrad = ctx.createRadialGradient(0, 0, 15, 0, 0, rIris);
-        irisGrad.addColorStop(0, "#ff1111");
-        irisGrad.addColorStop(0.65, "#b30000");
-        irisGrad.addColorStop(0.92, "#400000");
-        irisGrad.addColorStop(1, "#000000");
-        ctx.fillStyle = irisGrad;
-        ctx.beginPath();
-        ctx.arc(0, 0, rIris, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Organic Iris Muscle Striations
-        ctx.strokeStyle = "rgba(255, 60, 60, 0.3)";
-        ctx.lineWidth = 1.4;
+        ctx.rotate(-angle * 0.3);
+        ctx.strokeStyle = "rgba(255, 60, 60, 0.22)";
+        ctx.lineWidth = 2;
         for (let i = 0; i < 48; i++) {
           const a = (i * Math.PI) / 24;
           ctx.beginPath();
-          ctx.moveTo(Math.cos(a) * 32, Math.sin(a) * 32);
-          ctx.lineTo(Math.cos(a) * (rIris - 4), Math.sin(a) * (rIris - 4));
+          ctx.moveTo(Math.cos(a) * 40, Math.sin(a) * 40);
+          ctx.lineTo(Math.cos(a) * Math.max(canvas.width, canvas.height), Math.sin(a) * Math.max(canvas.width, canvas.height));
           ctx.stroke();
         }
+        ctx.restore();
 
-        // Limbal Ring Outline
-        ctx.lineWidth = 5;
-        ctx.strokeStyle = "#000000";
-        ctx.stroke();
+        // 3. Floating Blood Embers
+        ctx.fillStyle = "#ff6644";
+        embers.forEach(e => {
+          e.y += e.speedY;
+          if (e.y < 0) e.y = canvas.height;
+          ctx.globalAlpha = e.alpha;
+          ctx.beginPath();
+          ctx.arc(e.x, e.y, e.radius, 0, Math.PI * 2);
+          ctx.fill();
+        });
+        ctx.globalAlpha = 1.0;
 
-        // 3. Exact Itachi 3-Blade Mangekyo Pinwheel
+        // 4. Central Pure Black Itachi Mangekyo Blades
+        const bladeScale = Math.min(canvas.width, canvas.height) * (0.35 + elapsed * 0.08);
+
+        ctx.save();
+        ctx.translate(cx, cy);
+
+        // Aura shockwave around the blades
+        ctx.shadowColor = "#ff0000";
+        ctx.shadowBlur = 60;
+
         ctx.save();
         ctx.rotate(angle);
-        drawItachiTomoeBlade(0, rIris);
-        drawItachiTomoeBlade((Math.PI * 2) / 3, rIris);
-        drawItachiTomoeBlade((Math.PI * 4) / 3, rIris);
+        drawItachiBlade(0, bladeScale);
+        drawItachiBlade((Math.PI * 2) / 3, bladeScale);
+        drawItachiBlade((Math.PI * 4) / 3, bladeScale);
         ctx.restore();
 
-        // 4. Central Pupil
+        // Center pupil abyss
         ctx.fillStyle = "#000000";
         ctx.beginPath();
-        ctx.arc(0, 0, 24, 0, Math.PI * 2);
+        ctx.arc(0, 0, bladeScale * 0.22, 0, Math.PI * 2);
         ctx.fill();
-
-        // 5. Specular Glare (Sharp Anime Highlight)
-        ctx.fillStyle = "rgba(255, 255, 255, 0.85)";
-        ctx.beginPath();
-        ctx.arc(-42, -45, 12, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.fillStyle = "rgba(255, 255, 255, 0.45)";
-        ctx.beginPath();
-        ctx.arc(38, 42, 6, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.restore(); // Exit Sclera Clip
-
-        // Thick Anime Eyeliner Rim
-        ctx.strokeStyle = "#120a0a";
-        ctx.lineWidth = 9;
-        ctx.beginPath();
-        ctx.moveTo(-295, 0);
-        ctx.quadraticCurveTo(0, -180, 295, 0);
-        ctx.stroke();
 
         ctx.restore();
 
+        // Rapid Genjutsu Reality Glitch
+        if (elapsed > 2.0) {
+          document.getElementById("genjutsuOverlay").style.opacity = Math.random() * 0.85;
+        }
+
         if (elapsed < 3.4) {
-          shId = requestAnimationFrame(loop);
+          voidAnimId = requestAnimationFrame(loop);
         } else {
-          cancelAnimationFrame(shId);
+          cancelAnimationFrame(voidAnimId);
           showScene("scene-alarm");
           triggerWakeUpAlarm();
         }
@@ -858,11 +824,11 @@
       loop();
     }
 
-    // --- STEP 6: CLEANLY STACKED COLLEGE ALARM (03.mp3) ---
+    // --- 6. REALITY WAKEUP & COLLEGE ALARM (03.mp3) ---
     function triggerWakeUpAlarm() {
       const audio3 = new Audio("03.mp3");
       audio3.loop = true;
-      audio3.play().catch(e => console.log("03.mp3 playback error:", e));
+      audio3.play().catch(e => console.log("03.mp3 error:", e));
     }
   </script>
 </body>
