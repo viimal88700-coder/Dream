@@ -35,7 +35,7 @@
 
     /* 1. CINEMATIC DOOR SCENE */
     #scene-door {
-      background: radial-gradient(circle at center, #22130c 0%, #060302 80%, #000 100%);
+      background: radial-gradient(circle at center, #1e110c 0%, #060302 80%, #000 100%);
       perspective: 1200px;
     }
     .door-frame {
@@ -114,7 +114,7 @@
       opacity: 1;
     }
 
-    /* 2. ASTROPHYSICAL CANVAS BLACK HOLE */
+    /* 2. NASA LEVEL BLACK HOLE CANVAS */
     #scene-blackhole {
       background: #000;
     }
@@ -125,7 +125,7 @@
       height: 100%;
     }
 
-    /* 3. DIRECT POV FULLSCREEN PHONE UI */
+    /* 3. DIRECT PHONE CHAT UI */
     #scene-phone {
       background: #0d0e12;
       flex-direction: column;
@@ -195,8 +195,6 @@
       opacity: 1;
       transform: translateY(0) scale(1);
     }
-
-    /* UNBLOCKED VOICE NOTE BAR */
     .voice-bubble {
       display: flex;
       align-items: center;
@@ -253,7 +251,7 @@
       to { height: 26px; background: #fff; }
     }
 
-    /* 4. CANVAS MANGEKYO SHARINGAN */
+    /* 4. REALISTIC ITACHI EYE & MANGEKYO CANVAS */
     #scene-sharingan {
       background: #000;
     }
@@ -263,20 +261,30 @@
       width: 100%;
       height: 100%;
     }
-    .glitch-flash {
+    .genjutsu-chromatic {
       position: absolute;
       inset: 0;
-      background: red;
-      mix-blend-mode: color-dodge;
-      opacity: 0;
       pointer-events: none;
-      transition: opacity 0.1s ease;
+      mix-blend-mode: screen;
+      opacity: 0;
+      background: radial-gradient(circle, transparent 40%, rgba(255,0,0,0.5) 100%);
+      transition: opacity 0.2s ease;
     }
 
-    /* 5. GASPING WAKE-UP & ALARM */
+    /* 5. PROPERLY STACKED ALARM SCREEN */
     #scene-alarm {
-      background: #040404;
+      background: #030303;
+      display: none;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
       text-align: center;
+      padding: 24px;
+      width: 100vw;
+      height: 100vh;
+    }
+    #scene-alarm.active {
+      display: flex !important;
     }
     .eyelid {
       position: absolute;
@@ -285,7 +293,7 @@
       height: 52vh;
       background: #000;
       z-index: 999;
-      transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+      transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
     .eyelid-top { top: 0; transform: translateY(0); }
     .eyelid-bottom { bottom: 0; transform: translateY(0); }
@@ -293,37 +301,55 @@
     .eyes-open .eyelid-bottom { transform: translateY(100%); }
 
     .shock-text {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       letter-spacing: 4px;
-      color: #888;
+      color: #777;
       margin-bottom: 24px;
+      text-transform: uppercase;
     }
-    .digital-clock {
-      background: #0d0d12;
-      padding: 26px 44px;
-      border-radius: 20px;
+    .digital-clock-box {
+      width: 85%;
+      max-width: 320px;
+      background: #0c0c10;
+      padding: 28px 20px;
+      border-radius: 22px;
       border: 3px solid #ff1744;
-      box-shadow: 0 0 45px rgba(255, 23, 68, 0.45);
-      display: inline-block;
+      box-shadow: 0 0 40px rgba(255, 23, 68, 0.5), inset 0 0 15px rgba(255, 23, 68, 0.2);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
     .clock-time {
       font-family: monospace;
-      font-size: 3.8rem;
+      font-size: clamp(2.5rem, 11vw, 3.8rem);
       font-weight: 900;
       color: #ff1744;
-      text-shadow: 0 0 20px rgba(255, 23, 68, 1);
+      text-shadow: 0 0 20px rgba(255, 23, 68, 0.9);
+      line-height: 1.1;
+    }
+    .clock-ampm {
+      font-family: monospace;
+      font-size: clamp(1.6rem, 7vw, 2.2rem);
+      font-weight: 800;
+      color: #ff1744;
+      text-shadow: 0 0 16px rgba(255, 23, 68, 0.9);
+      margin-top: 4px;
     }
     .alarm-notice {
-      margin-top: 24px;
-      font-size: 2rem;
+      margin-top: 32px;
+      font-size: clamp(1.4rem, 6.5vw, 2.2rem);
       font-weight: 900;
-      letter-spacing: 4px;
+      letter-spacing: 3px;
       color: #fff;
-      animation: pulseAlert 0.6s ease infinite alternate;
+      text-transform: uppercase;
+      animation: pulseNotice 0.65s ease infinite alternate;
+      max-width: 90%;
+      line-height: 1.3;
     }
-    @keyframes pulseAlert {
-      from { transform: scale(1); color: #ff5252; text-shadow: 0 0 10px red; }
-      to { transform: scale(1.1); color: #fff; text-shadow: 0 0 35px #ff1744; }
+    @keyframes pulseNotice {
+      from { transform: scale(1); color: #ff5252; text-shadow: 0 0 12px red; }
+      to { transform: scale(1.08); color: #fff; text-shadow: 0 0 35px #ff1744; }
     }
   </style>
 </head>
@@ -347,12 +373,12 @@
     <div class="lens-bloom" id="lensBloom"></div>
   </div>
 
-  <!-- SCENE 2: CANVAS BLACK HOLE SIMULATION -->
+  <!-- SCENE 2: NASA INTERSTELLAR BLACK HOLE -->
   <div id="scene-blackhole" class="scene">
     <canvas id="blackHoleCanvas"></canvas>
   </div>
 
-  <!-- SCENE 3: DIRECT FULLSCREEN PHONE CHAT -->
+  <!-- SCENE 3: DIRECT PHONE CHAT UI -->
   <div id="scene-phone" class="scene">
     <div class="chat-app-bar">
       <div class="avatar">J</div>
@@ -376,23 +402,24 @@
     </div>
   </div>
 
-  <!-- SCENE 4: CANVAS ITACHI MANGEKYO SHARINGAN -->
+  <!-- SCENE 4: REALISTIC ITACHI MANGEKYO SHARINGAN -->
   <div id="scene-sharingan" class="scene">
     <canvas id="sharinganCanvas"></canvas>
-    <div class="glitch-flash" id="genjutsuGlitch"></div>
+    <div class="genjutsu-chromatic" id="genjutsuGlow"></div>
   </div>
 
-  <!-- SCENE 5: REALITY WAKEUP & COLLEGE ALARM -->
+  <!-- SCENE 5: PROPERLY STACKED COLLEGE ALARM -->
   <div id="scene-alarm" class="scene">
     <div class="shock-text">* GASP * WAKING UP TO REALITY...</div>
-    <div class="digital-clock">
-      <div class="clock-time">07:45 AM</div>
+    <div class="digital-clock-box">
+      <div class="clock-time">07:45</div>
+      <div class="clock-ampm">AM</div>
     </div>
     <div class="alarm-notice">TIME FOR COLLEGE</div>
   </div>
 
   <script>
-    // --- SYNTHESIZED PROCEDURAL AUDIO ENGINE ---
+    // --- 1. HOLLYWOOD-GRADE PROCEDURAL SYNTHESIS ENGINE ---
     const AudioEngine = {
       ctx: null,
       init() {
@@ -404,77 +431,106 @@
           this.ctx.resume();
         }
       },
-      playDoorCreak() {
+      playHeavyDoorOpen() {
         this.init();
         const now = this.ctx.currentTime;
 
+        // Brass mechanical latch
         const latch = this.ctx.createOscillator();
         const latchGain = this.ctx.createGain();
-        latch.type = "triangle";
-        latch.frequency.setValueAtTime(320, now);
-        latch.frequency.exponentialRampToValueAtTime(70, now + 0.12);
-        latchGain.gain.setValueAtTime(0.4, now);
-        latchGain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+        latch.type = "square";
+        latch.frequency.setValueAtTime(240, now);
+        latch.frequency.exponentialRampToValueAtTime(50, now + 0.12);
+        latchGain.gain.setValueAtTime(0.35, now);
+        latchGain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
         latch.connect(latchGain);
         latchGain.connect(this.ctx.destination);
         latch.start(now);
         latch.stop(now + 0.12);
 
-        const osc = this.ctx.createOscillator();
-        const gain = this.ctx.createGain();
-        osc.type = "sawtooth";
-        osc.frequency.setValueAtTime(55, now + 0.15);
-        osc.frequency.exponentialRampToValueAtTime(360, now + 2.5);
-        gain.gain.setValueAtTime(0.3, now + 0.15);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 2.5);
-        osc.connect(gain);
-        gain.connect(this.ctx.destination);
-        osc.start(now + 0.15);
-        osc.stop(now + 2.5);
+        // Low frequency wooden friction screech
+        const creak = this.ctx.createOscillator();
+        const creakGain = this.ctx.createGain();
+        creak.type = "sawtooth";
+        creak.frequency.setValueAtTime(65, now + 0.1);
+        creak.frequency.linearRampToValueAtTime(320, now + 1.2);
+        creak.frequency.exponentialRampToValueAtTime(80, now + 2.5);
+        creakGain.gain.setValueAtTime(0.3, now + 0.1);
+        creakGain.gain.exponentialRampToValueAtTime(0.001, now + 2.5);
+        creak.connect(creakGain);
+        creakGain.connect(this.ctx.destination);
+        creak.start(now + 0.1);
+        creak.stop(now + 2.5);
 
+        // Deep 35Hz sub-bass room resonance
         const sub = this.ctx.createOscillator();
         const subGain = this.ctx.createGain();
         sub.type = "sine";
-        sub.frequency.setValueAtTime(110, now + 0.3);
-        sub.frequency.exponentialRampToValueAtTime(26, now + 2.4);
-        subGain.gain.setValueAtTime(0.45, now + 0.3);
-        subGain.gain.exponentialRampToValueAtTime(0.001, now + 2.4);
+        sub.frequency.setValueAtTime(95, now + 0.2);
+        sub.frequency.exponentialRampToValueAtTime(32, now + 2.2);
+        subGain.gain.setValueAtTime(0.5, now + 0.2);
+        subGain.gain.exponentialRampToValueAtTime(0.001, now + 2.2);
         sub.connect(subGain);
         subGain.connect(this.ctx.destination);
-        sub.start(now + 0.3);
-        sub.stop(now + 2.4);
+        sub.start(now + 0.2);
+        sub.stop(now + 2.2);
       },
 
-      playGravitationalSuck() {
+      playDeepSpaceBlackHole() {
+        this.init();
+        const now = this.ctx.currentTime;
+
+        // Infrasound gravitational drone
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(140, now);
+        osc.frequency.exponentialRampToValueAtTime(30, now + 3.8);
+        gain.gain.setValueAtTime(0.65, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 3.8);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 3.8);
+
+        // Filtered accretion air rush noise
+        const bufLen = this.ctx.sampleRate * 3.5;
+        const buf = this.ctx.createBuffer(1, bufLen, this.ctx.sampleRate);
+        const data = buf.getChannelData(0);
+        for (let i = 0; i < bufLen; i++) data[i] = Math.random() * 2 - 1;
+        const noise = this.ctx.createBufferSource();
+        noise.buffer = buf;
+
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = "lowpass";
+        filter.frequency.setValueAtTime(800, now);
+        filter.frequency.exponentialRampToValueAtTime(80, now + 3.5);
+
+        const nGain = this.ctx.createGain();
+        nGain.gain.setValueAtTime(0.35, now);
+        nGain.gain.exponentialRampToValueAtTime(0.001, now + 3.5);
+
+        noise.connect(filter);
+        filter.connect(nGain);
+        nGain.connect(this.ctx.destination);
+        noise.start(now);
+        noise.stop(now + 3.5);
+      },
+
+      playNotificationChime() {
         this.init();
         const now = this.ctx.currentTime;
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
         osc.type = "sine";
-        osc.frequency.setValueAtTime(220, now);
-        osc.frequency.exponentialRampToValueAtTime(28, now + 3.2);
-        gain.gain.setValueAtTime(0.55, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 3.2);
+        osc.frequency.setValueAtTime(587.33, now); // D5
+        osc.frequency.setValueAtTime(880.00, now + 0.08); // A5
+        gain.gain.setValueAtTime(0.25, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
         osc.connect(gain);
         gain.connect(this.ctx.destination);
         osc.start(now);
-        osc.stop(now + 3.2);
-      },
-
-      playMessagePing() {
-        this.init();
-        const now = this.ctx.currentTime;
-        const osc = this.ctx.createOscillator();
-        const gain = this.ctx.createGain();
-        osc.type = "sine";
-        osc.frequency.setValueAtTime(640, now);
-        osc.frequency.exponentialRampToValueAtTime(960, now + 0.13);
-        gain.gain.setValueAtTime(0.28, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.13);
-        osc.connect(gain);
-        gain.connect(this.ctx.destination);
-        osc.start(now);
-        osc.stop(now + 0.13);
+        osc.stop(now + 0.22);
       }
     };
 
@@ -487,9 +543,9 @@
       setTimeout(() => document.body.classList.add("eyes-open"), 300);
     });
 
-    // 1. DOOR TRANSITION
+    // --- STEP 1: DOOR OPEN ---
     function triggerDoor() {
-      AudioEngine.playDoorCreak();
+      AudioEngine.playHeavyDoorOpen();
       document.getElementById("openDoorBtn").style.display = "none";
       document.getElementById("doorHandle").style.transform = "rotate(28deg)";
 
@@ -503,101 +559,115 @@
 
       setTimeout(() => {
         showScene("scene-blackhole");
-        startBlackHoleCanvas();
+        startNasaBlackHole();
       }, 3000);
     }
 
-    // 2. TRUE ACCRETION-DISK BLACK HOLE CANVAS (2,500 PARTICLES + SPAGHETTIFICATION)
-    let bhAnimId;
-    function startBlackHoleCanvas() {
-      AudioEngine.playGravitationalSuck();
+    // --- STEP 2: NASA-GRADE EINSTEIN RING ACCRETION DISK BLACK HOLE ---
+    let bhId;
+    function startNasaBlackHole() {
+      AudioEngine.playDeepSpaceBlackHole();
       const canvas = document.getElementById("blackHoleCanvas");
       const ctx = canvas.getContext("2d");
-
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
 
       const cx = canvas.width / 2;
       const cy = canvas.height / 2;
-      const particles = [];
-      const count = 2500;
+      const rHole = Math.min(canvas.width, canvas.height) * 0.16;
+      let startTime = Date.now();
 
-      for (let i = 0; i < count; i++) {
-        const angle = Math.random() * Math.PI * 2;
-        const dist = 40 + Math.pow(Math.random(), 1.5) * Math.max(canvas.width, canvas.height);
+      // 3,000 Einstein Ring Particles
+      const particles = [];
+      for (let i = 0; i < 3000; i++) {
         particles.push({
-          angle: angle,
-          dist: dist,
-          speed: (0.015 + Math.random() * 0.035),
-          fallSpeed: (1.2 + Math.random() * 2.8),
-          size: Math.random() * 2.4 + 0.8,
-          // Relativistic brightness: Doppler shifts on the left side
-          hue: Math.random() > 0.3 ? 20 + Math.random() * 25 : 55
+          angle: Math.random() * Math.PI * 2,
+          radius: rHole * 1.05 + Math.pow(Math.random(), 2) * Math.max(canvas.width, canvas.height) * 0.8,
+          speed: 0.015 + Math.random() * 0.04,
+          fallSpeed: 1.4 + Math.random() * 2.8,
+          size: Math.random() * 2.2 + 0.6,
+          isUpperHalo: Math.random() > 0.5
         });
       }
 
-      let startTime = Date.now();
-
       function loop() {
         const elapsed = (Date.now() - startTime) / 1000;
-        let suckMult = 1.0;
-        if (elapsed > 1.8) {
-          suckMult += Math.pow((elapsed - 1.8) * 2.5, 2);
+        let suckFactor = 1.0;
+        if (elapsed > 2.0) {
+          suckFactor += Math.pow((elapsed - 2.0) * 3, 2.2);
         }
 
         ctx.fillStyle = "rgba(0, 0, 0, 0.28)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Accretion disk ambient glow
-        const glow = ctx.createRadialGradient(cx, cy, 20, cx, cy, 180);
-        glow.addColorStop(0, "rgba(0,0,0,1)");
-        glow.addColorStop(0.3, "rgba(255, 60, 0, 0.5)");
-        glow.addColorStop(0.7, "rgba(255, 140, 0, 0.2)");
-        glow.addColorStop(1, "transparent");
-        ctx.fillStyle = glow;
+        // 1. Relativistic Einstein Halo (Bent light rays from behind)
+        ctx.save();
+        ctx.translate(cx, cy);
+
+        // Lensing Glow
+        const haloGrad = ctx.createRadialGradient(0, 0, rHole * 0.9, 0, 0, rHole * 2.4);
+        haloGrad.addColorStop(0, "rgba(0,0,0,1)");
+        haloGrad.addColorStop(0.2, "rgba(255, 100, 20, 0.85)");
+        haloGrad.addColorStop(0.5, "rgba(255, 180, 50, 0.4)");
+        haloGrad.addColorStop(1, "transparent");
+        ctx.fillStyle = haloGrad;
         ctx.beginPath();
-        ctx.arc(cx, cy, 180, 0, Math.PI * 2);
+        ctx.arc(0, 0, rHole * 2.4, 0, Math.PI * 2);
         ctx.fill();
 
-        // Particles
+        // 2. Gravitational Lensing Particles
         particles.forEach(p => {
-          p.angle += p.speed * suckMult;
-          p.dist -= p.fallSpeed * suckMult;
+          p.angle += p.speed * suckFactor;
+          p.radius -= p.fallSpeed * suckFactor;
 
-          if (p.dist <= 25) {
-            p.dist = Math.max(canvas.width, canvas.height) * 0.8;
+          if (p.radius <= rHole * 0.95) {
+            p.radius = Math.max(canvas.width, canvas.height) * 0.7;
             p.angle = Math.random() * Math.PI * 2;
           }
 
-          const px = cx + Math.cos(p.angle) * p.dist;
-          const py = cy + Math.sin(p.angle) * p.dist * 0.75; // Elliptical disk tilt
+          // Doppler shift: left side approaches viewer (hotter/brighter)
+          const isLeft = Math.cos(p.angle) < 0;
+          ctx.fillStyle = isLeft ? "#ffffff" : (p.isUpperHalo ? "#ff9d00" : "#ff4900");
 
-          // Spaghettification streak effect
-          const tailLen = (p.fallSpeed * suckMult * 1.5);
-          const px2 = cx + Math.cos(p.angle - 0.05) * (p.dist + tailLen);
-          const py2 = cy + Math.sin(p.angle - 0.05) * (p.dist + tailLen) * 0.75;
+          // Accretion disk equatorial plane & vertically bent halo
+          let px, py;
+          if (p.isUpperHalo) {
+            // Bent light arcing over the shadow
+            px = Math.cos(p.angle) * p.radius;
+            py = Math.sin(p.angle) * (p.radius * 0.35) - (rHole * 0.6);
+          } else {
+            // Front flat tilted disk
+            px = Math.cos(p.angle) * p.radius;
+            py = Math.sin(p.angle) * (p.radius * 0.28);
+          }
 
-          ctx.strokeStyle = `hsl(${p.hue}, 100%, ${Math.min(90, 50 + suckMult * 10)}%)`;
+          // Spaghettification streak
+          const tailX = px - Math.sin(p.angle) * (p.fallSpeed * suckFactor * 2);
+          const tailY = py + Math.cos(p.angle) * (p.fallSpeed * suckFactor * 0.8);
+
+          ctx.strokeStyle = ctx.fillStyle;
           ctx.lineWidth = p.size;
           ctx.beginPath();
           ctx.moveTo(px, py);
-          ctx.lineTo(px2, py2);
+          ctx.lineTo(tailX, tailY);
           ctx.stroke();
         });
 
-        // Event Horizon (Singularity shadow)
+        // 3. Absolute Pure Black Event Horizon
         ctx.fillStyle = "#000000";
-        ctx.shadowColor = "#ff3b00";
-        ctx.shadowBlur = 30;
+        ctx.shadowColor = "#ff5500";
+        ctx.shadowBlur = 45;
         ctx.beginPath();
-        ctx.arc(cx, cy, 40, 0, Math.PI * 2);
+        ctx.arc(0, 0, rHole, 0, Math.PI * 2);
         ctx.fill();
         ctx.shadowBlur = 0;
 
+        ctx.restore();
+
         if (elapsed < 3.8) {
-          bhAnimId = requestAnimationFrame(loop);
+          bhId = requestAnimationFrame(loop);
         } else {
-          cancelAnimationFrame(bhAnimId);
+          cancelAnimationFrame(bhId);
           showScene("scene-phone");
           triggerChatMessages();
         }
@@ -605,7 +675,7 @@
       loop();
     }
 
-    // 3. CHAT SEQUENCE (UNBLOCKED FULLSCREEN)
+    // --- STEP 3: PHONE CHAT (CLEAN VIEWPORT) ---
     function triggerChatMessages() {
       const delays = [600, 1900, 3200, 4400];
       const elements = ["msg1", "msg2", "msg3", "voiceMsg"];
@@ -622,12 +692,12 @@
           typing.textContent = "";
           chatStatus.textContent = "online";
           document.getElementById(id).classList.add("show");
-          AudioEngine.playMessagePing();
+          AudioEngine.playNotificationChime();
         }, delays[index]);
       });
     }
 
-    // 4. FRIEND VOICE NOTE (01.mp3)
+    // --- STEP 4: FRIEND VOICE NOTE (01.mp3) ---
     let voicePlayed = false;
     function playVoiceNote() {
       if (voicePlayed) return;
@@ -639,20 +709,20 @@
 
       const audio1 = new Audio("01.mp3");
       audio1.play().catch(e => {
-        console.log("01.mp3 playback failed:", e);
-        setTimeout(startSharinganCanvas, 2000);
+        console.log("01.mp3 missing/blocked:", e);
+        setTimeout(startItachiSharinganCanvas, 2000);
       });
 
-      audio1.onended = startSharinganCanvas;
+      audio1.onended = startItachiSharinganCanvas;
     }
 
-    // 5. TRUE CANVAS MANGEKYO SHARINGAN (02.mp3)
-    let shAnimId;
-    function startSharinganCanvas() {
+    // --- STEP 5: HYPER-REALISTIC ITACHI MANGEKYO SHARINGAN (02.mp3) ---
+    let shId;
+    function startItachiSharinganCanvas() {
       showScene("scene-sharingan");
 
       const audio2 = new Audio("02.mp3");
-      audio2.play().catch(e => console.log("02.mp3 playback failed:", e));
+      audio2.play().catch(e => console.log("02.mp3 error:", e));
 
       const canvas = document.getElementById("sharinganCanvas");
       const ctx = canvas.getContext("2d");
@@ -661,18 +731,19 @@
 
       const cx = canvas.width / 2;
       const cy = canvas.height / 2;
-      let rotation = 0;
-      let scale = 0.2;
       let startTime = Date.now();
+      let angle = 0;
+      let eyeScale = 0.5;
 
-      function drawBlade(angle) {
+      // Mathematical Itachi Curved Tomoe Blade
+      function drawItachiBlade(rotAngle, radius) {
         ctx.save();
-        ctx.rotate(angle);
+        ctx.rotate(rotAngle);
         ctx.beginPath();
-        // Itachi's curved pinwheel tomoe geometry
         ctx.moveTo(0, 0);
-        ctx.bezierCurveTo(24, -30, 48, -70, 0, -110);
-        ctx.bezierCurveTo(-28, -70, -12, -30, 0, 0);
+        // Characteristic curved triangular hook connecting to pupil
+        ctx.bezierCurveTo(radius * 0.25, -radius * 0.28, radius * 0.55, -radius * 0.65, 0, -radius * 0.95);
+        ctx.bezierCurveTo(-radius * 0.28, -radius * 0.65, -radius * 0.15, -radius * 0.3, 0, 0);
         ctx.fillStyle = "#000000";
         ctx.fill();
         ctx.restore();
@@ -680,55 +751,101 @@
 
       function loop() {
         const elapsed = (Date.now() - startTime) / 1000;
-        rotation += 0.08 + (elapsed * 0.05);
+        angle += 0.08 + (elapsed * 0.06);
 
         if (elapsed < 2.0) {
-          scale += (1.4 - scale) * 0.05;
+          eyeScale += (1.3 - eyeScale) * 0.06;
         } else {
-          scale += Math.pow((elapsed - 2.0) * 4, 2.2) * 0.08; // Extreme zoom into the eye
-          document.getElementById("genjutsuGlitch").style.opacity = Math.random() * 0.7;
+          eyeScale += Math.pow((elapsed - 2.0) * 4.5, 2.5) * 0.12;
+          document.getElementById("genjutsuGlow").style.opacity = Math.random() * 0.8;
         }
 
-        ctx.fillStyle = "rgba(0, 0, 0, 0.35)";
+        ctx.fillStyle = "#000000";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         ctx.save();
         ctx.translate(cx, cy);
-        ctx.scale(scale, scale);
+        ctx.scale(eyeScale, eyeScale);
 
-        // Crimson iris
-        const iris = ctx.createRadialGradient(0, 0, 30, 0, 0, 140);
-        iris.addColorStop(0, "#ff1a1a");
-        iris.addColorStop(0.7, "#cc0000");
-        iris.addColorStop(1, "#4a0000");
-        ctx.fillStyle = iris;
+        const rIris = 135;
+
+        // 1. Anatomical Sclera (Eye White with blood vessels)
+        ctx.fillStyle = "#e2dcd7";
         ctx.beginPath();
-        ctx.arc(0, 0, 140, 0, Math.PI * 2);
+        // Eye Almond Shape (Slit opening, not a round globe)
+        ctx.moveTo(-260, 0);
+        ctx.quadraticCurveTo(0, -180, 260, 0);
+        ctx.quadraticCurveTo(0, 180, -260, 0);
         ctx.fill();
-        ctx.lineWidth = 6;
-        ctx.strokeStyle = "#000000";
+        ctx.clip(); // Restrict everything inside the human eye slit
+
+        // Sclera shadows and red veins
+        ctx.strokeStyle = "rgba(180, 0, 0, 0.4)";
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.moveTo(-240, 0); ctx.lineTo(-150, -20);
+        ctx.moveTo(-230, 20); ctx.lineTo(-160, 10);
+        ctx.moveTo(240, 0); ctx.lineTo(150, 15);
         ctx.stroke();
 
-        // 3 Tomoe Blades
+        // 2. Glowing Crimson Iris with Fibers
+        const irisGrad = ctx.createRadialGradient(0, 0, 20, 0, 0, rIris);
+        irisGrad.addColorStop(0, "#ff1111");
+        irisGrad.addColorStop(0.65, "#b50000");
+        irisGrad.addColorStop(1, "#360000");
+        ctx.fillStyle = irisGrad;
+        ctx.beginPath();
+        ctx.arc(0, 0, rIris, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Iris Muscle Striations
+        ctx.strokeStyle = "rgba(255, 60, 60, 0.35)";
+        ctx.lineWidth = 1.5;
+        for (let i = 0; i < 36; i++) {
+          const a = (i * Math.PI) / 18;
+          ctx.beginPath();
+          ctx.moveTo(Math.cos(a) * 35, Math.sin(a) * 35);
+          ctx.lineTo(Math.cos(a) * rIris, Math.sin(a) * rIris);
+          ctx.stroke();
+        }
+
+        // Iris Limbal Ring
+        ctx.lineWidth = 6;
+        ctx.strokeStyle = "#000000";
+        ctx.beginPath();
+        ctx.arc(0, 0, rIris, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // 3. Itachi 3-Blade Mangekyo Pinwheel
         ctx.save();
-        ctx.rotate(rotation);
-        drawBlade(0);
-        drawBlade((Math.PI * 2) / 3);
-        drawBlade((Math.PI * 4) / 3);
+        ctx.rotate(angle);
+        drawItachiBlade(0, rIris);
+        drawItachiBlade((Math.PI * 2) / 3, rIris);
+        drawItachiBlade((Math.PI * 4) / 3, rIris);
         ctx.restore();
 
-        // Center pupil
+        // 4. Central Black Pupil
         ctx.fillStyle = "#000000";
         ctx.beginPath();
         ctx.arc(0, 0, 24, 0, Math.PI * 2);
         ctx.fill();
 
+        // 5. Cornea Light Glare (Wet Glass Reflection)
+        const glare = ctx.createLinearGradient(-40, -40, 40, 40);
+        glare.addColorStop(0, "rgba(255,255,255,0.7)");
+        glare.addColorStop(0.5, "rgba(255,255,255,0.1)");
+        glare.addColorStop(1, "transparent");
+        ctx.fillStyle = glare;
+        ctx.beginPath();
+        ctx.arc(-35, -35, 25, 0, Math.PI * 2);
+        ctx.fill();
+
         ctx.restore();
 
         if (elapsed < 3.4) {
-          shAnimId = requestAnimationFrame(loop);
+          shId = requestAnimationFrame(loop);
         } else {
-          cancelAnimationFrame(shAnimId);
+          cancelAnimationFrame(shId);
           showScene("scene-alarm");
           triggerWakeUpAlarm();
         }
@@ -736,14 +853,15 @@
       loop();
     }
 
-    // 6. REALITY WAKEUP & COLLEGE ALARM (03.mp3)
+    // --- STEP 6: CLEAN VERTICALLY STACKED ALARM (03.mp3) ---
     function triggerWakeUpAlarm() {
+      // Rapid waking-up blink simulation
       document.body.classList.remove("eyes-open");
       setTimeout(() => document.body.classList.add("eyes-open"), 350);
 
       const audio3 = new Audio("03.mp3");
       audio3.loop = true;
-      audio3.play().catch(e => console.log("03.mp3 playback failed:", e));
+      audio3.play().catch(e => console.log("03.mp3 error:", e));
     }
   </script>
 </body>
