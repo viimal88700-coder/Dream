@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Wake Up</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: #000;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      overflow: hidden;
+      color: #fff;
+    }
+
+    .scene {
+      position: absolute;
+      inset: 0;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .scene.active {
+      display: flex;
+    }
+
+    /* 1. CINEMATIC DOOR SCENE */
+    #scene-door {
+      background: radial-gradient(circle, #251612 0%, #050302 100%);
+      perspective: 1100px;
+    }
+    .door-frame {
+      width: 190px;
+      height: 330px;
+      border: 9px solid #2d1810;
+      border-bottom: none;
+      position: relative;
+      background: #000;
+      box-shadow: 0 0 50px rgba(0,0,0,0.95);
+      perspective: 1200px;
+    }
+    .door-leaf {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #4e342e, #2d1810);
+      border: 2px solid #1a0d08;
+      transform-origin: left;
+      transition: transform 2.8s cubic-bezier(0.15, 0.85, 0.25, 1);
+      position: relative;
+      box-shadow: inset 0 0 25px rgba(0,0,0,0.8);
+    }
+    .door-knob {
+      position: absolute;
+      right: 18px;
+      top: 52%;
+      width: 15px;
+      height: 15px;
+      background: #d4af37;
+      border-radius: 50%;
+      box-shadow: 0 0 10px rgba(212, 175, 55, 0.7);
+    }
+    .door-open .door-leaf {
+      transform: rotateY(-115deg);
+    }
+    .white-flash {
+      position: absolute;
+      inset: 0;
+      background: #fff;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 100;
+      transition: opacity 1.8s ease;
+    }
+    .white-flash.trigger {
+      opacity: 1;
+    }
+    .primary-btn {
+      margin-top: 40px;
+      padding: 15px 36px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: #fff;
+      background: linear-gradient(135deg, #d32f2f, #8b0000);
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(211, 47, 47, 0.45);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .primary-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* 2. BLACK HOLE SCENE */
+    #scene-blackhole {
+      background: #000;
+    }
+    .black-hole-container {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .accretion-disk {
+      position: absolute;
+      width: 350px;
+      height: 350px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,110,0,0.95) 0%, rgba(255,50,0,0.65) 45%, transparent 75%);
+      filter: blur(14px);
+      animation: spinHole 2.6s linear infinite;
+    }
+    .event-horizon {
+      position: relative;
+      width: 150px;
+      height: 150px;
+      background: #000;
+      border-radius: 50%;
+      box-shadow: 0 0 50px 12px #ff3d00, inset 0 0 30px #000;
+      z-index: 2;
+    }
+    @keyframes spinHole {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .implode {
+      animation: suckIn 2.2s forwards cubic-bezier(0.7, 0, 0.85, 0);
+    }
+    @keyframes suckIn {
+      0% { transform: scale(1); filter: brightness(1); }
+      50% { transform: scale(3.2); filter: brightness(2.5); }
+      100% { transform: scale(0); filter: brightness(0); }
+    }
+
+    /* 3. PHONE SCREEN (JAGATHISH MESSAGES) */
+    #scene-phone {
+      background: #07070a;
+    }
+    .phone-body {
+      width: 90%;
+      max-width: 360px;
+      height: 570px;
+      background: #181820;
+      border-radius: 36px;
+      border: 4px solid #2a2a35;
+      box-shadow: 0 25px 65px rgba(0,0,0,0.9);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transform: translateY(100vh);
+      animation: slideUpPhone 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes slideUpPhone {
+      to { transform: translateY(0); }
+    }
+    .phone-header {
+      padding: 16px 20px;
+      background: #23232e;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #ff416c, #ff4b2b);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: #fff;
+      font-size: 1.1rem;
+    }
+    .user-info h4 {
+      margin: 0;
+      font-size: 1rem;
+    }
+    .user-info span {
+      font-size: 0.75rem;
+      color: #00e676;
+    }
+    .chat-messages {
+      flex: 1;
+      padding: 18px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow-y: auto;
+    }
+    .msg-bubble {
+      max-width: 82%;
+      padding: 12px 16px;
+      background: #2c2c3a;
+      border-radius: 16px 16px 16px 3px;
+      font-size: 0.95rem;
+      line-height: 1.35;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    .msg-bubble.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .voice-bubble {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: #1b5e20;
+      border-radius: 16px 16px 16px 3px;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+    .voice-bubble.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .play-btn {
+      width: 32px;
+      height: 32px;
+      background: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #1b5e20;
+      font-size: 0.85rem;
+    }
+
+    /* 4. ITACHI MANGEKYO SHARINGAN */
+    #scene-sharingan {
+      background: #000;
+    }
+    .eye-socket {
+      width: 270px;
+      height: 270px;
+      border-radius: 50%;
+      background: #d50000;
+      box-shadow: 0 0 80px #ff0000, inset 0 0 50px #300000;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: scale(0.1);
+      transition: transform 1.2s cubic-bezier(0.1, 0.9, 0.2, 1);
+    }
+    .sharingan-pupil {
+      width: 46px;
+      height: 46px;
+      background: #000;
+      border-radius: 50%;
+      z-index: 5;
+    }
+    .pinwheel {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      animation: spinEye 3.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+    }
+    .blade {
+      position: absolute;
+      width: 44px;
+      height: 110px;
+      background: #000;
+      border-radius: 50% 50% 10% 80%;
+      left: 113px;
+      top: 25px;
+      transform-origin: bottom center;
+    }
+    .blade:nth-child(2) {
+      transform: rotate(120deg);
+    }
+    .blade:nth-child(3) {
+      transform: rotate(240deg);
+    }
+    @keyframes spinEye {
+      0% { transform: rotate(0deg); }
+      75% { transform: rotate(1080deg); }
+      100% { transform: rotate(1080deg); }
+    }
+    .glitch-flash {
+      position: absolute;
+      inset: 0;
+      background: red;
+      mix-blend-mode: color-dodge;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* 5. WAKE-UP & "TIME FOR COLLEGE" ALARM */
+    #scene-alarm {
+      background: #050505;
+      text-align: center;
+    }
+    .shock-text {
+      font-size: 1.2rem;
+      letter-spacing: 3px;
+      color: #777;
+      margin-bottom: 24px;
+    }
+    .clock-display {
+      background: #111;
+      padding: 24px 40px;
+      border-radius: 18px;
+      border: 2px solid #ff1744;
+      box-shadow: 0 0 40px rgba(255, 23, 68, 0.45);
+      display: inline-block;
+    }
+    .clock-time {
+      font-family: monospace;
+      font-size: 3.6rem;
+      font-weight: 900;
+      color: #ff1744;
+      text-shadow: 0 0 18px rgba(255, 23, 68, 0.9);
+      margin: 0;
+    }
+    .alarm-notice {
+      margin-top: 22px;
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: 3px;
+      color: #fff;
+      animation: pulseAlert 0.7s ease infinite alternate;
+    }
+    @keyframes pulseAlert {
+      from { transform: scale(1); color: #ff5252; }
+      to { transform: scale(1.08); color: #fff; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- SCENE 1: THE DOOR -->
+  <div id="scene-door" class="scene active">
+    <div class="door-frame" id="doorFrame">
+      <div class="door-leaf">
+        <div class="door-knob"></div>
+      </div>
+    </div>
+    <button class="primary-btn" id="openDoorBtn" onclick="triggerDoor()">Open the door</button>
+    <div class="white-flash" id="flashOverlay"></div>
+  </div>
+
+  <!-- SCENE 2: BLACK HOLE -->
+  <div id="scene-blackhole" class="scene">
+    <div class="black-hole-container" id="blackHoleEl">
+      <div class="accretion-disk"></div>
+      <div class="event-horizon"></div>
+    </div>
+  </div>
+
+  <!-- SCENE 3: PHONE & JAGATHISH'S MESSAGES -->
+  <div id="scene-phone" class="scene">
+    <div class="phone-body">
+      <div class="phone-header">
+        <div class="avatar">J</div>
+        <div class="user-info">
+          <h4>Jagathish</h4>
+          <span>online</span>
+        </div>
+      </div>
+      <div class="chat-messages" id="chatArea">
+        <div class="msg-bubble" id="msg1">Bro where are you?? 💀</div>
+        <div class="msg-bubble" id="msg2">Did you forget what day it is today?</div>
+        <div class="msg-bubble" id="msg3">Listen to this audio right now! 👇</div>
+        <div class="voice-bubble" id="voiceMsg" onclick="playVoiceNote()">
+          <div class="play-btn" id="playBtnIcon">▶</div>
+          <span style="font-size: 0.85rem;" id="voiceStatus">Voice note (01.mp3)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCENE 4: ITACHI MANGEKYO SHARINGAN -->
+  <div id="scene-sharingan" class="scene">
+    <div class="eye-socket" id="mangekyoEye">
+      <div class="pinwheel">
+        <div class="blade"></div>
+        <div class="blade"></div>
+        <div class="blade"></div>
+      </div>
+      <div class="sharingan-pupil"></div>
+    </div>
+    <div class="glitch-flash" id="genjutsuGlitch"></div>
+  </div>
+
+  <!-- SCENE 5: REALITY WAKEUP & ALARM -->
+  <div id="scene-alarm" class="scene">
+    <div class="shock-text">* GASP * WAKING UP...</div>
+    <div class="clock-display">
+      <div class="clock-time">07:45 AM</div>
+    </div>
+    <div class="alarm-notice">TIME FOR COLLEGE</div>
+  </div>
+
+  <script>
+    // --- BUILT-IN PROCEDURAL CINEMATIC AUDIO (Door creak, Black hole vortex, Message notification) ---
+    const CinematicAudio = {
+      ctx: null,
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContext();
+        }
+        if (this.ctx.state === "suspended") {
+          this.ctx.resume();
+        }
+      },
+
+      // Heavy wooden door creak + low cinematic boom
+      playDoorSound() {
+        this.init();
+        const now = this.ctx.currentTime;
+
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = "sawtooth";
+        osc.frequency.setValueAtTime(60, now);
+        osc.frequency.exponentialRampToValueAtTime(320, now + 2.2);
+
+        gain.gain.setValueAtTime(0.28, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 2.2);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 2.2);
+
+        const subOsc = this.ctx.createOscillator();
+        const subGain = this.ctx.createGain();
+        subOsc.type = "sine";
+        subOsc.frequency.setValueAtTime(110, now + 0.3);
+        subOsc.frequency.exponentialRampToValueAtTime(30, now + 2.0);
+
+        subGain.gain.setValueAtTime(0.35, now + 0.3);
+        subGain.gain.exponentialRampToValueAtTime(0.001, now + 2.0);
+
+        subOsc.connect(subGain);
+        subGain.connect(this.ctx.destination);
+        subOsc.start(now + 0.3);
+        subOsc.stop(now + 2.0);
+      },
+
+      // Deep cosmic black hole gravity rumble
+      playBlackHoleVortex() {
+        this.init();
+        const now = this.ctx.currentTime;
+
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(180, now);
+        osc.frequency.exponentialRampToValueAtTime(32, now + 2.0);
+
+        gain.gain.setValueAtTime(0.45, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 2.0);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 2.0);
+
+        // Suction air noise
+        const bufferSize = this.ctx.sampleRate * 2.0;
+        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = Math.random() * 2 - 1;
+        }
+
+        const noise = this.ctx.createBufferSource();
+        noise.buffer = buffer;
+
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = "lowpass";
+        filter.frequency.setValueAtTime(600, now);
+        filter.frequency.exponentialRampToValueAtTime(60, now + 2.0);
+
+        const noiseGain = this.ctx.createGain();
+        noiseGain.gain.setValueAtTime(0.3, now);
+        noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 2.0);
+
+        noise.connect(filter);
+        filter.connect(noiseGain);
+        noiseGain.connect(this.ctx.destination);
+
+        noise.start(now);
+        noise.stop(now + 2.0);
+      },
+
+      // Message ping chime
+      playMessageNotification() {
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(650, now);
+        osc.frequency.exponentialRampToValueAtTime(980, now + 0.12);
+
+        gain.gain.setValueAtTime(0.25, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.12);
+      }
+    };
+
+    function showScene(id) {
+      document.querySelectorAll(".scene").forEach(s => s.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+    }
+
+    // SCENE 1: OPEN DOOR
+    function triggerDoor() {
+      CinematicAudio.playDoorSound();
+      document.getElementById("doorFrame").classList.add("door-open");
+      document.getElementById("openDoorBtn").style.display = "none";
+
+      setTimeout(() => {
+        document.getElementById("flashOverlay").classList.add("trigger");
+      }, 1200);
+
+      setTimeout(() => {
+        showScene("scene-blackhole");
+        triggerBlackHole();
+      }, 2400);
+    }
+
+    // SCENE 2: BLACK HOLE SUCTION
+    function triggerBlackHole() {
+      CinematicAudio.playBlackHoleVortex();
+      const hole = document.getElementById("blackHoleEl");
+      setTimeout(() => {
+        hole.classList.add("implode");
+      }, 1400);
+
+      setTimeout(() => {
+        showScene("scene-phone");
+        triggerMessages();
+      }, 3600);
+    }
+
+    // SCENE 3: MESSAGES FROM JAGATHISH ONE BY ONE
+    function triggerMessages() {
+      const delays = [600, 1800, 3000, 4200];
+      const elements = ["msg1", "msg2", "msg3", "voiceMsg"];
+
+      elements.forEach((id, index) => {
+        setTimeout(() => {
+          document.getElementById(id).classList.add("show");
+          CinematicAudio.playMessageNotification();
+        }, delays[index]);
+      });
+    }
+
+    // SCENE 4: VOICE NOTE PLAYBACK (Plays 01.mp3)
+    let voicePlayed = false;
+    function playVoiceNote() {
+      if (voicePlayed) return;
+      voicePlayed = true;
+
+      document.getElementById("playBtnIcon").textContent = "❚❚";
+      document.getElementById("voiceStatus").textContent = "Playing...";
+
+      const audio1 = new Audio("01.mp3");
+      audio1.play().catch(e => {
+        console.log("01.mp3 playback failed:", e);
+        setTimeout(triggerSharinganSequence, 2000);
+      });
+
+      audio1.onended = triggerSharinganSequence;
+    }
+
+    // SCENE 5: ITACHI'S MANGEKYO SHARINGAN (Plays 02.mp3)
+    function triggerSharinganSequence() {
+      showScene("scene-sharingan");
+
+      const audio2 = new Audio("02.mp3");
+      audio2.play().catch(e => console.log("02.mp3 playback failed:", e));
+
+      const eye = document.getElementById("mangekyoEye");
+      setTimeout(() => {
+        eye.style.transform = "scale(1.4)";
+      }, 200);
+
+      setTimeout(() => {
+        eye.style.transform = "scale(8.5)";
+        document.getElementById("genjutsuGlitch").style.opacity = "0.75";
+      }, 2400);
+
+      setTimeout(() => {
+        showScene("scene-alarm");
+        triggerAlarm();
+      }, 3400);
+    }
+
+    // SCENE 6: "TIME FOR COLLEGE" ALARM (Plays 03.mp3)
+    function triggerAlarm() {
+      const audio3 = new Audio("03.mp3");
+      audio3.loop = true;
+      audio3.play().catch(e => console.log("03.mp3 playback failed:", e));
+    }
+  </script>
+</body>
+</html>
