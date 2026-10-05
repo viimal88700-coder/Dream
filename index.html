@@ -37,29 +37,29 @@
        1. 3D GRAND DOUBLE WOODEN DOORS (🚪🚪)
        ==================================================== */
     #scene-door {
-      background: radial-gradient(circle at center, #180c07 0%, #060201 80%, #000 100%);
+      background: radial-gradient(circle at center, #1a0d07 0%, #050201 80%, #000 100%);
       perspective: 1400px;
     }
-    .grand-portal {
-      width: 320px;
-      height: 440px;
+    .portal-arch {
       position: relative;
+      width: 320px;
+      height: 450px;
       perspective: 1200px;
       display: flex;
       justify-content: center;
       align-items: center;
     }
-    .portal-arch {
+    .arch-frame {
       position: absolute;
       inset: -14px;
-      border: 14px solid #1c0e07;
+      border: 14px solid #1a0c06;
       border-bottom: none;
-      border-radius: 12px 12px 0 0;
-      box-shadow: 0 0 60px rgba(0,0,0,0.95), inset 0 0 40px #000;
+      border-radius: 14px 14px 0 0;
+      box-shadow: 0 0 60px rgba(0,0,0,0.95), inset 0 0 35px #000;
       pointer-events: none;
       z-index: 10;
     }
-    .double-doors-container {
+    .doors-wrapper {
       width: 100%;
       height: 100%;
       display: flex;
@@ -70,19 +70,19 @@
     .door-leaf {
       width: 50%;
       height: 100%;
-      background: linear-gradient(135deg, #442517 0%, #2b140b 50%, #150804 100%);
-      border: 2px solid #140804;
+      background: linear-gradient(135deg, #442416 0%, #291209 50%, #140703 100%);
+      border: 2px solid #140703;
       position: relative;
       transition: transform 3.2s cubic-bezier(0.12, 0.9, 0.2, 1);
       box-shadow: inset 0 0 35px rgba(0,0,0,0.9);
     }
     .door-left {
       transform-origin: left;
-      border-right: 2px solid #0a0402;
+      border-right: 2px solid #090301;
     }
     .door-right {
       transform-origin: right;
-      border-left: 2px solid #0a0402;
+      border-left: 2px solid #090301;
     }
     .doors-open .door-left {
       transform: rotateY(-118deg);
@@ -90,18 +90,16 @@
     .doors-open .door-right {
       transform: rotateY(118deg);
     }
-    /* Carved Panel Moldings */
     .wood-panel {
       position: absolute;
       width: 72%;
       height: 38%;
       left: 14%;
-      border: 3px solid rgba(0,0,0,0.65);
+      border: 3px solid rgba(0,0,0,0.7);
       box-shadow: inset 0 0 16px rgba(0,0,0,0.9), 0 0 2px rgba(255,255,255,0.06);
     }
-    .panel-upper { top: 8%; }
-    .panel-lower { bottom: 8%; }
-    /* Golden Brass Knocker Rings */
+    .panel-top { top: 8%; }
+    .panel-bottom { bottom: 8%; }
     .door-knocker {
       position: absolute;
       top: 50%;
@@ -148,11 +146,11 @@
       opacity: 1;
     }
 
-    /* 2. CANVASES (KILONOVA & TSUKUYOMI IRIS) */
+    /* 2. CANVASES (KILONOVA & SHARINGAN IRIS) */
     #scene-kilonova, #scene-sharingan {
       background: #000;
     }
-    .full-canvas {
+    .retina-canvas {
       position: absolute;
       inset: 0;
       width: 100%;
@@ -160,7 +158,7 @@
       display: block;
     }
 
-    /* 3. FULLSCREEN NATIVE CHAT UI */
+    /* 3. FULLSCREEN NATIVE MESSENGER UI */
     #scene-phone {
       background: #0d0e12;
       flex-direction: column;
@@ -367,19 +365,19 @@
 </head>
 <body>
 
-  <!-- SCENE 1: GRAND DOUBLE WOODEN DOORS (🚪🚪) -->
+  <!-- SCENE 1: 3D GRAND DOUBLE WOODEN DOORS (🚪🚪) -->
   <div id="scene-door" class="scene active">
-    <div class="grand-portal" id="portalFrame">
-      <div class="portal-arch"></div>
-      <div class="double-doors-container" id="doubleDoors">
+    <div class="portal-arch" id="portalFrame">
+      <div class="arch-frame"></div>
+      <div class="doors-wrapper">
         <div class="door-leaf door-left">
-          <div class="wood-panel panel-upper"></div>
-          <div class="wood-panel panel-lower"></div>
+          <div class="wood-panel panel-top"></div>
+          <div class="wood-panel panel-bottom"></div>
           <div class="door-knocker"></div>
         </div>
         <div class="door-leaf door-right">
-          <div class="wood-panel panel-upper"></div>
-          <div class="wood-panel panel-lower"></div>
+          <div class="wood-panel panel-top"></div>
+          <div class="wood-panel panel-bottom"></div>
           <div class="door-knocker"></div>
         </div>
       </div>
@@ -390,9 +388,9 @@
     <div class="lens-bloom" id="lensBloom"></div>
   </div>
 
-  <!-- SCENE 2: MATHEMATICAL HIGH-DENSITY KILONOVA MERGER -->
+  <!-- SCENE 2: ACCURATE NEUTRON STAR MERGER & KILONOVA -->
   <div id="scene-kilonova" class="scene">
-    <canvas id="kilonovaCanvas" class="full-canvas"></canvas>
+    <canvas id="kilonovaCanvas" class="retina-canvas"></canvas>
   </div>
 
   <!-- SCENE 3: DIRECT PHONE CHAT UI -->
@@ -419,9 +417,9 @@
     </div>
   </div>
 
-  <!-- SCENE 4: DEEP INSIDE THE IRIS (TSUKUYOMI COSMOS) -->
+  <!-- SCENE 4: PURE SHARINGAN IRIS & TSUKUYOMI VORTEX -->
   <div id="scene-sharingan" class="scene">
-    <canvas id="sharinganCanvas" class="full-canvas"></canvas>
+    <canvas id="sharinganCanvas" class="retina-canvas"></canvas>
     <div class="genjutsu-overlay" id="genjutsuOverlay"></div>
   </div>
 
@@ -465,7 +463,7 @@
           latch.stop(now + offset + 0.14);
         }
 
-        // Heavy twin wooden friction screech
+        // Twin oak wood screech
         const creak = this.ctx.createOscillator();
         const creakGain = this.ctx.createGain();
         creak.type = "sawtooth";
@@ -479,7 +477,7 @@
         creak.start(now + 0.1);
         creak.stop(now + 2.8);
 
-        // Sub-bass stone resonance impact
+        // Sub-bass room resonance
         const sub = this.ctx.createOscillator();
         const subGain = this.ctx.createGain();
         sub.type = "sine";
@@ -493,11 +491,11 @@
         sub.stop(now + 2.4);
       },
 
-      playKilonovaAudio() {
+      playKilonovaChirpAndBoom() {
         this.init();
         const now = this.ctx.currentTime;
 
-        // Gravitational wave chirp (rising frequency as stars merge)
+        // Gravitational wave chirp (rising pitch)
         const chirp = this.ctx.createOscillator();
         const chirpGain = this.ctx.createGain();
         chirp.type = "sawtooth";
@@ -511,7 +509,7 @@
         chirp.start(now);
         chirp.stop(now + 2.6);
 
-        // Relativistic Jet Detonation Boom (At collision point)
+        // Relativistic Jet Detonation Boom
         setTimeout(() => {
           const jetNow = this.ctx.currentTime;
           const jet = this.ctx.createOscillator();
@@ -550,6 +548,16 @@
       document.getElementById(id).classList.add("active");
     }
 
+    // Helper: Retina Canvas Setup
+    function setupRetinaCanvas(canvas) {
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
+      const ctx = canvas.getContext("2d");
+      ctx.scale(dpr, dpr);
+      return { ctx, dpr, width: window.innerWidth, height: window.innerHeight };
+    }
+
     // --- STEP 1: DOUBLE DOORS OPENING ---
     function triggerDoor() {
       AudioEngine.playDoubleDoorOpen();
@@ -566,31 +574,29 @@
       }, 2900);
     }
 
-    // --- STEP 2: MATHEMATICAL BLENDER-LEVEL NEUTRON STAR MERGER ---
+    // --- STEP 2: MATHEMATICAL HIGH-FIDELITY KILONOVA (GW170817) ---
     let knAnimId;
     function startKilonovaCanvas() {
-      AudioEngine.playKilonovaAudio();
+      AudioEngine.playKilonovaChirpAndBoom();
       const canvas = document.getElementById("kilonovaCanvas");
-      const ctx = canvas.getContext("2d");
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      const { ctx, width, height } = setupRetinaCanvas(canvas);
 
-      const cx = canvas.width / 2;
-      const cy = canvas.height / 2;
+      const cx = width / 2;
+      const cy = height / 2;
       let startTime = Date.now();
 
-      // Deep space background starfield
+      // Background Starfield
       const bgStars = [];
       for (let i = 0; i < 350; i++) {
         bgStars.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
+          x: Math.random() * width,
+          y: Math.random() * height,
           size: Math.random() * 2 + 0.5,
           alpha: Math.random() * 0.8 + 0.2
         });
       }
 
-      // 1,800 active tidal particle ribbons
+      // Active Tidal Plasma Streams
       const tidalPlasma = [];
 
       function drawNeutronCore(x, y, radius) {
@@ -613,9 +619,9 @@
 
         ctx.globalCompositeOperation = "source-over";
         ctx.fillStyle = "rgba(0, 0, 0, 0.26)";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillRect(0, 0, width, height);
 
-        // Background Starfield
+        // Draw background stars
         ctx.fillStyle = "#ffffff";
         bgStars.forEach(s => {
           ctx.globalAlpha = s.alpha;
@@ -625,10 +631,10 @@
 
         if (elapsed < 2.5) {
           // ==========================================
-          // STAGE 1 & 2: MATHEMATICAL INSPIRAL & TAILS
+          // STAGE 1 & 2: INSPIRAL & CYAN TIDAL TAILS
           // ==========================================
           const decay = Math.pow(elapsed / 2.5, 2.4);
-          const orbitR = (1 - decay) * (Math.min(canvas.width, canvas.height) * 0.32);
+          const orbitR = (1 - decay) * (Math.min(width, height) * 0.32);
           const theta = Math.pow(elapsed, 2.6) * 9.5;
 
           const s1x = cx + Math.cos(theta) * orbitR;
@@ -643,7 +649,6 @@
             tidalPlasma.push({ x: s2x + spread, y: s2y + spread, alpha: 1.0, color: "#80eeff" });
           }
 
-          // Render active fluid tidal plasma
           ctx.save();
           ctx.globalCompositeOperation = "lighter";
           for (let i = tidalPlasma.length - 1; i >= 0; i--) {
@@ -667,14 +672,14 @@
 
         } else if (elapsed >= 2.5 && elapsed < 3.4) {
           // ==========================================
-          // STAGE 3: POLAR RELATIVISTIC JETS (45 DEG)
+          // STAGE 3: RELATIVISTIC OPPOSING JETS (45 DEG)
           // ==========================================
           const jetT = elapsed - 2.5;
-          const jetLength = jetT * (Math.max(canvas.width, canvas.height) * 1.4);
+          const jetLength = jetT * (Math.max(width, height) * 1.4);
 
           ctx.save();
           ctx.translate(cx, cy);
-          ctx.rotate(-Math.PI / 4); // 45-degree relativistic angle
+          ctx.rotate(-Math.PI / 4); // 45-degree angle
 
           ctx.globalCompositeOperation = "lighter";
 
@@ -733,7 +738,7 @@
           // STAGE 4: MASSIVE KILONOVA EXPANSION
           // ==========================================
           const expT = elapsed - 3.4;
-          const explosionR = expT * (Math.max(canvas.width, canvas.height) * 1.7) + 85;
+          const explosionR = expT * (Math.max(width, height) * 1.7) + 85;
 
           ctx.save();
           ctx.globalCompositeOperation = "lighter";
@@ -752,7 +757,7 @@
 
           // Camera whiteout flash
           ctx.fillStyle = "rgba(255, 255, 255, " + Math.min(1, expT * 2.6) + ")";
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.fillRect(0, 0, width, height);
           ctx.restore();
         }
 
@@ -767,7 +772,7 @@
       loop();
     }
 
-    // --- STEP 3: PHONE CHAT ---
+    // --- STEP 3: PHONE CHAT (CLEAN VIEWPORT) ---
     function triggerChatMessages() {
       const delays = [600, 1900, 3200, 4400];
       const elements = ["msg1", "msg2", "msg3", "voiceMsg"];
@@ -802,53 +807,53 @@
       const audio1 = new Audio("01.mp3");
       audio1.play().catch(e => {
         console.log("01.mp3 fallback:", e);
-        setTimeout(startDeepSharinganVoid, 2000);
+        setTimeout(startDeepSharinganIris, 2000);
       });
 
-      audio1.onended = startDeepSharinganVoid;
+      audio1.onended = startDeepSharinganIris;
     }
 
-    // --- STEP 5: DEEP INSIDE THE IRIS (TSUKUYOMI COSMOS) (02.mp3) ---
-    let voidAnimId;
-    function startDeepSharinganVoid() {
+    // --- STEP 5: PURE SHARINGAN IRIS & TSUKUYOMI VORTEX (02.mp3) ---
+    let irisAnimId;
+    function startDeepSharinganIris() {
       showScene("scene-sharingan");
 
       const audio2 = new Audio("02.mp3");
       audio2.play().catch(e => console.log("02.mp3 error:", e));
 
       const canvas = document.getElementById("sharinganCanvas");
-      const ctx = canvas.getContext("2d");
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      const { ctx, width, height } = setupRetinaCanvas(canvas);
 
-      const cx = canvas.width / 2;
-      const cy = canvas.height / 2;
+      const cx = width / 2;
+      const cy = height / 2;
       let startTime = Date.now();
       let angle = 0;
 
-      // 450 Ember ash particles in the crimson cosmos
+      // Floating crimson chakra embers
       const embers = [];
       for (let i = 0; i < 450; i++) {
         embers.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
+          x: Math.random() * width,
+          y: Math.random() * height,
           radius: Math.random() * 2.6 + 0.8,
           speedY: -(Math.random() * 2.2 + 0.6),
           alpha: Math.random() * 0.75 + 0.25
         });
       }
 
-      // Mathematical Itachi Curved Tomoe Blade
-      function drawItachiBlade(rot, scale) {
+      // Mathematical Itachi Curved Tomoe Blade (Tapered Pinwheel Arc)
+      function drawItachiTomoe(rot, scale) {
         ctx.save();
         ctx.rotate(rot);
         ctx.beginPath();
         ctx.moveTo(0, 0);
+        // Sweeping outer hook arc
         ctx.bezierCurveTo(
           scale * 0.28, -scale * 0.35,
           scale * 0.68, -scale * 0.72,
           scale * 0.32, -scale * 0.98
         );
+        // Tapered return arc curving back to center pupil
         ctx.bezierCurveTo(
           scale * 0.06, -scale * 0.76,
           -scale * 0.18, -scale * 0.35,
@@ -863,16 +868,17 @@
         const elapsed = (Date.now() - startTime) / 1000;
         angle += 0.12 + Math.pow(elapsed, 2) * 0.08;
 
-        // 1. Deep Crimson Cosmic Void (Inside the Iris)
-        const voidGrad = ctx.createRadialGradient(cx, cy, 30, cx, cy, Math.max(canvas.width, canvas.height) * 0.85);
+        // 1. Deep Crimson Cosmos Background (Inside the Iris Vortex)
+        const maxR = Math.max(width, height) * 0.85;
+        const voidGrad = ctx.createRadialGradient(cx, cy, 30, cx, cy, maxR);
         voidGrad.addColorStop(0, "#ff1100");
         voidGrad.addColorStop(0.35, "#aa0000");
         voidGrad.addColorStop(0.7, "#440000");
         voidGrad.addColorStop(1, "#080000");
         ctx.fillStyle = voidGrad;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillRect(0, 0, width, height);
 
-        // 2. Swirling Iris Striations & Shockwaves
+        // 2. High-Density Swirling Iris Micro-Fibrils
         ctx.save();
         ctx.translate(cx, cy);
         ctx.rotate(-angle * 0.35);
@@ -882,16 +888,23 @@
           const a = (i * Math.PI) / 24;
           ctx.beginPath();
           ctx.moveTo(Math.cos(a) * 45, Math.sin(a) * 45);
-          ctx.lineTo(Math.cos(a) * Math.max(canvas.width, canvas.height), Math.sin(a) * Math.max(canvas.width, canvas.height));
+          ctx.lineTo(Math.cos(a) * maxR, Math.sin(a) * maxR);
           ctx.stroke();
         }
+
+        // Concentric Tomoe Orbit Ring
+        ctx.strokeStyle = "rgba(0, 0, 0, 0.45)";
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.arc(0, 0, Math.min(width, height) * 0.34, 0, Math.PI * 2);
+        ctx.stroke();
         ctx.restore();
 
-        // 3. Floating Blood Embers
+        // 3. Floating Blood Chakra Embers
         ctx.fillStyle = "#ff6644";
         embers.forEach(e => {
           e.y += e.speedY;
-          if (e.y < 0) e.y = canvas.height;
+          if (e.y < 0) e.y = height;
           ctx.globalAlpha = e.alpha;
           ctx.beginPath();
           ctx.arc(e.x, e.y, e.radius, 0, Math.PI * 2);
@@ -900,23 +913,23 @@
         ctx.globalAlpha = 1.0;
 
         // 4. Central Pure Black Itachi Mangekyo Blades
-        const bladeScale = Math.min(canvas.width, canvas.height) * (0.36 + elapsed * 0.09);
+        const bladeScale = Math.min(width, height) * (0.36 + elapsed * 0.09);
 
         ctx.save();
         ctx.translate(cx, cy);
 
-        // Red aura glow around the blades
+        // Intense red chakra aura around the blades
         ctx.shadowColor = "#ff0000";
         ctx.shadowBlur = 65;
 
         ctx.save();
         ctx.rotate(angle);
-        drawItachiBlade(0, bladeScale);
-        drawItachiBlade((Math.PI * 2) / 3, bladeScale);
-        drawItachiBlade((Math.PI * 4) / 3, bladeScale);
+        drawItachiTomoe(0, bladeScale);
+        drawItachiTomoe((Math.PI * 2) / 3, bladeScale);
+        drawItachiTomoe((Math.PI * 4) / 3, bladeScale);
         ctx.restore();
 
-        // Center pupil abyss
+        // Central Pupil Abyss
         ctx.fillStyle = "#000000";
         ctx.beginPath();
         ctx.arc(0, 0, bladeScale * 0.22, 0, Math.PI * 2);
@@ -924,15 +937,15 @@
 
         ctx.restore();
 
-        // Screen Genjutsu Reality Glitch
+        // Optical Genjutsu Reality Glitch Flash
         if (elapsed > 2.0) {
           document.getElementById("genjutsuOverlay").style.opacity = Math.random() * 0.85;
         }
 
         if (elapsed < 3.4) {
-          voidAnimId = requestAnimationFrame(loop);
+          irisAnimId = requestAnimationFrame(loop);
         } else {
-          cancelAnimationFrame(voidAnimId);
+          cancelAnimationFrame(irisAnimId);
           showScene("scene-alarm");
           triggerWakeUpAlarm();
         }
