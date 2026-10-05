@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>Wake Up</title>
+  <title>POV: A Strange Morning</title>
   <style>
     * {
       box-sizing: border-box;
+      margin: 0;
+      padding: 0;
       user-select: none;
       -webkit-tap-highlight-color: transparent;
     }
     body, html {
-      margin: 0;
-      padding: 0;
       width: 100%;
       height: 100%;
       background: #000;
@@ -21,11 +21,32 @@
       color: #fff;
     }
 
+    /* POV CAMERA RIG & HEAD-BOB */
+    #camera-rig {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      perspective: 1200px;
+    }
+    .head-bob {
+      animation: headBreathing 4.5s ease-in-out infinite alternate;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      inset: 0;
+    }
+    @keyframes headBreathing {
+      0% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-4px) rotate(0.4deg); }
+      100% { transform: translateY(2px) rotate(-0.3deg); }
+    }
+
+    /* SCENE WRAPPER */
     .scene {
       position: absolute;
       inset: 0;
       display: none;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       overflow: hidden;
@@ -34,263 +55,393 @@
       display: flex;
     }
 
-    /* 1. CINEMATIC DOOR SCENE */
+    /* =========================================
+       1. POV DOOR SCENE WITH PHYSICAL ARM
+       ========================================= */
     #scene-door {
-      background: radial-gradient(circle, #251612 0%, #050302 100%);
-      perspective: 1100px;
+      background: radial-gradient(circle at center, #1c110d 0%, #060403 80%, #000 100%);
+    }
+    .hallway-wall {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(90deg, rgba(255,255,255,0.01) 0px, rgba(255,255,255,0.01) 2px, transparent 2px, transparent 40px);
+      pointer-events: none;
     }
     .door-frame {
-      width: 190px;
-      height: 330px;
-      border: 9px solid #2d1810;
+      width: 220px;
+      height: 380px;
+      border: 12px solid #23120b;
       border-bottom: none;
       position: relative;
       background: #000;
-      box-shadow: 0 0 50px rgba(0,0,0,0.95);
-      perspective: 1200px;
+      box-shadow: 0 10px 60px rgba(0,0,0,0.9), inset 0 0 40px #000;
+      perspective: 1400px;
     }
     .door-leaf {
       width: 100%;
       height: 100%;
-      background: linear-gradient(135deg, #4e342e, #2d1810);
-      border: 2px solid #1a0d08;
+      background: linear-gradient(135deg, #442a20 0%, #2b1710 60%, #1a0c07 100%);
+      border: 2px solid #140804;
       transform-origin: left;
-      transition: transform 2.8s cubic-bezier(0.15, 0.85, 0.25, 1);
+      transition: transform 3.2s cubic-bezier(0.12, 0.9, 0.2, 1);
       position: relative;
-      box-shadow: inset 0 0 25px rgba(0,0,0,0.8);
+      box-shadow: inset 0 0 35px rgba(0,0,0,0.85);
     }
-    .door-knob {
+    /* Wood Panel Details */
+    .door-panel {
+      position: absolute;
+      width: 68%;
+      height: 35%;
+      left: 16%;
+      border: 3px solid rgba(0,0,0,0.5);
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.6), 0 0 4px rgba(255,255,255,0.05);
+    }
+    .panel-top { top: 10%; }
+    .panel-bottom { bottom: 10%; }
+    .door-handle {
       position: absolute;
       right: 18px;
       top: 52%;
-      width: 15px;
-      height: 15px;
-      background: #d4af37;
-      border-radius: 50%;
-      box-shadow: 0 0 10px rgba(212, 175, 55, 0.7);
+      width: 28px;
+      height: 10px;
+      background: linear-gradient(180deg, #ffd700, #b8860b);
+      border-radius: 5px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.8);
+      transform-origin: left;
+      transition: transform 0.4s ease;
     }
-    .door-open .door-leaf {
-      transform: rotateY(-115deg);
-    }
-    .white-flash {
+
+    /* POV HAND REACHING OUT */
+    .pov-arm {
       position: absolute;
-      inset: 0;
-      background: #fff;
-      opacity: 0;
+      bottom: -320px;
+      right: 18%;
+      width: 180px;
+      height: 420px;
       pointer-events: none;
-      z-index: 100;
-      transition: opacity 1.8s ease;
+      z-index: 50;
+      transform-origin: bottom right;
+      transition: transform 1.2s cubic-bezier(0.15, 0.85, 0.35, 1);
     }
-    .white-flash.trigger {
-      opacity: 1;
+    .pov-sleeve {
+      width: 130px;
+      height: 260px;
+      background: linear-gradient(135deg, #2b3a4a, #16202c);
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      border-radius: 40px 40px 0 0;
+      box-shadow: -10px 10px 30px rgba(0,0,0,0.8);
     }
-    .primary-btn {
-      margin-top: 40px;
-      padding: 15px 36px;
+    .pov-hand {
+      width: 80px;
+      height: 120px;
+      background: linear-gradient(180deg, #e0a37e, #c5825d);
+      position: absolute;
+      top: 60px;
+      right: 35px;
+      border-radius: 20px 20px 10px 10px;
+      transform: rotate(-12deg);
+      box-shadow: inset -4px 0 10px rgba(0,0,0,0.3);
+    }
+    .arm-reach {
+      transform: translateY(-240px) translateX(-40px) rotate(-8deg);
+    }
+
+    /* ACTION BUTTON */
+    .door-btn-wrap {
+      position: absolute;
+      bottom: 60px;
+      z-index: 80;
+    }
+    .cinematic-btn {
+      padding: 16px 42px;
       font-size: 1.15rem;
       font-weight: 700;
-      letter-spacing: 1.5px;
+      letter-spacing: 2px;
       color: #fff;
-      background: linear-gradient(135deg, #d32f2f, #8b0000);
-      border: none;
+      background: linear-gradient(135deg, #e53935, #8e0000);
+      border: 1px solid rgba(255,255,255,0.2);
       border-radius: 50px;
       cursor: pointer;
-      box-shadow: 0 10px 30px rgba(211, 47, 47, 0.45);
+      box-shadow: 0 12px 35px rgba(229, 57, 53, 0.5), inset 0 1px 2px rgba(255,255,255,0.4);
       transition: transform 0.15s, box-shadow 0.15s;
     }
-    .primary-btn:active {
+    .cinematic-btn:active {
       transform: scale(0.95);
     }
 
-    /* 2. BLACK HOLE SCENE */
+    /* BLINDING VOLUMETRIC FLASH */
+    .lens-bloom {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, #ffffff 10%, rgba(255,255,255,0.8) 50%, rgba(255,200,150,0.2) 80%);
+      opacity: 0;
+      pointer-events: none;
+      z-index: 100;
+      transition: opacity 2.2s cubic-bezier(0.1, 0.9, 0.2, 1);
+    }
+    .lens-bloom.trigger {
+      opacity: 1;
+    }
+
+    /* =========================================
+       2. PIXEL-BY-PIXEL CANVAS BLACK HOLE
+       ========================================= */
     #scene-blackhole {
       background: #000;
     }
-    .black-hole-container {
+    #blackHoleCanvas {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+    .spaghettify-overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, transparent 30%, #000 80%);
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    /* =========================================
+       3. POV PHONE PICKUP & CHAT SCREEN
+       ========================================= */
+    #scene-phone {
+      background: #0a0a0f;
+    }
+    .pov-phone-rig {
       position: relative;
-      width: 300px;
-      height: 300px;
+      width: 100%;
+      height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
+      transform: translateY(110vh) scale(0.85);
+      transition: transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .accretion-disk {
-      position: absolute;
-      width: 350px;
-      height: 350px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,110,0,0.95) 0%, rgba(255,50,0,0.65) 45%, transparent 75%);
-      filter: blur(14px);
-      animation: spinHole 2.6s linear infinite;
+    .pov-phone-rig.in-hand {
+      transform: translateY(0) scale(1);
     }
-    .event-horizon {
-      position: relative;
-      width: 150px;
-      height: 150px;
-      background: #000;
-      border-radius: 50%;
-      box-shadow: 0 0 50px 12px #ff3d00, inset 0 0 30px #000;
-      z-index: 2;
-    }
-    @keyframes spinHole {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-    .implode {
-      animation: suckIn 2.2s forwards cubic-bezier(0.7, 0, 0.85, 0);
-    }
-    @keyframes suckIn {
-      0% { transform: scale(1); filter: brightness(1); }
-      50% { transform: scale(3.2); filter: brightness(2.5); }
-      100% { transform: scale(0); filter: brightness(0); }
-    }
-
-    /* 3. PHONE SCREEN (JAGATHISH MESSAGES) */
-    #scene-phone {
-      background: #07070a;
-    }
-    .phone-body {
-      width: 90%;
-      max-width: 360px;
-      height: 570px;
-      background: #181820;
-      border-radius: 36px;
-      border: 4px solid #2a2a35;
-      box-shadow: 0 25px 65px rgba(0,0,0,0.9);
+    .phone-device {
+      width: 360px;
+      height: 640px;
+      background: #15151c;
+      border-radius: 44px;
+      border: 6px solid #2d2d38;
+      box-shadow: 0 35px 80px rgba(0,0,0,0.95), inset 0 0 15px rgba(0,0,0,0.8);
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      transform: translateY(100vh);
-      animation: slideUpPhone 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      position: relative;
+      z-index: 10;
     }
-    @keyframes slideUpPhone {
-      to { transform: translateY(0); }
+    /* Holding Hands on Left & Right */
+    .left-thumb {
+      position: absolute;
+      left: 15px;
+      bottom: 240px;
+      width: 45px;
+      height: 140px;
+      background: linear-gradient(90deg, #9b5a38, #d48a60);
+      border-radius: 25px;
+      transform: rotate(20deg);
+      z-index: 15;
+      box-shadow: -8px 12px 25px rgba(0,0,0,0.8);
+    }
+    .right-thumb {
+      position: absolute;
+      right: 15px;
+      bottom: 240px;
+      width: 45px;
+      height: 140px;
+      background: linear-gradient(-90deg, #9b5a38, #d48a60);
+      border-radius: 25px;
+      transform: rotate(-20deg);
+      z-index: 15;
+      box-shadow: 8px 12px 25px rgba(0,0,0,0.8);
+    }
+
+    .phone-notch {
+      width: 120px;
+      height: 24px;
+      background: #000;
+      align-self: center;
+      border-bottom-left-radius: 16px;
+      border-bottom-right-radius: 16px;
+      z-index: 20;
     }
     .phone-header {
-      padding: 16px 20px;
-      background: #23232e;
+      padding: 12px 18px;
+      background: #1f1f2a;
       display: flex;
       align-items: center;
       gap: 12px;
       border-bottom: 1px solid rgba(255,255,255,0.06);
     }
     .avatar {
-      width: 42px;
-      height: 42px;
+      width: 44px;
+      height: 44px;
       border-radius: 50%;
       background: linear-gradient(135deg, #ff416c, #ff4b2b);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-weight: 700;
+      font-weight: 800;
       color: #fff;
-      font-size: 1.1rem;
+      font-size: 1.15rem;
     }
     .user-info h4 {
       margin: 0;
-      font-size: 1rem;
+      font-size: 1.05rem;
     }
     .user-info span {
-      font-size: 0.75rem;
+      font-size: 0.78rem;
       color: #00e676;
+      font-weight: 500;
     }
-    .chat-messages {
+    .chat-body {
       flex: 1;
-      padding: 18px 14px;
+      padding: 16px 14px;
       display: flex;
       flex-direction: column;
       gap: 12px;
       overflow-y: auto;
     }
+    .typing-status {
+      font-size: 0.78rem;
+      color: #aaa;
+      font-style: italic;
+      height: 18px;
+    }
     .msg-bubble {
       max-width: 82%;
       padding: 12px 16px;
-      background: #2c2c3a;
-      border-radius: 16px 16px 16px 3px;
+      background: #2b2b3a;
+      border-radius: 18px 18px 18px 4px;
       font-size: 0.95rem;
-      line-height: 1.35;
+      line-height: 1.4;
       opacity: 0;
-      transform: translateY(12px);
-      transition: opacity 0.35s ease, transform 0.35s ease;
+      transform: translateY(12px) scale(0.95);
+      transition: all 0.35s cubic-bezier(0.18, 0.89, 0.32, 1.28);
     }
     .msg-bubble.show {
       opacity: 1;
-      transform: translateY(0);
+      transform: translateY(0) scale(1);
     }
     .voice-bubble {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 12px 16px;
+      padding: 14px 18px;
       background: #1b5e20;
-      border-radius: 16px 16px 16px 3px;
+      border-radius: 18px 18px 18px 4px;
       cursor: pointer;
       opacity: 0;
       transform: translateY(12px);
-      transition: opacity 0.35s ease, transform 0.35s ease;
+      transition: all 0.35s ease;
+      box-shadow: 0 4px 15px rgba(27, 94, 32, 0.4);
     }
     .voice-bubble.show {
       opacity: 1;
       transform: translateY(0);
     }
     .play-btn {
-      width: 32px;
-      height: 32px;
+      width: 36px;
+      height: 36px;
       background: #fff;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       color: #1b5e20;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    .waveform {
+      display: flex;
+      gap: 3px;
+      align-items: center;
+      height: 24px;
+      flex: 1;
+    }
+    .waveform span {
+      width: 3px;
+      height: 8px;
+      background: rgba(255,255,255,0.6);
+      border-radius: 3px;
+    }
+    .playing .waveform span {
+      animation: wavePulse 0.5s ease infinite alternate;
+    }
+    .waveform span:nth-child(2) { animation-delay: 0.1s; }
+    .waveform span:nth-child(3) { animation-delay: 0.2s; }
+    .waveform span:nth-child(4) { animation-delay: 0.3s; }
+    .waveform span:nth-child(5) { animation-delay: 0.4s; }
+    @keyframes wavePulse {
+      from { height: 6px; }
+      to { height: 22px; background: #fff; }
     }
 
-    /* 4. ITACHI MANGEKYO SHARINGAN */
+    /* =========================================
+       4. ITACHI MANGEKYO SHARINGAN TSUKUYOMI
+       ========================================= */
     #scene-sharingan {
       background: #000;
     }
-    .eye-socket {
-      width: 270px;
-      height: 270px;
+    .tsukuyomi-bg {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle, #550000 0%, #150000 70%, #000 100%);
+      opacity: 0;
+      transition: opacity 1.5s ease;
+    }
+    .eye-chasm {
+      width: 300px;
+      height: 300px;
       border-radius: 50%;
-      background: #d50000;
-      box-shadow: 0 0 80px #ff0000, inset 0 0 50px #300000;
+      background: #e60000;
+      box-shadow: 0 0 100px #ff0000, inset 0 0 60px #400000;
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
-      transform: scale(0.1);
-      transition: transform 1.2s cubic-bezier(0.1, 0.9, 0.2, 1);
+      transform: scale(0.05);
+      transition: transform 1.4s cubic-bezier(0.12, 0.9, 0.2, 1);
+    }
+    .iris-ring {
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      border: 3px solid rgba(0,0,0,0.6);
     }
     .sharingan-pupil {
-      width: 46px;
-      height: 46px;
+      width: 50px;
+      height: 50px;
       background: #000;
       border-radius: 50%;
       z-index: 5;
+      box-shadow: 0 0 12px rgba(0,0,0,0.9);
     }
     .pinwheel {
       position: absolute;
       width: 100%;
       height: 100%;
-      animation: spinEye 3.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+      animation: spinEye 3.6s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
     }
     .blade {
       position: absolute;
-      width: 44px;
-      height: 110px;
+      width: 48px;
+      height: 120px;
       background: #000;
-      border-radius: 50% 50% 10% 80%;
-      left: 113px;
-      top: 25px;
+      border-radius: 50% 50% 12% 80%;
+      left: 126px;
+      top: 30px;
       transform-origin: bottom center;
     }
-    .blade:nth-child(2) {
-      transform: rotate(120deg);
-    }
-    .blade:nth-child(3) {
-      transform: rotate(240deg);
-    }
+    .blade:nth-child(2) { transform: rotate(120deg); }
+    .blade:nth-child(3) { transform: rotate(240deg); }
     @keyframes spinEye {
       0% { transform: rotate(0deg); }
       75% { transform: rotate(1080deg); }
@@ -300,119 +451,173 @@
       position: absolute;
       inset: 0;
       background: red;
-      mix-blend-mode: color-dodge;
+      mix-blend-mode: exclusion;
       opacity: 0;
       pointer-events: none;
     }
 
-    /* 5. WAKE-UP & "TIME FOR COLLEGE" ALARM */
+    /* =========================================
+       5. GASPING WAKE-UP & COLLEGE ALARM
+       ========================================= */
     #scene-alarm {
-      background: #050505;
+      background: #040404;
       text-align: center;
     }
-    .shock-text {
-      font-size: 1.2rem;
-      letter-spacing: 3px;
-      color: #777;
-      margin-bottom: 24px;
+    /* Realistic POV Eyelids Blinking */
+    .eyelid {
+      position: absolute;
+      left: 0;
+      width: 100vw;
+      height: 52vh;
+      background: #000;
+      z-index: 999;
+      transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
     }
-    .clock-display {
-      background: #111;
-      padding: 24px 40px;
-      border-radius: 18px;
-      border: 2px solid #ff1744;
-      box-shadow: 0 0 40px rgba(255, 23, 68, 0.45);
+    .eyelid-top {
+      top: 0;
+      transform: translateY(0);
+    }
+    .eyelid-bottom {
+      bottom: 0;
+      transform: translateY(0);
+    }
+    .eyes-open .eyelid-top { transform: translateY(-100%); }
+    .eyes-open .eyelid-bottom { transform: translateY(100%); }
+
+    .shock-text {
+      font-size: 1.3rem;
+      letter-spacing: 4px;
+      color: #888;
+      margin-bottom: 28px;
+      text-transform: uppercase;
+    }
+    .digital-clock {
+      background: #0f0f14;
+      padding: 28px 48px;
+      border-radius: 20px;
+      border: 3px solid #ff1744;
+      box-shadow: 0 0 45px rgba(255, 23, 68, 0.5), inset 0 0 20px rgba(0,0,0,0.8);
       display: inline-block;
     }
     .clock-time {
       font-family: monospace;
-      font-size: 3.6rem;
+      font-size: 4rem;
       font-weight: 900;
       color: #ff1744;
-      text-shadow: 0 0 18px rgba(255, 23, 68, 0.9);
-      margin: 0;
+      text-shadow: 0 0 22px rgba(255, 23, 68, 1);
     }
     .alarm-notice {
-      margin-top: 22px;
-      font-size: 1.8rem;
-      font-weight: 800;
-      letter-spacing: 3px;
+      margin-top: 26px;
+      font-size: 2.2rem;
+      font-weight: 900;
+      letter-spacing: 4px;
       color: #fff;
-      animation: pulseAlert 0.7s ease infinite alternate;
+      animation: pulseAlert 0.6s ease infinite alternate;
     }
     @keyframes pulseAlert {
-      from { transform: scale(1); color: #ff5252; }
-      to { transform: scale(1.08); color: #fff; }
+      from { transform: scale(1); color: #ff5252; text-shadow: 0 0 10px red; }
+      to { transform: scale(1.1); color: #fff; text-shadow: 0 0 30px #ff1744; }
     }
   </style>
 </head>
 <body>
 
-  <!-- SCENE 1: THE DOOR -->
-  <div id="scene-door" class="scene active">
-    <div class="door-frame" id="doorFrame">
-      <div class="door-leaf">
-        <div class="door-knob"></div>
+  <!-- EYELIDS FOR FIRST-PERSON BLINK EFFECTS -->
+  <div class="eyelid eyelid-top" id="eyelidTop"></div>
+  <div class="eyelid eyelid-bottom" id="eyelidBottom"></div>
+
+  <div id="camera-rig">
+    <div class="head-bob">
+
+      <!-- SCENE 1: POV DOOR SCENE -->
+      <div id="scene-door" class="scene active">
+        <div class="hallway-wall"></div>
+        <div class="door-frame" id="doorFrame">
+          <div class="door-leaf" id="doorLeaf">
+            <div class="door-panel panel-top"></div>
+            <div class="door-panel panel-bottom"></div>
+            <div class="door-handle" id="doorHandle"></div>
+          </div>
+        </div>
+
+        <!-- POV Hand & Arm -->
+        <div class="pov-arm" id="povArm">
+          <div class="pov-sleeve"></div>
+          <div class="pov-hand"></div>
+        </div>
+
+        <div class="door-btn-wrap">
+          <button class="cinematic-btn" id="openDoorBtn" onclick="triggerDoorPOV()">OPEN THE DOOR</button>
+        </div>
+        <div class="lens-bloom" id="lensBloom"></div>
       </div>
-    </div>
-    <button class="primary-btn" id="openDoorBtn" onclick="triggerDoor()">Open the door</button>
-    <div class="white-flash" id="flashOverlay"></div>
-  </div>
 
-  <!-- SCENE 2: BLACK HOLE -->
-  <div id="scene-blackhole" class="scene">
-    <div class="black-hole-container" id="blackHoleEl">
-      <div class="accretion-disk"></div>
-      <div class="event-horizon"></div>
-    </div>
-  </div>
+      <!-- SCENE 2: PIXEL-BY-PIXEL BLACK HOLE (HTML5 CANVAS) -->
+      <div id="scene-blackhole" class="scene">
+        <canvas id="blackHoleCanvas"></canvas>
+        <div class="spaghettify-overlay"></div>
+      </div>
 
-  <!-- SCENE 3: PHONE & JAGATHISH'S MESSAGES -->
-  <div id="scene-phone" class="scene">
-    <div class="phone-body">
-      <div class="phone-header">
-        <div class="avatar">J</div>
-        <div class="user-info">
-          <h4>Jagathish</h4>
-          <span>online</span>
+      <!-- SCENE 3: POV PICKING UP PHONE (JAGATHISH) -->
+      <div id="scene-phone" class="scene">
+        <div class="pov-phone-rig" id="phoneRig">
+          <div class="left-thumb"></div>
+          <div class="right-thumb"></div>
+          <div class="phone-device">
+            <div class="phone-notch"></div>
+            <div class="phone-header">
+              <div class="avatar">J</div>
+              <div class="user-info">
+                <h4>Jagathish</h4>
+                <span id="chatStatus">online</span>
+              </div>
+            </div>
+            <div class="chat-body" id="chatBody">
+              <div class="msg-bubble" id="msg1">Bro where are you?? 💀</div>
+              <div class="msg-bubble" id="msg2">Did you forget what day it is today?</div>
+              <div class="msg-bubble" id="msg3">Listen to this audio right now! 👇</div>
+              <div class="voice-bubble" id="voiceMsg" onclick="playVoiceNote()">
+                <div class="play-btn" id="playBtnIcon">▶</div>
+                <div class="waveform" id="waveform">
+                  <span></span><span></span><span></span><span></span><span></span>
+                </div>
+                <span style="font-size: 0.85rem; font-weight:600;" id="voiceStatus">0:04</span>
+              </div>
+              <div class="typing-status" id="typingStatus"></div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="chat-messages" id="chatArea">
-        <div class="msg-bubble" id="msg1">Bro where are you?? 💀</div>
-        <div class="msg-bubble" id="msg2">Did you forget what day it is today?</div>
-        <div class="msg-bubble" id="msg3">Listen to this audio right now! 👇</div>
-        <div class="voice-bubble" id="voiceMsg" onclick="playVoiceNote()">
-          <div class="play-btn" id="playBtnIcon">▶</div>
-          <span style="font-size: 0.85rem;" id="voiceStatus">Voice note (01.mp3)</span>
+
+      <!-- SCENE 4: ITACHI MANGEKYO SHARINGAN -->
+      <div id="scene-sharingan" class="scene">
+        <div class="tsukuyomi-bg" id="tsukuyomiBg"></div>
+        <div class="eye-chasm" id="mangekyoEye">
+          <div class="iris-ring"></div>
+          <div class="pinwheel">
+            <div class="blade"></div>
+            <div class="blade"></div>
+            <div class="blade"></div>
+          </div>
+          <div class="sharingan-pupil"></div>
         </div>
+        <div class="glitch-flash" id="genjutsuGlitch"></div>
       </div>
-    </div>
-  </div>
 
-  <!-- SCENE 4: ITACHI MANGEKYO SHARINGAN -->
-  <div id="scene-sharingan" class="scene">
-    <div class="eye-socket" id="mangekyoEye">
-      <div class="pinwheel">
-        <div class="blade"></div>
-        <div class="blade"></div>
-        <div class="blade"></div>
+      <!-- SCENE 5: GASPING WAKE-UP & ALARM -->
+      <div id="scene-alarm" class="scene">
+        <div class="shock-text">* GASP * WAKING UP TO REALITY...</div>
+        <div class="digital-clock">
+          <div class="clock-time">07:45 AM</div>
+        </div>
+        <div class="alarm-notice">TIME FOR COLLEGE</div>
       </div>
-      <div class="sharingan-pupil"></div>
-    </div>
-    <div class="glitch-flash" id="genjutsuGlitch"></div>
-  </div>
 
-  <!-- SCENE 5: REALITY WAKEUP & ALARM -->
-  <div id="scene-alarm" class="scene">
-    <div class="shock-text">* GASP * WAKING UP...</div>
-    <div class="clock-display">
-      <div class="clock-time">07:45 AM</div>
     </div>
-    <div class="alarm-notice">TIME FOR COLLEGE</div>
   </div>
 
   <script>
-    // --- BUILT-IN PROCEDURAL CINEMATIC AUDIO (Door creak, Black hole vortex, Message notification) ---
+    // --- 1. PROCEDURAL CINEMATIC AUDIO ENGINE ---
     const CinematicAudio = {
       ctx: null,
       init() {
@@ -424,106 +629,80 @@
           this.ctx.resume();
         }
       },
-
-      // Heavy wooden door creak + low cinematic boom
-      playDoorSound() {
+      playDoorLatchAndCreak() {
         this.init();
         const now = this.ctx.currentTime;
 
+        // Brass handle click
+        const latch = this.ctx.createOscillator();
+        const latchGain = this.ctx.createGain();
+        latch.type = "triangle";
+        latch.frequency.setValueAtTime(320, now);
+        latch.frequency.exponentialRampToValueAtTime(80, now + 0.1);
+        latchGain.gain.setValueAtTime(0.4, now);
+        latchGain.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+        latch.connect(latchGain);
+        latchGain.connect(this.ctx.destination);
+        latch.start(now);
+        latch.stop(now + 0.1);
+
+        // Heavy wood creak
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
         osc.type = "sawtooth";
-        osc.frequency.setValueAtTime(60, now);
-        osc.frequency.exponentialRampToValueAtTime(320, now + 2.2);
-
-        gain.gain.setValueAtTime(0.28, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 2.2);
-
+        osc.frequency.setValueAtTime(55, now + 0.15);
+        osc.frequency.exponentialRampToValueAtTime(360, now + 2.5);
+        gain.gain.setValueAtTime(0.3, now + 0.15);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 2.5);
         osc.connect(gain);
         gain.connect(this.ctx.destination);
-        osc.start(now);
-        osc.stop(now + 2.2);
+        osc.start(now + 0.15);
+        osc.stop(now + 2.5);
 
-        const subOsc = this.ctx.createOscillator();
+        // Sub rumble impact
+        const sub = this.ctx.createOscillator();
         const subGain = this.ctx.createGain();
-        subOsc.type = "sine";
-        subOsc.frequency.setValueAtTime(110, now + 0.3);
-        subOsc.frequency.exponentialRampToValueAtTime(30, now + 2.0);
-
-        subGain.gain.setValueAtTime(0.35, now + 0.3);
-        subGain.gain.exponentialRampToValueAtTime(0.001, now + 2.0);
-
-        subOsc.connect(subGain);
+        sub.type = "sine";
+        sub.frequency.setValueAtTime(110, now + 0.3);
+        sub.frequency.exponentialRampToValueAtTime(28, now + 2.4);
+        subGain.gain.setValueAtTime(0.4, now + 0.3);
+        subGain.gain.exponentialRampToValueAtTime(0.001, now + 2.4);
+        sub.connect(subGain);
         subGain.connect(this.ctx.destination);
-        subOsc.start(now + 0.3);
-        subOsc.stop(now + 2.0);
+        sub.start(now + 0.3);
+        sub.stop(now + 2.4);
       },
 
-      // Deep cosmic black hole gravity rumble
-      playBlackHoleVortex() {
-        this.init();
-        const now = this.ctx.currentTime;
-
-        const osc = this.ctx.createOscillator();
-        const gain = this.ctx.createGain();
-        osc.type = "sine";
-        osc.frequency.setValueAtTime(180, now);
-        osc.frequency.exponentialRampToValueAtTime(32, now + 2.0);
-
-        gain.gain.setValueAtTime(0.45, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 2.0);
-
-        osc.connect(gain);
-        gain.connect(this.ctx.destination);
-        osc.start(now);
-        osc.stop(now + 2.0);
-
-        // Suction air noise
-        const bufferSize = this.ctx.sampleRate * 2.0;
-        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
-        const data = buffer.getChannelData(0);
-        for (let i = 0; i < bufferSize; i++) {
-          data[i] = Math.random() * 2 - 1;
-        }
-
-        const noise = this.ctx.createBufferSource();
-        noise.buffer = buffer;
-
-        const filter = this.ctx.createBiquadFilter();
-        filter.type = "lowpass";
-        filter.frequency.setValueAtTime(600, now);
-        filter.frequency.exponentialRampToValueAtTime(60, now + 2.0);
-
-        const noiseGain = this.ctx.createGain();
-        noiseGain.gain.setValueAtTime(0.3, now);
-        noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 2.0);
-
-        noise.connect(filter);
-        filter.connect(noiseGain);
-        noiseGain.connect(this.ctx.destination);
-
-        noise.start(now);
-        noise.stop(now + 2.0);
-      },
-
-      // Message ping chime
-      playMessageNotification() {
+      playBlackHoleSuck() {
         this.init();
         const now = this.ctx.currentTime;
         const osc = this.ctx.createOscillator();
         const gain = this.ctx.createGain();
-
         osc.type = "sine";
-        osc.frequency.setValueAtTime(650, now);
-        osc.frequency.exponentialRampToValueAtTime(980, now + 0.12);
-
-        gain.gain.setValueAtTime(0.25, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
-
+        osc.frequency.setValueAtTime(220, now);
+        osc.frequency.exponentialRampToValueAtTime(25, now + 3.0);
+        gain.gain.setValueAtTime(0.5, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 3.0);
         osc.connect(gain);
         gain.connect(this.ctx.destination);
         osc.start(now);
-        osc.stop(now + 0.12);
+        osc.stop(now + 3.0);
+      },
+
+      playMessagePop() {
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(620, now);
+        osc.frequency.exponentialRampToValueAtTime(940, now + 0.14);
+        gain.gain.setValueAtTime(0.28, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.14);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.14);
       }
     };
 
@@ -532,92 +711,215 @@
       document.getElementById(id).classList.add("active");
     }
 
-    // SCENE 1: OPEN DOOR
-    function triggerDoor() {
-      CinematicAudio.playDoorSound();
-      document.getElementById("doorFrame").classList.add("door-open");
+    // --- INITIAL POV EYE BLINK ON PAGE LOAD ---
+    window.addEventListener("DOMContentLoaded", () => {
+      setTimeout(() => {
+        document.body.classList.add("eyes-open");
+      }, 300);
+    });
+
+    // --- STEP 1: POV DOOR OPENING WITH ARM MOVEMENT ---
+    function triggerDoorPOV() {
+      CinematicAudio.playDoorLatchAndCreak();
       document.getElementById("openDoorBtn").style.display = "none";
 
-      setTimeout(() => {
-        document.getElementById("flashOverlay").classList.add("trigger");
-      }, 1200);
+      // Arm reaches for the handle
+      const arm = document.getElementById("povArm");
+      const handle = document.getElementById("doorHandle");
+      arm.classList.add("arm-reach");
 
+      // Handle turns downward
+      setTimeout(() => {
+        handle.style.transform = "rotate(28deg)";
+      }, 700);
+
+      // Door swings open slowly
+      setTimeout(() => {
+        document.getElementById("doorLeaf").style.transform = "rotateY(-110deg)";
+        arm.style.transform = "translateY(150px) translateX(60px) rotate(10deg)";
+      }, 1100);
+
+      // Blinding white bloom fills vision
+      setTimeout(() => {
+        document.getElementById("lensBloom").classList.add("trigger");
+      }, 1800);
+
+      // Cut to Black Hole Canvas
       setTimeout(() => {
         showScene("scene-blackhole");
-        triggerBlackHole();
-      }, 2400);
+        initPixelBlackHole();
+      }, 3200);
     }
 
-    // SCENE 2: BLACK HOLE SUCTION
-    function triggerBlackHole() {
-      CinematicAudio.playBlackHoleVortex();
-      const hole = document.getElementById("blackHoleEl");
-      setTimeout(() => {
-        hole.classList.add("implode");
-      }, 1400);
+    // --- STEP 2: PIXEL-BY-PIXEL CANVAS BLACK HOLE SIMULATION ---
+    let animFrameId;
+    function initPixelBlackHole() {
+      CinematicAudio.playBlackHoleSuck();
+      const canvas = document.getElementById("blackHoleCanvas");
+      const ctx = canvas.getContext("2d");
 
-      setTimeout(() => {
-        showScene("scene-phone");
-        triggerMessages();
-      }, 3600);
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      const particles = [];
+      const particleCount = 1200; // 1,200 individual pixels
+
+      for (let i = 0; i < particleCount; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const radius = 60 + Math.random() * Math.max(canvas.width, canvas.height);
+        particles.push({
+          angle: angle,
+          radius: radius,
+          speed: 0.02 + Math.random() * 0.03,
+          radialSpeed: 1.5 + Math.random() * 2.5,
+          size: Math.random() * 2.5 + 1,
+          color: Math.random() > 0.4 ? "#ff4500" : (Math.random() > 0.5 ? "#ffa500" : "#ffffff")
+        });
+      }
+
+      let startTime = Date.now();
+      let suctionFactor = 1;
+
+      function renderLoop() {
+        ctx.fillStyle = "rgba(0, 0, 0, 0.22)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        const elapsed = (Date.now() - startTime) / 1000;
+        if (elapsed > 2.0) {
+          suctionFactor += 0.08; // Extreme acceleration
+        }
+
+        // Event Horizon Glow
+        const gradient = ctx.createRadialGradient(centerX, centerY, 30, centerX, centerY, 140);
+        gradient.addColorStop(0, "rgba(0, 0, 0, 1)");
+        gradient.addColorStop(0.5, "rgba(255, 69, 0, 0.6)");
+        gradient.addColorStop(1, "transparent");
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, 140, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Render each pixel particle with orbital gravity
+        particles.forEach(p => {
+          p.angle += p.speed * suctionFactor;
+          p.radius -= p.radialSpeed * suctionFactor;
+
+          if (p.radius <= 35) {
+            // Respawn outward to create infinite suction effect
+            p.radius = Math.max(canvas.width, canvas.height) * 0.7;
+            p.angle = Math.random() * Math.PI * 2;
+          }
+
+          const px = centerX + Math.cos(p.angle) * p.radius;
+          const py = centerY + Math.sin(p.angle) * p.radius;
+
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          ctx.arc(px, py, p.size, 0, Math.PI * 2);
+          ctx.fill();
+        });
+
+        // Core Event Horizon
+        ctx.fillStyle = "#000000";
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, 45, 0, Math.PI * 2);
+        ctx.fill();
+
+        if (elapsed < 3.8) {
+          animFrameId = requestAnimationFrame(renderLoop);
+        } else {
+          cancelAnimationFrame(animFrameId);
+          showScene("scene-phone");
+          triggerPhoneScene();
+        }
+      }
+      renderLoop();
     }
 
-    // SCENE 3: MESSAGES FROM JAGATHISH ONE BY ONE
-    function triggerMessages() {
-      const delays = [600, 1800, 3000, 4200];
+    // --- STEP 3: POV PHONE PICKUP & MESSAGES FROM JAGATHISH ---
+    function triggerPhoneScene() {
+      const phoneRig = document.getElementById("phoneRig");
+      setTimeout(() => {
+        phoneRig.classList.add("in-hand");
+      }, 200);
+
+      const delays = [800, 2200, 3600, 4800];
       const elements = ["msg1", "msg2", "msg3", "voiceMsg"];
+      const typing = document.getElementById("typingStatus");
+      const chatStatus = document.getElementById("chatStatus");
 
       elements.forEach((id, index) => {
         setTimeout(() => {
+          typing.textContent = "Jagathish is typing...";
+          chatStatus.textContent = "typing...";
+        }, delays[index] - 500);
+
+        setTimeout(() => {
+          typing.textContent = "";
+          chatStatus.textContent = "online";
           document.getElementById(id).classList.add("show");
-          CinematicAudio.playMessageNotification();
+          CinematicAudio.playMessagePop();
         }, delays[index]);
       });
     }
 
-    // SCENE 4: VOICE NOTE PLAYBACK (Plays 01.mp3)
+    // --- STEP 4: FRIEND VOICE NOTE (01.mp3) ---
     let voicePlayed = false;
     function playVoiceNote() {
       if (voicePlayed) return;
       voicePlayed = true;
 
       document.getElementById("playBtnIcon").textContent = "❚❚";
+      document.getElementById("voiceMsg").classList.add("playing");
       document.getElementById("voiceStatus").textContent = "Playing...";
 
       const audio1 = new Audio("01.mp3");
       audio1.play().catch(e => {
         console.log("01.mp3 playback failed:", e);
-        setTimeout(triggerSharinganSequence, 2000);
+        setTimeout(triggerSharinganGenjutsu, 2000);
       });
 
-      audio1.onended = triggerSharinganSequence;
+      audio1.onended = triggerSharinganGenjutsu;
     }
 
-    // SCENE 5: ITACHI'S MANGEKYO SHARINGAN (Plays 02.mp3)
-    function triggerSharinganSequence() {
+    // --- STEP 5: ITACHI'S MANGEKYO SHARINGAN (02.mp3) ---
+    function triggerSharinganGenjutsu() {
       showScene("scene-sharingan");
 
       const audio2 = new Audio("02.mp3");
       audio2.play().catch(e => console.log("02.mp3 playback failed:", e));
 
       const eye = document.getElementById("mangekyoEye");
-      setTimeout(() => {
-        eye.style.transform = "scale(1.4)";
-      }, 200);
+      const tsukuyomi = document.getElementById("tsukuyomiBg");
 
       setTimeout(() => {
-        eye.style.transform = "scale(8.5)";
-        document.getElementById("genjutsuGlitch").style.opacity = "0.75";
+        tsukuyomi.style.opacity = "1";
+        eye.style.transform = "scale(1.3)";
+      }, 150);
+
+      // Eye zooms into viewer's pupil
+      setTimeout(() => {
+        eye.style.transform = "scale(10)";
+        document.getElementById("genjutsuGlitch").style.opacity = "0.85";
       }, 2400);
 
+      // Sudden wake-up cut
       setTimeout(() => {
         showScene("scene-alarm");
-        triggerAlarm();
+        triggerWakeUpAlarm();
       }, 3400);
     }
 
-    // SCENE 6: "TIME FOR COLLEGE" ALARM (Plays 03.mp3)
-    function triggerAlarm() {
+    // --- STEP 6: WAKE-UP REALITY & COLLEGE ALARM (03.mp3) ---
+    function triggerWakeUpAlarm() {
+      // Rapid waking-up blink simulation
+      document.body.classList.remove("eyes-open");
+      setTimeout(() => {
+        document.body.classList.add("eyes-open");
+      }, 400);
+
       const audio3 = new Audio("03.mp3");
       audio3.loop = true;
       audio3.play().catch(e => console.log("03.mp3 playback failed:", e));
