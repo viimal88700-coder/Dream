@@ -33,73 +33,107 @@
       display: flex;
     }
 
-    /* 1. CINEMATIC DOOR SCENE */
+    /* ====================================================
+       1. 3D GRAND DOUBLE WOODEN DOORS (🚪🚪)
+       ==================================================== */
     #scene-door {
-      background: radial-gradient(circle at center, #1e110c 0%, #060302 80%, #000 100%);
-      perspective: 1200px;
-    }
-    .door-frame {
-      width: 220px;
-      height: 380px;
-      border: 10px solid #23120b;
-      border-bottom: none;
-      position: relative;
-      background: #000;
-      box-shadow: 0 10px 60px rgba(0,0,0,0.95);
+      background: radial-gradient(circle at center, #180c07 0%, #060201 80%, #000 100%);
       perspective: 1400px;
     }
-    .door-leaf {
+    .grand-portal {
+      width: 320px;
+      height: 440px;
+      position: relative;
+      perspective: 1200px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .portal-arch {
+      position: absolute;
+      inset: -14px;
+      border: 14px solid #1c0e07;
+      border-bottom: none;
+      border-radius: 12px 12px 0 0;
+      box-shadow: 0 0 60px rgba(0,0,0,0.95), inset 0 0 40px #000;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .double-doors-container {
       width: 100%;
       height: 100%;
-      background: linear-gradient(135deg, #44281c 0%, #29150e 60%, #150905 100%);
+      display: flex;
+      background: #000;
+      overflow: hidden;
+      box-shadow: inset 0 0 50px #000;
+    }
+    .door-leaf {
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(135deg, #442517 0%, #2b140b 50%, #150804 100%);
       border: 2px solid #140804;
-      transform-origin: left;
-      transition: transform 2.8s cubic-bezier(0.12, 0.9, 0.2, 1);
       position: relative;
+      transition: transform 3.2s cubic-bezier(0.12, 0.9, 0.2, 1);
       box-shadow: inset 0 0 35px rgba(0,0,0,0.9);
     }
-    .door-panel {
-      position: absolute;
-      width: 68%;
-      height: 36%;
-      left: 16%;
-      border: 2px solid rgba(0,0,0,0.6);
-      box-shadow: inset 0 0 12px rgba(0,0,0,0.8), 0 0 2px rgba(255,255,255,0.08);
-    }
-    .panel-top { top: 9%; }
-    .panel-bottom { bottom: 9%; }
-    .door-handle {
-      position: absolute;
-      right: 16px;
-      top: 52%;
-      width: 26px;
-      height: 8px;
-      background: linear-gradient(180deg, #ffd700, #b8860b);
-      border-radius: 4px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.8);
+    .door-left {
       transform-origin: left;
-      transition: transform 0.4s ease;
+      border-right: 2px solid #0a0402;
     }
+    .door-right {
+      transform-origin: right;
+      border-left: 2px solid #0a0402;
+    }
+    .doors-open .door-left {
+      transform: rotateY(-118deg);
+    }
+    .doors-open .door-right {
+      transform: rotateY(118deg);
+    }
+    /* Carved Panel Moldings */
+    .wood-panel {
+      position: absolute;
+      width: 72%;
+      height: 38%;
+      left: 14%;
+      border: 3px solid rgba(0,0,0,0.65);
+      box-shadow: inset 0 0 16px rgba(0,0,0,0.9), 0 0 2px rgba(255,255,255,0.06);
+    }
+    .panel-upper { top: 8%; }
+    .panel-lower { bottom: 8%; }
+    /* Golden Brass Knocker Rings */
+    .door-knocker {
+      position: absolute;
+      top: 50%;
+      width: 22px;
+      height: 22px;
+      border: 4px solid #d4af37;
+      border-radius: 50%;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.9);
+    }
+    .door-left .door-knocker { right: 14px; }
+    .door-right .door-knocker { left: 14px; }
+
     .door-btn-wrap {
       position: absolute;
-      bottom: 60px;
+      bottom: 50px;
       z-index: 80;
     }
     .cinematic-btn {
-      padding: 16px 42px;
+      padding: 16px 44px;
       font-size: 1.15rem;
-      font-weight: 700;
-      letter-spacing: 2px;
+      font-weight: 800;
+      letter-spacing: 2.5px;
       color: #fff;
-      background: linear-gradient(135deg, #e53935, #8e0000);
-      border: 1px solid rgba(255,255,255,0.2);
+      background: linear-gradient(135deg, #d32f2f, #7f0000);
+      border: 1px solid rgba(255,255,255,0.25);
       border-radius: 50px;
       cursor: pointer;
-      box-shadow: 0 12px 35px rgba(229, 57, 53, 0.5), inset 0 1px 2px rgba(255,255,255,0.4);
-      transition: transform 0.15s;
+      box-shadow: 0 12px 40px rgba(211, 47, 47, 0.55), inset 0 1px 2px rgba(255,255,255,0.4);
+      transition: transform 0.15s, box-shadow 0.15s;
     }
     .cinematic-btn:active {
-      transform: scale(0.95);
+      transform: scale(0.96);
     }
     .lens-bloom {
       position: absolute;
@@ -114,7 +148,7 @@
       opacity: 1;
     }
 
-    /* 2. CANVASES (KILONOVA & SHARINGAN VOID) */
+    /* 2. CANVASES (KILONOVA & TSUKUYOMI IRIS) */
     #scene-kilonova, #scene-sharingan {
       background: #000;
     }
@@ -126,7 +160,7 @@
       display: block;
     }
 
-    /* 3. DIRECT PHONE CHAT UI */
+    /* 3. FULLSCREEN NATIVE CHAT UI */
     #scene-phone {
       background: #0d0e12;
       flex-direction: column;
@@ -333,22 +367,30 @@
 </head>
 <body>
 
-  <!-- SCENE 1: CINEMATIC DOOR -->
+  <!-- SCENE 1: GRAND DOUBLE WOODEN DOORS (🚪🚪) -->
   <div id="scene-door" class="scene active">
-    <div class="door-frame" id="doorFrame">
-      <div class="door-leaf" id="doorLeaf">
-        <div class="door-panel panel-top"></div>
-        <div class="door-panel panel-bottom"></div>
-        <div class="door-handle" id="doorHandle"></div>
+    <div class="grand-portal" id="portalFrame">
+      <div class="portal-arch"></div>
+      <div class="double-doors-container" id="doubleDoors">
+        <div class="door-leaf door-left">
+          <div class="wood-panel panel-upper"></div>
+          <div class="wood-panel panel-lower"></div>
+          <div class="door-knocker"></div>
+        </div>
+        <div class="door-leaf door-right">
+          <div class="wood-panel panel-upper"></div>
+          <div class="wood-panel panel-lower"></div>
+          <div class="door-knocker"></div>
+        </div>
       </div>
     </div>
     <div class="door-btn-wrap">
-      <button class="cinematic-btn" id="openDoorBtn" onclick="triggerDoor()">OPEN THE DOOR</button>
+      <button class="cinematic-btn" id="openDoorBtn" onclick="triggerDoor()">OPEN THE DOORS</button>
     </div>
     <div class="lens-bloom" id="lensBloom"></div>
   </div>
 
-  <!-- SCENE 2: ACCURATE NEUTRON STAR MERGER / KILONOVA -->
+  <!-- SCENE 2: MATHEMATICAL HIGH-DENSITY KILONOVA MERGER -->
   <div id="scene-kilonova" class="scene">
     <canvas id="kilonovaCanvas" class="full-canvas"></canvas>
   </div>
@@ -377,7 +419,7 @@
     </div>
   </div>
 
-  <!-- SCENE 4: DEEP INSIDE THE SHARINGAN VOID -->
+  <!-- SCENE 4: DEEP INSIDE THE IRIS (TSUKUYOMI COSMOS) -->
   <div id="scene-sharingan" class="scene">
     <canvas id="sharinganCanvas" class="full-canvas"></canvas>
     <div class="genjutsu-overlay" id="genjutsuOverlay"></div>
@@ -404,80 +446,86 @@
         }
         if (this.ctx.state === "suspended") this.ctx.resume();
       },
-      playDoorOpen() {
+      playDoubleDoorOpen() {
         this.init();
         const now = this.ctx.currentTime;
 
-        const latch = this.ctx.createOscillator();
-        const latchGain = this.ctx.createGain();
-        latch.type = "square";
-        latch.frequency.setValueAtTime(260, now);
-        latchGain.gain.setValueAtTime(0.35, now);
-        latchGain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
-        latch.connect(latchGain);
-        latchGain.connect(this.ctx.destination);
-        latch.start(now);
-        latch.stop(now + 0.12);
+        // Double mechanical latches
+        for (let offset of [0, 0.04]) {
+          const latch = this.ctx.createOscillator();
+          const latchGain = this.ctx.createGain();
+          latch.type = "square";
+          latch.frequency.setValueAtTime(260, now + offset);
+          latch.frequency.exponentialRampToValueAtTime(50, now + offset + 0.14);
+          latchGain.gain.setValueAtTime(0.32, now + offset);
+          latchGain.gain.exponentialRampToValueAtTime(0.001, now + offset + 0.14);
+          latch.connect(latchGain);
+          latchGain.connect(this.ctx.destination);
+          latch.start(now + offset);
+          latch.stop(now + offset + 0.14);
+        }
 
+        // Heavy twin wooden friction screech
         const creak = this.ctx.createOscillator();
         const creakGain = this.ctx.createGain();
         creak.type = "sawtooth";
-        creak.frequency.setValueAtTime(60, now + 0.1);
-        creak.frequency.linearRampToValueAtTime(310, now + 1.2);
-        creak.frequency.exponentialRampToValueAtTime(80, now + 2.5);
-        creakGain.gain.setValueAtTime(0.28, now + 0.1);
-        creakGain.gain.exponentialRampToValueAtTime(0.001, now + 2.5);
+        creak.frequency.setValueAtTime(55, now + 0.1);
+        creak.frequency.linearRampToValueAtTime(280, now + 1.2);
+        creak.frequency.exponentialRampToValueAtTime(75, now + 2.8);
+        creakGain.gain.setValueAtTime(0.35, now + 0.1);
+        creakGain.gain.exponentialRampToValueAtTime(0.001, now + 2.8);
         creak.connect(creakGain);
         creakGain.connect(this.ctx.destination);
         creak.start(now + 0.1);
-        creak.stop(now + 2.5);
+        creak.stop(now + 2.8);
 
+        // Sub-bass stone resonance impact
         const sub = this.ctx.createOscillator();
         const subGain = this.ctx.createGain();
         sub.type = "sine";
-        sub.frequency.setValueAtTime(100, now + 0.2);
-        sub.frequency.exponentialRampToValueAtTime(30, now + 2.2);
-        subGain.gain.setValueAtTime(0.5, now + 0.2);
-        subGain.gain.exponentialRampToValueAtTime(0.001, now + 2.2);
+        sub.frequency.setValueAtTime(95, now + 0.2);
+        sub.frequency.exponentialRampToValueAtTime(26, now + 2.4);
+        subGain.gain.setValueAtTime(0.55, now + 0.2);
+        subGain.gain.exponentialRampToValueAtTime(0.001, now + 2.4);
         sub.connect(subGain);
         subGain.connect(this.ctx.destination);
         sub.start(now + 0.2);
-        sub.stop(now + 2.2);
+        sub.stop(now + 2.4);
       },
 
       playKilonovaAudio() {
         this.init();
         const now = this.ctx.currentTime;
 
-        // Accelerating orbital whine
-        const osc = this.ctx.createOscillator();
-        const gain = this.ctx.createGain();
-        osc.type = "sawtooth";
-        osc.frequency.setValueAtTime(70, now);
-        osc.frequency.exponentialRampToValueAtTime(900, now + 2.6);
-        gain.gain.setValueAtTime(0.12, now);
-        gain.gain.linearRampToValueAtTime(0.38, now + 2.6);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 2.7);
-        osc.connect(gain);
-        gain.connect(this.ctx.destination);
-        osc.start(now);
-        osc.stop(now + 2.7);
+        // Gravitational wave chirp (rising frequency as stars merge)
+        const chirp = this.ctx.createOscillator();
+        const chirpGain = this.ctx.createGain();
+        chirp.type = "sawtooth";
+        chirp.frequency.setValueAtTime(60, now);
+        chirp.frequency.exponentialRampToValueAtTime(1050, now + 2.5);
+        chirpGain.gain.setValueAtTime(0.12, now);
+        chirpGain.gain.linearRampToValueAtTime(0.42, now + 2.5);
+        chirpGain.gain.exponentialRampToValueAtTime(0.001, now + 2.6);
+        chirp.connect(chirpGain);
+        chirpGain.connect(this.ctx.destination);
+        chirp.start(now);
+        chirp.stop(now + 2.6);
 
-        // Relativistic Jet eruption boom
+        // Relativistic Jet Detonation Boom (At collision point)
         setTimeout(() => {
           const jetNow = this.ctx.currentTime;
-          const jetOsc = this.ctx.createOscillator();
+          const jet = this.ctx.createOscillator();
           const jetGain = this.ctx.createGain();
-          jetOsc.type = "sine";
-          jetOsc.frequency.setValueAtTime(160, jetNow);
-          jetOsc.frequency.exponentialRampToValueAtTime(24, jetNow + 2.2);
+          jet.type = "sine";
+          jet.frequency.setValueAtTime(160, jetNow);
+          jet.frequency.exponentialRampToValueAtTime(22, jetNow + 2.5);
           jetGain.gain.setValueAtTime(0.9, jetNow);
-          jetGain.gain.exponentialRampToValueAtTime(0.001, jetNow + 2.2);
-          jetOsc.connect(jetGain);
+          jetGain.gain.exponentialRampToValueAtTime(0.001, jetNow + 2.5);
+          jet.connect(jetGain);
           jetGain.connect(this.ctx.destination);
-          jetOsc.start(jetNow);
-          jetOsc.stop(jetNow + 2.2);
-        }, 2600);
+          jet.start(jetNow);
+          jet.stop(jetNow + 2.5);
+        }, 2500);
       },
 
       playNotificationChime() {
@@ -502,15 +550,11 @@
       document.getElementById(id).classList.add("active");
     }
 
-    // --- 1. DOOR TRIGGER ---
+    // --- STEP 1: DOUBLE DOORS OPENING ---
     function triggerDoor() {
-      AudioEngine.playDoorOpen();
+      AudioEngine.playDoubleDoorOpen();
       document.getElementById("openDoorBtn").style.display = "none";
-      document.getElementById("doorHandle").style.transform = "rotate(28deg)";
-
-      setTimeout(() => {
-        document.getElementById("doorLeaf").style.transform = "rotateY(-110deg)";
-      }, 500);
+      document.getElementById("portalFrame").classList.add("doors-open");
 
       setTimeout(() => {
         document.getElementById("lensBloom").classList.add("trigger");
@@ -518,13 +562,13 @@
 
       setTimeout(() => {
         showScene("scene-kilonova");
-        startKilonovaAnimation();
+        startKilonovaCanvas();
       }, 2900);
     }
 
-    // --- 2. EXACT NEUTRON STAR MERGER & KILONOVA (FROM VIDEO) ---
+    // --- STEP 2: MATHEMATICAL BLENDER-LEVEL NEUTRON STAR MERGER ---
     let knAnimId;
-    function startKilonovaAnimation() {
+    function startKilonovaCanvas() {
       AudioEngine.playKilonovaAudio();
       const canvas = document.getElementById("kilonovaCanvas");
       const ctx = canvas.getContext("2d");
@@ -535,9 +579,9 @@
       const cy = canvas.height / 2;
       let startTime = Date.now();
 
-      // Deep Space Stars
+      // Deep space background starfield
       const bgStars = [];
-      for (let i = 0; i < 280; i++) {
+      for (let i = 0; i < 350; i++) {
         bgStars.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
@@ -546,21 +590,20 @@
         });
       }
 
-      // Tidal tail ribbon memory
-      const tidalTails = [];
+      // 1,800 active tidal particle ribbons
+      const tidalPlasma = [];
 
-      function drawNeutronStar(x, y, radius) {
+      function drawNeutronCore(x, y, radius) {
         ctx.save();
         ctx.globalCompositeOperation = "lighter";
-        // Cyan-white core
-        const grad = ctx.createRadialGradient(x, y, 0, x, y, radius * 3.8);
+        const grad = ctx.createRadialGradient(x, y, 0, x, y, radius * 3.6);
         grad.addColorStop(0, "#ffffff");
-        grad.addColorStop(0.3, "#e0f7ff");
-        grad.addColorStop(0.65, "#00c3ff");
+        grad.addColorStop(0.25, "#e0f8ff");
+        grad.addColorStop(0.65, "#00c8ff");
         grad.addColorStop(1, "transparent");
         ctx.fillStyle = grad;
         ctx.beginPath();
-        ctx.arc(x, y, radius * 3.8, 0, Math.PI * 2);
+        ctx.arc(x, y, radius * 3.6, 0, Math.PI * 2);
         ctx.fill();
         ctx.restore();
       }
@@ -569,10 +612,10 @@
         const elapsed = (Date.now() - startTime) / 1000;
 
         ctx.globalCompositeOperation = "source-over";
-        ctx.fillStyle = "rgba(0, 0, 0, 0.28)";
+        ctx.fillStyle = "rgba(0, 0, 0, 0.26)";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Draw background stars
+        // Background Starfield
         ctx.fillStyle = "#ffffff";
         bgStars.forEach(s => {
           ctx.globalAlpha = s.alpha;
@@ -582,128 +625,133 @@
 
         if (elapsed < 2.5) {
           // ==========================================
-          // STAGE 1 & 2: INSPIRAL & CYAN TIDAL TAILS
+          // STAGE 1 & 2: MATHEMATICAL INSPIRAL & TAILS
           // ==========================================
-          const spiralFactor = Math.pow(elapsed / 2.5, 2.2);
-          const orbitR = (1 - spiralFactor) * (Math.min(canvas.width, canvas.height) * 0.32);
-          const angle = Math.pow(elapsed, 2.5) * 8.5;
+          const decay = Math.pow(elapsed / 2.5, 2.4);
+          const orbitR = (1 - decay) * (Math.min(canvas.width, canvas.height) * 0.32);
+          const theta = Math.pow(elapsed, 2.6) * 9.5;
 
-          const s1x = cx + Math.cos(angle) * orbitR;
-          const s1y = cy + Math.sin(angle) * (orbitR * 0.7);
-          const s2x = cx + Math.cos(angle + Math.PI) * orbitR;
-          const s2y = cy + Math.sin(angle + Math.PI) * (orbitR * 0.7);
+          const s1x = cx + Math.cos(theta) * orbitR;
+          const s1y = cy + Math.sin(theta) * (orbitR * 0.68);
+          const s2x = cx + Math.cos(theta + Math.PI) * orbitR;
+          const s2y = cy + Math.sin(theta + Math.PI) * (orbitR * 0.68);
 
-          tidalTails.push({ x: s1x, y: s1y, alpha: 1.0 });
-          tidalTails.push({ x: s2x, y: s2y, alpha: 1.0 });
+          // Eject Archimedean spiral tidal ribbons
+          for (let k = 0; k < 6; k++) {
+            const spread = (Math.random() - 0.5) * 12;
+            tidalPlasma.push({ x: s1x + spread, y: s1y + spread, alpha: 1.0, color: "#00d5ff" });
+            tidalPlasma.push({ x: s2x + spread, y: s2y + spread, alpha: 1.0, color: "#80eeff" });
+          }
 
-          // Render streaming cyan tidal tails
+          // Render active fluid tidal plasma
           ctx.save();
           ctx.globalCompositeOperation = "lighter";
-          for (let i = tidalTails.length - 1; i >= 0; i--) {
-            const t = tidalTails[i];
-            t.alpha -= 0.035;
-            if (t.alpha <= 0) {
-              tidalTails.splice(i, 1);
+          for (let i = tidalPlasma.length - 1; i >= 0; i--) {
+            const p = tidalPlasma[i];
+            p.alpha -= 0.038;
+            if (p.alpha <= 0) {
+              tidalPlasma.splice(i, 1);
               continue;
             }
-            ctx.fillStyle = "rgba(0, 180, 255, " + t.alpha + ")";
+            ctx.fillStyle = p.color;
+            ctx.globalAlpha = p.alpha;
             ctx.beginPath();
-            ctx.arc(t.x, t.y, 6 + (1 - t.alpha) * 16, 0, Math.PI * 2);
+            ctx.arc(p.x, p.y, 4 + (1 - p.alpha) * 18, 0, Math.PI * 2);
             ctx.fill();
           }
           ctx.restore();
 
-          const rStar = Math.max(12, 26 - elapsed * 4);
-          drawNeutronStar(s1x, s1y, rStar);
-          drawNeutronStar(s2x, s2y, rStar);
+          const rCore = Math.max(12, 28 - elapsed * 4);
+          drawNeutronCore(s1x, s1y, rCore);
+          drawNeutronCore(s2x, s2y, rCore);
 
         } else if (elapsed >= 2.5 && elapsed < 3.4) {
           // ==========================================
-          // STAGE 3: RELATIVISTIC OPPOSING JETS (45 DEG)
+          // STAGE 3: POLAR RELATIVISTIC JETS (45 DEG)
           // ==========================================
-          const jetElapsed = elapsed - 2.5;
-          const jetLen = jetElapsed * (Math.max(canvas.width, canvas.height) * 1.4);
+          const jetT = elapsed - 2.5;
+          const jetLength = jetT * (Math.max(canvas.width, canvas.height) * 1.4);
 
           ctx.save();
           ctx.translate(cx, cy);
-          ctx.rotate(-Math.PI / 4); // 45-degree angle from the video
+          ctx.rotate(-Math.PI / 4); // 45-degree relativistic angle
 
           ctx.globalCompositeOperation = "lighter";
 
-          // Expanding equatorial blue synchrotron ring
-          const ringR = jetElapsed * 280;
-          ctx.strokeStyle = "rgba(70, 150, 255, " + Math.max(0, 0.8 - jetElapsed * 0.6) + ")";
-          ctx.lineWidth = 14;
+          // Expanding synchrotron blue-violet shock ring
+          const ringRadius = jetT * 320;
+          ctx.strokeStyle = "rgba(80, 160, 255, " + Math.max(0, 0.85 - jetT * 0.7) + ")";
+          ctx.lineWidth = 16;
           ctx.beginPath();
-          ctx.ellipse(0, 0, ringR, ringR * 0.35, 0, 0, Math.PI * 2);
+          ctx.ellipse(0, 0, ringRadius, ringRadius * 0.35, 0, 0, Math.PI * 2);
           ctx.stroke();
 
-          // Fire-orange relativistic jet cores
-          for (let dir of [-1, 1]) {
-            const jGrad = ctx.createLinearGradient(0, 0, 0, dir * jetLen);
-            jGrad.addColorStop(0, "rgba(255, 255, 255, 1)");
-            jGrad.addColorStop(0.3, "rgba(255, 140, 0, 0.85)");
-            jGrad.addColorStop(0.7, "rgba(255, 50, 0, 0.5)");
-            jGrad.addColorStop(1, "rgba(255, 0, 150, 0)");
-            ctx.fillStyle = jGrad;
+          // Opposing relativistic fire plasma columns
+          for (let sign of [-1, 1]) {
+            const grad = ctx.createLinearGradient(0, 0, 0, sign * jetLength);
+            grad.addColorStop(0, "rgba(255, 255, 255, 1)");
+            grad.addColorStop(0.25, "rgba(255, 150, 0, 0.9)");
+            grad.addColorStop(0.65, "rgba(255, 40, 0, 0.55)");
+            grad.addColorStop(1, "rgba(230, 0, 180, 0)");
+            ctx.fillStyle = grad;
 
             ctx.beginPath();
             ctx.moveTo(0, 0);
-            ctx.lineTo(-24 - jetElapsed * 20, dir * jetLen);
-            ctx.lineTo(24 + jetElapsed * 20, dir * jetLen);
+            ctx.lineTo(-26 - jetT * 22, sign * jetLength);
+            ctx.lineTo(26 + jetT * 22, sign * jetLength);
             ctx.closePath();
             ctx.fill();
 
-            // Magenta shock lobes at jet tips
-            const lobeY = dir * jetLen;
-            const lGrad = ctx.createRadialGradient(0, lobeY, 0, 0, lobeY, 55 + jetElapsed * 30);
-            lGrad.addColorStop(0, "#ffffff");
-            lGrad.addColorStop(0.4, "#e000ff");
-            lGrad.addColorStop(0.8, "#7700ff");
-            lGrad.addColorStop(1, "transparent");
-            ctx.fillStyle = lGrad;
+            // Violet/magenta terminal shockhead lobes
+            const lobeY = sign * jetLength;
+            const lobeGrad = ctx.createRadialGradient(0, lobeY, 0, 0, lobeY, 60 + jetT * 35);
+            lobeGrad.addColorStop(0, "#ffffff");
+            lobeGrad.addColorStop(0.35, "#e100ff");
+            lobeGrad.addColorStop(0.75, "#7700ff");
+            lobeGrad.addColorStop(1, "transparent");
+            ctx.fillStyle = lobeGrad;
             ctx.beginPath();
-            ctx.arc(0, lobeY, 55 + jetElapsed * 30, 0, Math.PI * 2);
+            ctx.arc(0, lobeY, 60 + jetT * 35, 0, Math.PI * 2);
             ctx.fill();
           }
 
-          // Central hyper-dense cyan-white core
-          const coreG = ctx.createRadialGradient(0, 0, 0, 0, 0, 65);
-          coreG.addColorStop(0, "#ffffff");
-          coreG.addColorStop(0.4, "#80e5ff");
-          coreG.addColorStop(0.8, "#0077ff");
-          coreG.addColorStop(1, "transparent");
-          ctx.fillStyle = coreG;
+          // Blinding merged core
+          const coreGrad = ctx.createRadialGradient(0, 0, 0, 0, 0, 75);
+          coreGrad.addColorStop(0, "#ffffff");
+          coreGrad.addColorStop(0.35, "#a0f0ff");
+          coreGrad.addColorStop(0.75, "#0088ff");
+          coreGrad.addColorStop(1, "transparent");
+          ctx.fillStyle = coreGrad;
           ctx.beginPath();
-          ctx.arc(0, 0, 65, 0, Math.PI * 2);
+          ctx.arc(0, 0, 75, 0, Math.PI * 2);
           ctx.fill();
 
           ctx.restore();
 
         } else {
           // ==========================================
-          // STAGE 4: MASSIVE EXPANDING KILONOVA CLOUD
+          // STAGE 4: MASSIVE KILONOVA EXPANSION
           // ==========================================
-          const expElapsed = elapsed - 3.4;
-          const cloudR = expElapsed * (Math.max(canvas.width, canvas.height) * 1.6) + 80;
+          const expT = elapsed - 3.4;
+          const explosionR = expT * (Math.max(canvas.width, canvas.height) * 1.7) + 85;
 
           ctx.save();
           ctx.globalCompositeOperation = "lighter";
 
-          // Crystalline fractal cloud puff
-          const cGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, cloudR);
+          // Expanding cyan plasma cloud
+          const cGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, explosionR);
           cGrad.addColorStop(0, "#ffffff");
-          cGrad.addColorStop(0.3, "#a8f0ff");
-          cGrad.addColorStop(0.65, "#0099ff");
+          cGrad.addColorStop(0.35, "#b5f5ff");
+          cGrad.addColorStop(0.7, "#0099ff");
           cGrad.addColorStop(0.95, "#001144");
           cGrad.addColorStop(1, "transparent");
           ctx.fillStyle = cGrad;
           ctx.beginPath();
-          ctx.arc(cx, cy, cloudR, 0, Math.PI * 2);
+          ctx.arc(cx, cy, explosionR, 0, Math.PI * 2);
           ctx.fill();
 
-          // Full-screen blinding flash
-          ctx.fillStyle = "rgba(255, 255, 255, " + Math.min(1, expElapsed * 2.5) + ")";
+          // Camera whiteout flash
+          ctx.fillStyle = "rgba(255, 255, 255, " + Math.min(1, expT * 2.6) + ")";
           ctx.fillRect(0, 0, canvas.width, canvas.height);
           ctx.restore();
         }
@@ -719,7 +767,7 @@
       loop();
     }
 
-    // --- 3. PHONE CHAT (CLEAN VIEWPORT) ---
+    // --- STEP 3: PHONE CHAT ---
     function triggerChatMessages() {
       const delays = [600, 1900, 3200, 4400];
       const elements = ["msg1", "msg2", "msg3", "voiceMsg"];
@@ -741,7 +789,7 @@
       });
     }
 
-    // --- 4. FRIEND VOICE NOTE (01.mp3) ---
+    // --- STEP 4: FRIEND VOICE NOTE (01.mp3) ---
     let voicePlayed = false;
     function playVoiceNote() {
       if (voicePlayed) return;
@@ -753,14 +801,14 @@
 
       const audio1 = new Audio("01.mp3");
       audio1.play().catch(e => {
-        console.log("01.mp3 missing/blocked:", e);
+        console.log("01.mp3 fallback:", e);
         setTimeout(startDeepSharinganVoid, 2000);
       });
 
       audio1.onended = startDeepSharinganVoid;
     }
 
-    // --- 5. DEEP INSIDE THE EYE: TSUKUYOMI CRIMSON VOID (02.mp3) ---
+    // --- STEP 5: DEEP INSIDE THE IRIS (TSUKUYOMI COSMOS) (02.mp3) ---
     let voidAnimId;
     function startDeepSharinganVoid() {
       showScene("scene-sharingan");
@@ -778,15 +826,15 @@
       let startTime = Date.now();
       let angle = 0;
 
-      // Ash/ember particles floating in the iris cosmos
+      // 450 Ember ash particles in the crimson cosmos
       const embers = [];
-      for (let i = 0; i < 350; i++) {
+      for (let i = 0; i < 450; i++) {
         embers.push({
           x: Math.random() * canvas.width,
           y: Math.random() * canvas.height,
-          radius: Math.random() * 2.5 + 0.8,
-          speedY: -(Math.random() * 2 + 0.5),
-          alpha: Math.random() * 0.7 + 0.3
+          radius: Math.random() * 2.6 + 0.8,
+          speedY: -(Math.random() * 2.2 + 0.6),
+          alpha: Math.random() * 0.75 + 0.25
         });
       }
 
@@ -815,25 +863,25 @@
         const elapsed = (Date.now() - startTime) / 1000;
         angle += 0.12 + Math.pow(elapsed, 2) * 0.08;
 
-        // 1. Deep Crimson Cosmic Background (Inside the Iris)
-        const voidGrad = ctx.createRadialGradient(cx, cy, 30, cx, cy, Math.max(canvas.width, canvas.height) * 0.8);
+        // 1. Deep Crimson Cosmic Void (Inside the Iris)
+        const voidGrad = ctx.createRadialGradient(cx, cy, 30, cx, cy, Math.max(canvas.width, canvas.height) * 0.85);
         voidGrad.addColorStop(0, "#ff1100");
         voidGrad.addColorStop(0.35, "#aa0000");
         voidGrad.addColorStop(0.7, "#440000");
-        voidGrad.addColorStop(1, "#0a0000");
+        voidGrad.addColorStop(1, "#080000");
         ctx.fillStyle = voidGrad;
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
         // 2. Swirling Iris Striations & Shockwaves
         ctx.save();
         ctx.translate(cx, cy);
-        ctx.rotate(-angle * 0.3);
+        ctx.rotate(-angle * 0.35);
         ctx.strokeStyle = "rgba(255, 60, 60, 0.22)";
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 2.2;
         for (let i = 0; i < 48; i++) {
           const a = (i * Math.PI) / 24;
           ctx.beginPath();
-          ctx.moveTo(Math.cos(a) * 40, Math.sin(a) * 40);
+          ctx.moveTo(Math.cos(a) * 45, Math.sin(a) * 45);
           ctx.lineTo(Math.cos(a) * Math.max(canvas.width, canvas.height), Math.sin(a) * Math.max(canvas.width, canvas.height));
           ctx.stroke();
         }
@@ -852,14 +900,14 @@
         ctx.globalAlpha = 1.0;
 
         // 4. Central Pure Black Itachi Mangekyo Blades
-        const bladeScale = Math.min(canvas.width, canvas.height) * (0.35 + elapsed * 0.08);
+        const bladeScale = Math.min(canvas.width, canvas.height) * (0.36 + elapsed * 0.09);
 
         ctx.save();
         ctx.translate(cx, cy);
 
-        // Aura shockwave around the blades
+        // Red aura glow around the blades
         ctx.shadowColor = "#ff0000";
-        ctx.shadowBlur = 60;
+        ctx.shadowBlur = 65;
 
         ctx.save();
         ctx.rotate(angle);
@@ -876,7 +924,7 @@
 
         ctx.restore();
 
-        // Rapid Genjutsu Reality Glitch
+        // Screen Genjutsu Reality Glitch
         if (elapsed > 2.0) {
           document.getElementById("genjutsuOverlay").style.opacity = Math.random() * 0.85;
         }
@@ -892,7 +940,7 @@
       loop();
     }
 
-    // --- 6. REALITY WAKEUP & COLLEGE ALARM (03.mp3) ---
+    // --- STEP 6: REALITY WAKEUP & ALARM (03.mp3) ---
     function triggerWakeUpAlarm() {
       const audio3 = new Audio("03.mp3");
       audio3.loop = true;
