@@ -34,7 +34,7 @@
     }
 
     /* ====================================================
-       1. 3D GRAND DOUBLE WOODEN DOORS (🚪🚪)
+       1. 3D GRAND DOUBLE DOORS WITH BLINDING FLASH (🚪🚪)
        ==================================================== */
     #scene-door {
       background: radial-gradient(circle at center, #1a0d07 0%, #050201 80%, #000 100%);
@@ -43,7 +43,7 @@
     .portal-arch {
       position: relative;
       width: 320px;
-      height: 450px;
+      height: 460px;
       perspective: 1200px;
       display: flex;
       justify-content: center;
@@ -55,7 +55,7 @@
       border: 14px solid #1a0c06;
       border-bottom: none;
       border-radius: 14px 14px 0 0;
-      box-shadow: 0 0 60px rgba(0,0,0,0.95), inset 0 0 35px #000;
+      box-shadow: 0 0 70px rgba(0, 0, 0, 0.98), inset 0 0 35px #000;
       pointer-events: none;
       z-index: 10;
     }
@@ -66,6 +66,7 @@
       background: #000;
       overflow: hidden;
       box-shadow: inset 0 0 50px #000;
+      position: relative;
     }
     .door-leaf {
       width: 50%;
@@ -73,8 +74,9 @@
       background: linear-gradient(135deg, #442416 0%, #291209 50%, #140703 100%);
       border: 2px solid #140703;
       position: relative;
-      transition: transform 3.2s cubic-bezier(0.12, 0.9, 0.2, 1);
-      box-shadow: inset 0 0 35px rgba(0,0,0,0.9);
+      transition: transform 3.0s cubic-bezier(0.12, 0.9, 0.2, 1);
+      box-shadow: inset 0 0 35px rgba(0, 0, 0, 0.9);
+      z-index: 2;
     }
     .door-left {
       transform-origin: left;
@@ -85,18 +87,18 @@
       border-left: 2px solid #090301;
     }
     .doors-open .door-left {
-      transform: rotateY(-118deg);
+      transform: rotateY(-120deg);
     }
     .doors-open .door-right {
-      transform: rotateY(118deg);
+      transform: rotateY(120deg);
     }
     .wood-panel {
       position: absolute;
       width: 72%;
       height: 38%;
       left: 14%;
-      border: 3px solid rgba(0,0,0,0.7);
-      box-shadow: inset 0 0 16px rgba(0,0,0,0.9), 0 0 2px rgba(255,255,255,0.06);
+      border: 3px solid rgba(0, 0, 0, 0.7);
+      box-shadow: inset 0 0 16px rgba(0, 0, 0, 0.9), 0 0 2px rgba(255, 255, 255, 0.06);
     }
     .panel-top { top: 8%; }
     .panel-bottom { bottom: 8%; }
@@ -107,10 +109,30 @@
       height: 22px;
       border: 4px solid #d4af37;
       border-radius: 50%;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.9);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.9);
     }
     .door-left .door-knocker { right: 14px; }
     .door-right .door-knocker { left: 14px; }
+
+    /* Blinding Volumetric Seam Flare */
+    .door-light-beam {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 2px;
+      transform: translateX(-50%);
+      background: #ffffff;
+      box-shadow: 0 0 40px 10px #ffffff, 0 0 120px 40px #ffeedd;
+      opacity: 0;
+      z-index: 1;
+      transition: all 1.2s cubic-bezier(0.1, 0.9, 0.2, 1);
+    }
+    .doors-open .door-light-beam {
+      opacity: 1;
+      width: 100%;
+      box-shadow: 0 0 150px 80px #ffffff, 0 0 300px 150px #ffeedd;
+    }
 
     .door-btn-wrap {
       position: absolute;
@@ -124,30 +146,32 @@
       letter-spacing: 2.5px;
       color: #fff;
       background: linear-gradient(135deg, #d32f2f, #7f0000);
-      border: 1px solid rgba(255,255,255,0.25);
+      border: 1px solid rgba(255, 255, 255, 0.25);
       border-radius: 50px;
       cursor: pointer;
-      box-shadow: 0 12px 40px rgba(211, 47, 47, 0.55), inset 0 1px 2px rgba(255,255,255,0.4);
-      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 12px 40px rgba(211, 47, 47, 0.55), inset 0 1px 2px rgba(255, 255, 255, 0.4);
+      transition: transform 0.15s;
     }
     .cinematic-btn:active {
       transform: scale(0.96);
     }
-    .lens-bloom {
+
+    /* Massive Screen Whiteout */
+    .blinding-whiteout {
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at center, #ffffff 15%, rgba(255,255,255,0.9) 60%, rgba(255,180,100,0.3) 100%);
+      background: #ffffff;
       opacity: 0;
       pointer-events: none;
       z-index: 100;
-      transition: opacity 2.0s cubic-bezier(0.1, 0.9, 0.2, 1);
+      transition: opacity 1.6s cubic-bezier(0.12, 0.9, 0.2, 1);
     }
-    .lens-bloom.trigger {
+    .blinding-whiteout.flash-active {
       opacity: 1;
     }
 
-    /* 2. CANVASES (KILONOVA & SHARINGAN IRIS) */
-    #scene-kilonova, #scene-sharingan {
+    /* 2. RETINA CANVASES */
+    #scene-kilonova, #scene-sharingan, #scene-dizziness, #scene-ghost {
       background: #000;
     }
     .retina-canvas {
@@ -158,7 +182,7 @@
       display: block;
     }
 
-    /* 3. FULLSCREEN NATIVE MESSENGER UI */
+    /* 3. PHONE CHAT UI */
     #scene-phone {
       background: #0d0e12;
       flex-direction: column;
@@ -172,9 +196,9 @@
       display: flex;
       align-items: center;
       gap: 14px;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
       z-index: 10;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
     }
     .avatar {
       width: 44px;
@@ -268,7 +292,7 @@
     .waveform span {
       width: 3.5px;
       height: 8px;
-      background: rgba(255,255,255,0.5);
+      background: rgba(255, 255, 255, 0.5);
       border-radius: 4px;
     }
     .playing .waveform span {
@@ -284,7 +308,7 @@
       to { height: 26px; background: #fff; }
     }
 
-    /* 4. GENJUTSU FLASH */
+    /* 4. GENJUTSU FLASH OVERLAY */
     .genjutsu-overlay {
       position: absolute;
       inset: 0;
@@ -295,7 +319,64 @@
       transition: opacity 0.1s ease;
     }
 
-    /* 5. PERFECT CENTERED ALARM SCREEN */
+    /* ====================================================
+       5. BED DIZZINESS / VERTIGO WAKE-UP SCENE
+       ==================================================== */
+    #scene-dizziness {
+      background: #08090d;
+      perspective: 1000px;
+    }
+    .dizzy-camera-rig {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: filter 0.2s ease;
+      animation: vertigoSway 3.2s ease-in-out infinite alternate;
+    }
+    @keyframes vertigoSway {
+      0% { transform: scale(1.05) rotate(-4.5deg) translate(-12px, -8px); }
+      50% { transform: scale(1.12) rotate(3.8deg) translate(14px, 10px); }
+      100% { transform: scale(1.04) rotate(-3.2deg) translate(-10px, 12px); }
+    }
+    /* Sluggish Blinking Eyelids */
+    .eyelid {
+      position: absolute;
+      left: 0;
+      width: 100vw;
+      height: 52vh;
+      background: #000;
+      z-index: 999;
+      transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .eyelid-top { top: 0; transform: translateY(0); }
+    .eyelid-bottom { bottom: 0; transform: translateY(0); }
+    .eyes-open .eyelid-top { transform: translateY(-100%); }
+    .eyes-open .eyelid-bottom { transform: translateY(100%); }
+
+    .dizziness-text {
+      position: absolute;
+      top: 18%;
+      font-size: 1.15rem;
+      letter-spacing: 4px;
+      color: rgba(255, 255, 255, 0.6);
+      text-transform: uppercase;
+      font-style: italic;
+      text-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+      z-index: 50;
+      animation: pulseBreath 1.6s ease infinite alternate;
+    }
+    @keyframes pulseBreath {
+      from { opacity: 0.3; transform: scale(0.98); }
+      to { opacity: 0.9; transform: scale(1.02); }
+    }
+
+    /* ====================================================
+       6. ALARM SCREEN
+       ==================================================== */
     #scene-alarm {
       background: #030303;
       display: none;
@@ -361,15 +442,70 @@
       from { transform: scale(1); color: #ff5252; text-shadow: 0 0 12px red; }
       to { transform: scale(1.08); color: #fff; text-shadow: 0 0 35px #ff1744; }
     }
+
+    /* ====================================================
+       7. 4TH-WALL GHOST JUMPSCARE
+       ==================================================== */
+    #scene-ghost {
+      background: #000;
+      z-index: 999;
+    }
+    .cracked-screen {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.05s ease;
+      background: repeating-radial-gradient(circle at 50% 50%, rgba(255,255,255,0.9) 0px, transparent 2px, transparent 15px);
+      mix-blend-mode: color-dodge;
+    }
+    .earthquake {
+      animation: screenRattle 0.06s infinite alternate;
+    }
+    @keyframes screenRattle {
+      0% { transform: translate(-8px, 6px) rotate(-1.5deg); }
+      50% { transform: translate(7px, -9px) rotate(1.2deg); }
+      100% { transform: translate(-6px, -4px) rotate(-0.8deg); }
+    }
+    .glitch-flash-intense {
+      position: absolute;
+      inset: 0;
+      background: #ff0033;
+      mix-blend-mode: exclusion;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 1001;
+    }
+    .dimension-text {
+      position: absolute;
+      bottom: 12%;
+      font-family: monospace;
+      font-size: 1.8rem;
+      font-weight: 900;
+      letter-spacing: 5px;
+      color: #ff0033;
+      text-shadow: 0 0 25px red, 0 0 50px black;
+      text-transform: uppercase;
+      opacity: 0;
+      z-index: 1002;
+      animation: glitchText 0.15s infinite;
+    }
+    @keyframes glitchText {
+      0% { transform: scale(1) skewX(0deg); }
+      50% { transform: scale(1.15) skewX(15deg); color: #fff; }
+      100% { transform: scale(0.95) skewX(-15deg); color: #ff0000; }
+    }
   </style>
 </head>
 <body>
 
-  <!-- SCENE 1: 3D GRAND DOUBLE WOODEN DOORS (🚪🚪) -->
+  <!-- SCENE 1: 3D GRAND DOUBLE DOORS WITH BLINDING FLASH (🚪🚪) -->
   <div id="scene-door" class="scene active">
     <div class="portal-arch" id="portalFrame">
       <div class="arch-frame"></div>
       <div class="doors-wrapper">
+        <div class="door-light-beam"></div>
         <div class="door-leaf door-left">
           <div class="wood-panel panel-top"></div>
           <div class="wood-panel panel-bottom"></div>
@@ -385,10 +521,10 @@
     <div class="door-btn-wrap">
       <button class="cinematic-btn" id="openDoorBtn" onclick="triggerDoor()">OPEN THE DOORS</button>
     </div>
-    <div class="lens-bloom" id="lensBloom"></div>
+    <div class="blinding-whiteout" id="blindingFlash"></div>
   </div>
 
-  <!-- SCENE 2: ACCURATE NEUTRON STAR MERGER & KILONOVA -->
+  <!-- SCENE 2: ACCELERATED NEUTRON STAR MERGER & KILONOVA -->
   <div id="scene-kilonova" class="scene">
     <canvas id="kilonovaCanvas" class="retina-canvas"></canvas>
   </div>
@@ -417,24 +553,42 @@
     </div>
   </div>
 
-  <!-- SCENE 4: PURE SHARINGAN IRIS & TSUKUYOMI VORTEX -->
+  <!-- SCENE 4: 3-TOMOE TO ITACHI MANGEKYO TRANSFORMATION -->
   <div id="scene-sharingan" class="scene">
     <canvas id="sharinganCanvas" class="retina-canvas"></canvas>
     <div class="genjutsu-overlay" id="genjutsuOverlay"></div>
   </div>
 
-  <!-- SCENE 5: PERFECTLY CENTERED ALARM -->
-  <div id="scene-alarm" class="scene">
-    <div class="shock-text">* GASP * WAKING UP TO REALITY...</div>
-    <div class="digital-clock-box">
-      <div class="clock-time">07:45</div>
-      <div class="clock-ampm">AM</div>
+  <!-- SCENE 5: BED VERTIGO & DIZZINESS POV WAKE-UP -->
+  <div id="scene-dizziness" class="scene">
+    <div class="eyelid eyelid-top" id="dizzyEyelidTop"></div>
+    <div class="eyelid eyelid-bottom" id="dizzyEyelidBottom"></div>
+    <div class="dizzy-camera-rig" id="dizzyRig">
+      <canvas id="dizzyCanvas" class="retina-canvas"></canvas>
+      <div class="dizziness-text">* Head Spinning... Waking Up *</div>
     </div>
-    <div class="alarm-notice">TIME FOR COLLEGE</div>
+  </div>
+
+  <!-- SCENE 6: ALARM SCREEN -->
+  <div id="scene-alarm" class="scene">
+    <div class="shock-text">* GASP * TIME FOR REALITY...</div>
+    <div class="digital-clock-box" id="alarmClockBox">
+      <div class="clock-time" id="alarmTimeText">07:45</div>
+      <div class="clock-ampm" id="alarmAmPmText">AM</div>
+    </div>
+    <div class="alarm-notice" id="alarmNoticeText">TIME FOR COLLEGE</div>
+  </div>
+
+  <!-- SCENE 7: 4TH-WALL BREAKING GHOST JUMPSCARE -->
+  <div id="scene-ghost" class="scene">
+    <canvas id="ghostCanvas" class="retina-canvas"></canvas>
+    <div class="cracked-screen" id="glassCracks"></div>
+    <div class="glitch-flash-intense" id="glitchFlashIntense"></div>
+    <div class="dimension-text" id="dimensionText">YOU CANNOT ESCAPE</div>
   </div>
 
   <script>
-    // --- 1. PROCEDURAL CINEMATIC AUDIO SYNTHESIZER ---
+    // --- 1. PROCEDURAL CINEMATIC AUDIO & SYNTHESIS ENGINE ---
     const AudioEngine = {
       ctx: null,
       init() {
@@ -444,18 +598,18 @@
         }
         if (this.ctx.state === "suspended") this.ctx.resume();
       },
-      playDoubleDoorOpen() {
+      playDoubleDoorWithBoom() {
         this.init();
         const now = this.ctx.currentTime;
 
-        // Double mechanical latches
+        // Twin latch clicks
         for (let offset of [0, 0.04]) {
           const latch = this.ctx.createOscillator();
           const latchGain = this.ctx.createGain();
           latch.type = "square";
-          latch.frequency.setValueAtTime(260, now + offset);
+          latch.frequency.setValueAtTime(280, now + offset);
           latch.frequency.exponentialRampToValueAtTime(50, now + offset + 0.14);
-          latchGain.gain.setValueAtTime(0.32, now + offset);
+          latchGain.gain.setValueAtTime(0.35, now + offset);
           latchGain.gain.exponentialRampToValueAtTime(0.001, now + offset + 0.14);
           latch.connect(latchGain);
           latchGain.connect(this.ctx.destination);
@@ -463,12 +617,12 @@
           latch.stop(now + offset + 0.14);
         }
 
-        // Twin oak wood screech
+        // Heavy wood groan
         const creak = this.ctx.createOscillator();
         const creakGain = this.ctx.createGain();
         creak.type = "sawtooth";
         creak.frequency.setValueAtTime(55, now + 0.1);
-        creak.frequency.linearRampToValueAtTime(280, now + 1.2);
+        creak.frequency.linearRampToValueAtTime(320, now + 1.2);
         creak.frequency.exponentialRampToValueAtTime(75, now + 2.8);
         creakGain.gain.setValueAtTime(0.35, now + 0.1);
         creakGain.gain.exponentialRampToValueAtTime(0.001, now + 2.8);
@@ -477,53 +631,75 @@
         creak.start(now + 0.1);
         creak.stop(now + 2.8);
 
-        // Sub-bass room resonance
-        const sub = this.ctx.createOscillator();
-        const subGain = this.ctx.createGain();
-        sub.type = "sine";
-        sub.frequency.setValueAtTime(95, now + 0.2);
-        sub.frequency.exponentialRampToValueAtTime(26, now + 2.4);
-        subGain.gain.setValueAtTime(0.55, now + 0.2);
-        subGain.gain.exponentialRampToValueAtTime(0.001, now + 2.4);
-        sub.connect(subGain);
-        subGain.connect(this.ctx.destination);
-        sub.start(now + 0.2);
-        sub.stop(now + 2.4);
+        // Sub-bass detonation when flash breaches
+        setTimeout(() => {
+          const flashNow = this.ctx.currentTime;
+          const sub = this.ctx.createOscillator();
+          const subGain = this.ctx.createGain();
+          sub.type = "sine";
+          sub.frequency.setValueAtTime(140, flashNow);
+          sub.frequency.exponentialRampToValueAtTime(24, flashNow + 2.0);
+          subGain.gain.setValueAtTime(0.7, flashNow);
+          subGain.gain.exponentialRampToValueAtTime(0.001, flashNow + 2.0);
+          sub.connect(subGain);
+          subGain.connect(this.ctx.destination);
+          sub.start(flashNow);
+          sub.stop(flashNow + 2.0);
+        }, 1100);
       },
 
-      playKilonovaChirpAndBoom() {
+      playAcceleratedKilonova() {
         this.init();
         const now = this.ctx.currentTime;
 
-        // Gravitational wave chirp (rising pitch)
+        // Long escalating gravitational frequency chirp (accelerates into high pitch)
         const chirp = this.ctx.createOscillator();
         const chirpGain = this.ctx.createGain();
         chirp.type = "sawtooth";
-        chirp.frequency.setValueAtTime(60, now);
-        chirp.frequency.exponentialRampToValueAtTime(1050, now + 2.5);
-        chirpGain.gain.setValueAtTime(0.12, now);
-        chirpGain.gain.linearRampToValueAtTime(0.42, now + 2.5);
-        chirpGain.gain.exponentialRampToValueAtTime(0.001, now + 2.6);
+        chirp.frequency.setValueAtTime(50, now);
+        chirp.frequency.exponentialRampToValueAtTime(1400, now + 4.2);
+        chirpGain.gain.setValueAtTime(0.1, now);
+        chirpGain.gain.linearRampToValueAtTime(0.45, now + 4.2);
+        chirpGain.gain.exponentialRampToValueAtTime(0.001, now + 4.3);
         chirp.connect(chirpGain);
         chirpGain.connect(this.ctx.destination);
         chirp.start(now);
-        chirp.stop(now + 2.6);
+        chirp.stop(now + 4.3);
 
-        // Relativistic Jet Detonation Boom
+        // Massive Kilonova explosion detonation
         setTimeout(() => {
-          const jetNow = this.ctx.currentTime;
-          const jet = this.ctx.createOscillator();
-          const jetGain = this.ctx.createGain();
-          jet.type = "sine";
-          jet.frequency.setValueAtTime(160, jetNow);
-          jet.frequency.exponentialRampToValueAtTime(22, jetNow + 2.5);
-          jetGain.gain.setValueAtTime(0.9, jetNow);
-          jetGain.gain.exponentialRampToValueAtTime(0.001, jetNow + 2.5);
-          jet.connect(jetGain);
-          jetGain.connect(this.ctx.destination);
-          jet.start(jetNow);
-          jet.stop(jetNow + 2.5);
-        }, 2500);
+          const boomNow = this.ctx.currentTime;
+          const boom = this.ctx.createOscillator();
+          const boomGain = this.ctx.createGain();
+          boom.type = "sine";
+          boom.frequency.setValueAtTime(180, boomNow);
+          boom.frequency.exponentialRampToValueAtTime(18, boomNow + 2.8);
+          boomGain.gain.setValueAtTime(0.95, boomNow);
+          boomGain.gain.exponentialRampToValueAtTime(0.001, boomNow + 2.8);
+          boom.connect(boomGain);
+          boomGain.connect(this.ctx.destination);
+          boom.start(boomNow);
+          boom.stop(boomNow + 2.8);
+        }, 4200);
+      },
+
+      playDizzinessHeartbeat() {
+        this.init();
+        const now = this.ctx.currentTime;
+        // Low muffled rhythmic heartbeat
+        [0, 0.25, 1.2, 1.45, 2.4, 2.65].forEach(time => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(70, now + time);
+          osc.frequency.exponentialRampToValueAtTime(35, now + time + 0.15);
+          gain.gain.setValueAtTime(0.5, now + time);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + time + 0.15);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + time);
+          osc.stop(now + time + 0.15);
+        });
       },
 
       playNotificationChime() {
@@ -540,6 +716,26 @@
         gain.connect(this.ctx.destination);
         osc.start(now);
         osc.stop(now + 0.22);
+      },
+
+      playGhostScreech() {
+        this.init();
+        const now = this.ctx.currentTime;
+        [880, 920, 1250, 1820].forEach(freq => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = "sawtooth";
+          osc.frequency.setValueAtTime(freq, now);
+          osc.frequency.exponentialRampToValueAtTime(freq * 1.8, now + 0.4);
+          osc.frequency.exponentialRampToValueAtTime(60, now + 2.5);
+
+          gain.gain.setValueAtTime(0.4, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 2.5);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 2.5);
+        });
       }
     };
 
@@ -548,36 +744,36 @@
       document.getElementById(id).classList.add("active");
     }
 
-    // Helper: Retina Canvas Setup
     function setupRetinaCanvas(canvas) {
       const dpr = window.devicePixelRatio || 1;
       canvas.width = window.innerWidth * dpr;
       canvas.height = window.innerHeight * dpr;
       const ctx = canvas.getContext("2d");
       ctx.scale(dpr, dpr);
-      return { ctx, dpr, width: window.innerWidth, height: window.innerHeight };
+      return { ctx, width: window.innerWidth, height: window.innerHeight };
     }
 
-    // --- STEP 1: DOUBLE DOORS OPENING ---
+    // --- STEP 1: DOUBLE DOORS WITH BLINDING VOLUMETRIC FLASH ---
     function triggerDoor() {
-      AudioEngine.playDoubleDoorOpen();
+      AudioEngine.playDoubleDoorWithBoom();
       document.getElementById("openDoorBtn").style.display = "none";
       document.getElementById("portalFrame").classList.add("doors-open");
 
+      // Blinding white flash erupts from the opening seam
       setTimeout(() => {
-        document.getElementById("lensBloom").classList.add("trigger");
-      }, 1600);
+        document.getElementById("blindingFlash").classList.add("flash-active");
+      }, 1100);
 
       setTimeout(() => {
         showScene("scene-kilonova");
         startKilonovaCanvas();
-      }, 2900);
+      }, 2400);
     }
 
-    // --- STEP 2: MATHEMATICAL HIGH-FIDELITY KILONOVA (GW170817) ---
+    // --- STEP 2: PROLONGED & ULTRA-FAST NEUTRON STAR MERGER ---
     let knAnimId;
     function startKilonovaCanvas() {
-      AudioEngine.playKilonovaChirpAndBoom();
+      AudioEngine.playAcceleratedKilonova();
       const canvas = document.getElementById("kilonovaCanvas");
       const { ctx, width, height } = setupRetinaCanvas(canvas);
 
@@ -585,9 +781,8 @@
       const cy = height / 2;
       let startTime = Date.now();
 
-      // Background Starfield
       const bgStars = [];
-      for (let i = 0; i < 350; i++) {
+      for (let i = 0; i < 380; i++) {
         bgStars.push({
           x: Math.random() * width,
           y: Math.random() * height,
@@ -596,20 +791,19 @@
         });
       }
 
-      // Active Tidal Plasma Streams
       const tidalPlasma = [];
 
       function drawNeutronCore(x, y, radius) {
         ctx.save();
         ctx.globalCompositeOperation = "lighter";
-        const grad = ctx.createRadialGradient(x, y, 0, x, y, radius * 3.6);
+        const grad = ctx.createRadialGradient(x, y, 0, x, y, radius * 3.8);
         grad.addColorStop(0, "#ffffff");
         grad.addColorStop(0.25, "#e0f8ff");
         grad.addColorStop(0.65, "#00c8ff");
         grad.addColorStop(1, "transparent");
         ctx.fillStyle = grad;
         ctx.beginPath();
-        ctx.arc(x, y, radius * 3.6, 0, Math.PI * 2);
+        ctx.arc(x, y, radius * 3.8, 0, Math.PI * 2);
         ctx.fill();
         ctx.restore();
       }
@@ -618,10 +812,9 @@
         const elapsed = (Date.now() - startTime) / 1000;
 
         ctx.globalCompositeOperation = "source-over";
-        ctx.fillStyle = "rgba(0, 0, 0, 0.26)";
+        ctx.fillStyle = "rgba(0, 0, 0, 0.28)";
         ctx.fillRect(0, 0, width, height);
 
-        // Draw background stars
         ctx.fillStyle = "#ffffff";
         bgStars.forEach(s => {
           ctx.globalAlpha = s.alpha;
@@ -629,22 +822,32 @@
         });
         ctx.globalAlpha = 1.0;
 
-        if (elapsed < 2.5) {
-          // ==========================================
-          // STAGE 1 & 2: INSPIRAL & CYAN TIDAL TAILS
-          // ==========================================
-          const decay = Math.pow(elapsed / 2.5, 2.4);
-          const orbitR = (1 - decay) * (Math.min(width, height) * 0.32);
-          const theta = Math.pow(elapsed, 2.6) * 9.5;
+        // Camera screen shake that intensifies with speed
+        let shakeX = 0, shakeY = 0;
+        if (elapsed > 2.0 && elapsed < 4.2) {
+          const shakeMag = Math.pow((elapsed - 2.0) / 2.2, 2.5) * 16;
+          shakeX = (Math.random() - 0.5) * shakeMag;
+          shakeY = (Math.random() - 0.5) * shakeMag;
+        }
+
+        ctx.save();
+        ctx.translate(shakeX, shakeY);
+
+        if (elapsed < 4.2) {
+          // Prolonged & Exponentially Accelerating Inspiral
+          const decay = Math.pow(elapsed / 4.2, 2.8);
+          const orbitR = (1 - decay) * (Math.min(width, height) * 0.36);
+          // Exponential angular velocity: spins faster and faster
+          const theta = Math.pow(elapsed, 3.4) * 4.2;
 
           const s1x = cx + Math.cos(theta) * orbitR;
           const s1y = cy + Math.sin(theta) * (orbitR * 0.68);
           const s2x = cx + Math.cos(theta + Math.PI) * orbitR;
           const s2y = cy + Math.sin(theta + Math.PI) * (orbitR * 0.68);
 
-          // Eject Archimedean spiral tidal ribbons
-          for (let k = 0; k < 6; k++) {
-            const spread = (Math.random() - 0.5) * 12;
+          // Eject dense Archimedean tidal plasma
+          for (let k = 0; k < 8; k++) {
+            const spread = (Math.random() - 0.5) * 14;
             tidalPlasma.push({ x: s1x + spread, y: s1y + spread, alpha: 1.0, color: "#00d5ff" });
             tidalPlasma.push({ x: s2x + spread, y: s2y + spread, alpha: 1.0, color: "#80eeff" });
           }
@@ -653,7 +856,7 @@
           ctx.globalCompositeOperation = "lighter";
           for (let i = tidalPlasma.length - 1; i >= 0; i--) {
             const p = tidalPlasma[i];
-            p.alpha -= 0.038;
+            p.alpha -= 0.034;
             if (p.alpha <= 0) {
               tidalPlasma.splice(i, 1);
               continue;
@@ -661,37 +864,34 @@
             ctx.fillStyle = p.color;
             ctx.globalAlpha = p.alpha;
             ctx.beginPath();
-            ctx.arc(p.x, p.y, 4 + (1 - p.alpha) * 18, 0, Math.PI * 2);
+            ctx.arc(p.x, p.y, 4 + (1 - p.alpha) * 20, 0, Math.PI * 2);
             ctx.fill();
           }
           ctx.restore();
 
-          const rCore = Math.max(12, 28 - elapsed * 4);
+          const rCore = Math.max(10, 26 - elapsed * 2.8);
           drawNeutronCore(s1x, s1y, rCore);
           drawNeutronCore(s2x, s2y, rCore);
 
-        } else if (elapsed >= 2.5 && elapsed < 3.4) {
-          // ==========================================
-          // STAGE 3: RELATIVISTIC OPPOSING JETS (45 DEG)
-          // ==========================================
-          const jetT = elapsed - 2.5;
-          const jetLength = jetT * (Math.max(width, height) * 1.4);
+        } else if (elapsed >= 4.2 && elapsed < 5.2) {
+          // Relativistic 45-degree Polar Jets
+          const jetT = elapsed - 4.2;
+          const jetLength = jetT * (Math.max(width, height) * 1.5);
 
           ctx.save();
           ctx.translate(cx, cy);
-          ctx.rotate(-Math.PI / 4); // 45-degree angle
+          ctx.rotate(-Math.PI / 4);
 
           ctx.globalCompositeOperation = "lighter";
 
-          // Expanding synchrotron blue-violet shock ring
-          const ringRadius = jetT * 320;
+          // Expanding blue synchrotron shock ring
+          const ringRadius = jetT * 340;
           ctx.strokeStyle = "rgba(80, 160, 255, " + Math.max(0, 0.85 - jetT * 0.7) + ")";
           ctx.lineWidth = 16;
           ctx.beginPath();
           ctx.ellipse(0, 0, ringRadius, ringRadius * 0.35, 0, 0, Math.PI * 2);
           ctx.stroke();
 
-          // Opposing relativistic fire plasma columns
           for (let sign of [-1, 1]) {
             const grad = ctx.createLinearGradient(0, 0, 0, sign * jetLength);
             grad.addColorStop(0, "rgba(255, 255, 255, 1)");
@@ -702,48 +902,43 @@
 
             ctx.beginPath();
             ctx.moveTo(0, 0);
-            ctx.lineTo(-26 - jetT * 22, sign * jetLength);
-            ctx.lineTo(26 + jetT * 22, sign * jetLength);
+            ctx.lineTo(-28 - jetT * 22, sign * jetLength);
+            ctx.lineTo(28 + jetT * 22, sign * jetLength);
             ctx.closePath();
             ctx.fill();
 
-            // Violet/magenta terminal shockhead lobes
             const lobeY = sign * jetLength;
-            const lobeGrad = ctx.createRadialGradient(0, lobeY, 0, 0, lobeY, 60 + jetT * 35);
+            const lobeGrad = ctx.createRadialGradient(0, lobeY, 0, 0, lobeY, 65 + jetT * 35);
             lobeGrad.addColorStop(0, "#ffffff");
             lobeGrad.addColorStop(0.35, "#e100ff");
             lobeGrad.addColorStop(0.75, "#7700ff");
             lobeGrad.addColorStop(1, "transparent");
             ctx.fillStyle = lobeGrad;
             ctx.beginPath();
-            ctx.arc(0, lobeY, 60 + jetT * 35, 0, Math.PI * 2);
+            ctx.arc(0, lobeY, 65 + jetT * 35, 0, Math.PI * 2);
             ctx.fill();
           }
 
-          // Blinding merged core
-          const coreGrad = ctx.createRadialGradient(0, 0, 0, 0, 0, 75);
+          const coreGrad = ctx.createRadialGradient(0, 0, 0, 0, 0, 80);
           coreGrad.addColorStop(0, "#ffffff");
           coreGrad.addColorStop(0.35, "#a0f0ff");
           coreGrad.addColorStop(0.75, "#0088ff");
           coreGrad.addColorStop(1, "transparent");
           ctx.fillStyle = coreGrad;
           ctx.beginPath();
-          ctx.arc(0, 0, 75, 0, Math.PI * 2);
+          ctx.arc(0, 0, 80, 0, Math.PI * 2);
           ctx.fill();
 
           ctx.restore();
 
         } else {
-          // ==========================================
-          // STAGE 4: MASSIVE KILONOVA EXPANSION
-          // ==========================================
-          const expT = elapsed - 3.4;
-          const explosionR = expT * (Math.max(width, height) * 1.7) + 85;
+          // Massive Expanding Kilonova Cloud
+          const expT = elapsed - 5.2;
+          const explosionR = expT * (Math.max(width, height) * 1.8) + 90;
 
           ctx.save();
           ctx.globalCompositeOperation = "lighter";
 
-          // Expanding cyan plasma cloud
           const cGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, explosionR);
           cGrad.addColorStop(0, "#ffffff");
           cGrad.addColorStop(0.35, "#b5f5ff");
@@ -755,13 +950,14 @@
           ctx.arc(cx, cy, explosionR, 0, Math.PI * 2);
           ctx.fill();
 
-          // Camera whiteout flash
           ctx.fillStyle = "rgba(255, 255, 255, " + Math.min(1, expT * 2.6) + ")";
           ctx.fillRect(0, 0, width, height);
           ctx.restore();
         }
 
-        if (elapsed < 4.2) {
+        ctx.restore();
+
+        if (elapsed < 6.0) {
           knAnimId = requestAnimationFrame(loop);
         } else {
           cancelAnimationFrame(knAnimId);
@@ -772,7 +968,7 @@
       loop();
     }
 
-    // --- STEP 3: PHONE CHAT (CLEAN VIEWPORT) ---
+    // --- STEP 3: PHONE CHAT ---
     function triggerChatMessages() {
       const delays = [600, 1900, 3200, 4400];
       const elements = ["msg1", "msg2", "msg3", "voiceMsg"];
@@ -807,15 +1003,15 @@
       const audio1 = new Audio("01.mp3");
       audio1.play().catch(e => {
         console.log("01.mp3 fallback:", e);
-        setTimeout(startDeepSharinganIris, 2000);
+        setTimeout(startExactSharinganTransformation, 2000);
       });
 
-      audio1.onended = startDeepSharinganIris;
+      audio1.onended = startExactSharinganTransformation;
     }
 
-    // --- STEP 5: PURE SHARINGAN IRIS & TSUKUYOMI VORTEX (02.mp3) ---
-    let irisAnimId;
-    function startDeepSharinganIris() {
+    // --- STEP 5: EXACT YOUTUBE SHARINGAN TRANSFORMATION (02.mp3) ---
+    let sharinganAnimId;
+    function startExactSharinganTransformation() {
       showScene("scene-sharingan");
 
       const audio2 = new Audio("02.mp3");
@@ -827,137 +1023,349 @@
       const cx = width / 2;
       const cy = height / 2;
       let startTime = Date.now();
-      let angle = 0;
 
-      // Floating crimson chakra embers
-      const embers = [];
-      for (let i = 0; i < 450; i++) {
-        embers.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          radius: Math.random() * 2.6 + 0.8,
-          speedY: -(Math.random() * 2.2 + 0.6),
-          alpha: Math.random() * 0.75 + 0.25
-        });
+      // Individual Tomoe Comma (Exact Anime 3-Tomoe Shape)
+      function drawStandardTomoe(radius, angle) {
+        ctx.save();
+        ctx.rotate(angle);
+        ctx.translate(0, -radius * 0.52);
+
+        ctx.fillStyle = "#000000";
+        // Round head
+        ctx.beginPath();
+        ctx.arc(0, 0, radius * 0.13, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Curved tapering tail
+        ctx.beginPath();
+        ctx.moveTo(radius * 0.12, 0);
+        ctx.bezierCurveTo(radius * 0.18, radius * 0.18, radius * 0.08, radius * 0.35, -radius * 0.08, radius * 0.42);
+        ctx.bezierCurveTo(-radius * 0.02, radius * 0.28, 0, radius * 0.18, -radius * 0.12, 0);
+        ctx.fill();
+
+        ctx.restore();
       }
 
-      // Mathematical Itachi Curved Tomoe Blade (Tapered Pinwheel Arc)
-      function drawItachiTomoe(rot, scale) {
+      // Itachi Mangekyo Curved Tomoe Pinwheel Blade (Fully Formed)
+      function drawMangekyoBlade(radius, angle) {
         ctx.save();
-        ctx.rotate(rot);
+        ctx.rotate(angle);
+        ctx.fillStyle = "#000000";
         ctx.beginPath();
         ctx.moveTo(0, 0);
-        // Sweeping outer hook arc
-        ctx.bezierCurveTo(
-          scale * 0.28, -scale * 0.35,
-          scale * 0.68, -scale * 0.72,
-          scale * 0.32, -scale * 0.98
-        );
-        // Tapered return arc curving back to center pupil
-        ctx.bezierCurveTo(
-          scale * 0.06, -scale * 0.76,
-          -scale * 0.18, -scale * 0.35,
-          0, 0
-        );
-        ctx.fillStyle = "#000000";
+        ctx.bezierCurveTo(radius * 0.26, -radius * 0.32, radius * 0.68, -radius * 0.68, radius * 0.32, -radius * 0.96);
+        ctx.bezierCurveTo(radius * 0.06, -radius * 0.74, -radius * 0.18, -radius * 0.35, 0, 0);
         ctx.fill();
         ctx.restore();
       }
 
       function loop() {
         const elapsed = (Date.now() - startTime) / 1000;
-        angle += 0.12 + Math.pow(elapsed, 2) * 0.08;
 
-        // 1. Deep Crimson Cosmos Background (Inside the Iris Vortex)
-        const maxR = Math.max(width, height) * 0.85;
-        const voidGrad = ctx.createRadialGradient(cx, cy, 30, cx, cy, maxR);
-        voidGrad.addColorStop(0, "#ff1100");
-        voidGrad.addColorStop(0.35, "#aa0000");
-        voidGrad.addColorStop(0.7, "#440000");
-        voidGrad.addColorStop(1, "#080000");
-        ctx.fillStyle = voidGrad;
+        ctx.fillStyle = "#000000";
         ctx.fillRect(0, 0, width, height);
 
-        // 2. High-Density Swirling Iris Micro-Fibrils
+        const rIris = Math.min(width, height) * 0.42;
+
         ctx.save();
         ctx.translate(cx, cy);
-        ctx.rotate(-angle * 0.35);
-        ctx.strokeStyle = "rgba(255, 60, 60, 0.22)";
-        ctx.lineWidth = 2.2;
-        for (let i = 0; i < 48; i++) {
-          const a = (i * Math.PI) / 24;
-          ctx.beginPath();
-          ctx.moveTo(Math.cos(a) * 45, Math.sin(a) * 45);
-          ctx.lineTo(Math.cos(a) * maxR, Math.sin(a) * maxR);
-          ctx.stroke();
+
+        // 1. Red Iris with Soft Edge Shadow (Matching YouTube Reference)
+        const irisGrad = ctx.createRadialGradient(0, 0, rIris * 0.3, 0, 0, rIris);
+        irisGrad.addColorStop(0, "#ff0808");
+        irisGrad.addColorStop(0.75, "#e60000");
+        irisGrad.addColorStop(0.96, "#b30000");
+        irisGrad.addColorStop(1, "#000000");
+        ctx.fillStyle = irisGrad;
+        ctx.beginPath();
+        ctx.arc(0, 0, rIris, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Black Outer Ring / Border
+        ctx.lineWidth = 10;
+        ctx.strokeStyle = "#000000";
+        ctx.stroke();
+
+        // 2. Transformation Calculation
+        // Phase 1 (0 to 1.1s): Standard 3-Tomoe
+        // Phase 2 (1.1s to 2.4s): Spin accelerates, Tomoe elongate & morph into Mangekyo
+        // Phase 3 (2.4s+): Fully formed Mangekyo spinning with Genjutsu blur & zoom
+        let spinAngle = 0;
+        let morphT = 0; // 0 = 3-tomoe, 1 = Mangekyo
+
+        if (elapsed < 1.1) {
+          spinAngle = elapsed * 0.8;
+          morphT = 0;
+        } else if (elapsed >= 1.1 && elapsed < 2.4) {
+          const tNorm = (elapsed - 1.1) / 1.3;
+          spinAngle = 0.88 + Math.pow(tNorm, 2.2) * 16.0;
+          morphT = tNorm;
+        } else {
+          spinAngle = 17.0 + (elapsed - 2.4) * 12.0;
+          morphT = 1.0;
         }
 
-        // Concentric Tomoe Orbit Ring
-        ctx.strokeStyle = "rgba(0, 0, 0, 0.45)";
-        ctx.lineWidth = 5;
-        ctx.beginPath();
-        ctx.arc(0, 0, Math.min(width, height) * 0.34, 0, Math.PI * 2);
-        ctx.stroke();
+        // Draw Morphing Tomoe
+        ctx.save();
+        for (let i = 0; i < 3; i++) {
+          const bladeAngle = spinAngle + (i * Math.PI * 2) / 3;
+
+          if (morphT < 0.95) {
+            ctx.save();
+            ctx.globalAlpha = 1.0 - morphT;
+            drawStandardTomoe(rIris, bladeAngle);
+            ctx.restore();
+          }
+
+          if (morphT > 0.05) {
+            ctx.save();
+            ctx.globalAlpha = morphT;
+            drawMangekyoBlade(rIris, bladeAngle);
+            ctx.restore();
+          }
+        }
         ctx.restore();
 
-        // 3. Floating Blood Chakra Embers
-        ctx.fillStyle = "#ff6644";
-        embers.forEach(e => {
-          e.y += e.speedY;
-          if (e.y < 0) e.y = height;
-          ctx.globalAlpha = e.alpha;
-          ctx.beginPath();
-          ctx.arc(e.x, e.y, e.radius, 0, Math.PI * 2);
-          ctx.fill();
-        });
-        ctx.globalAlpha = 1.0;
-
-        // 4. Central Pure Black Itachi Mangekyo Blades
-        const bladeScale = Math.min(width, height) * (0.36 + elapsed * 0.09);
-
-        ctx.save();
-        ctx.translate(cx, cy);
-
-        // Intense red chakra aura around the blades
-        ctx.shadowColor = "#ff0000";
-        ctx.shadowBlur = 65;
-
-        ctx.save();
-        ctx.rotate(angle);
-        drawItachiTomoe(0, bladeScale);
-        drawItachiTomoe((Math.PI * 2) / 3, bladeScale);
-        drawItachiTomoe((Math.PI * 4) / 3, bladeScale);
-        ctx.restore();
-
-        // Central Pupil Abyss
+        // Center Pupil
         ctx.fillStyle = "#000000";
         ctx.beginPath();
-        ctx.arc(0, 0, bladeScale * 0.22, 0, Math.PI * 2);
+        ctx.arc(0, 0, rIris * 0.16, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Subtle specular highlight reflection
+        ctx.fillStyle = "rgba(255, 255, 255, 0.4)";
+        ctx.beginPath();
+        ctx.arc(-rIris * 0.28, -rIris * 0.28, rIris * 0.06, 0, Math.PI * 2);
         ctx.fill();
 
         ctx.restore();
 
-        // Optical Genjutsu Reality Glitch Flash
-        if (elapsed > 2.0) {
+        // Genjutsu optical reality glitch flash before wake-up
+        if (elapsed > 2.8) {
           document.getElementById("genjutsuOverlay").style.opacity = Math.random() * 0.85;
         }
 
-        if (elapsed < 3.4) {
-          irisAnimId = requestAnimationFrame(loop);
+        if (elapsed < 3.8) {
+          sharinganAnimId = requestAnimationFrame(loop);
         } else {
-          cancelAnimationFrame(irisAnimId);
-          showScene("scene-alarm");
-          triggerWakeUpAlarm();
+          cancelAnimationFrame(sharinganAnimId);
+          showScene("scene-dizziness");
+          startBedDizzinessWakeUp();
         }
       }
       loop();
     }
 
-    // --- STEP 6: REALITY WAKEUP & ALARM (03.mp3) ---
-    function triggerWakeUpAlarm() {
-      const audio3 = new Audio("03.mp3");
-      audio3.loop = true;
-      audio3.play().catch(e => console.log("03.mp3 error:", e));
+    // --- STEP 6: BED VERTIGO & DIZZINESS POV WAKE-UP (BEFORE ALARM) ---
+    let dizzyAnimId;
+    function startBedDizzinessWakeUp() {
+      AudioEngine.playDizzinessHeartbeat();
+
+      const canvas = document.getElementById("dizzyCanvas");
+      const { ctx, width, height } = setupRetinaCanvas(canvas);
+      const rig = document.getElementById("dizzyRig");
+
+      // Sluggish eyelid blinking (eyes struggle to open)
+      setTimeout(() => {
+        document.getElementById("scene-dizziness").classList.add("eyes-open");
+      }, 500);
+      setTimeout(() => {
+        document.getElementById("scene-dizziness").classList.remove("eyes-open");
+      }, 1400);
+      setTimeout(() => {
+        document.getElementById("scene-dizziness").classList.add("eyes-open");
+      }, 2000);
+
+      let startTime = Date.now();
+
+      function loop() {
+        const elapsed = (Date.now() - startTime) / 1000;
+
+        // Draw Bedroom Ceiling & Morning Window Light (First-Person Perspective)
+        ctx.fillStyle = "#12141c";
+        ctx.fillRect(0, 0, width, height);
+
+        // Ceiling Fan & Shadow
+        ctx.save();
+        ctx.translate(width / 2, height / 2 - 40);
+        ctx.rotate(elapsed * 0.8);
+        ctx.fillStyle = "#1c1f2b";
+        for (let i = 0; i < 4; i++) {
+          ctx.rotate((Math.PI * 2) / 4);
+          ctx.fillRect(-14, -140, 28, 140);
+        }
+        ctx.fillStyle = "#0a0c12";
+        ctx.beginPath();
+        ctx.arc(0, 0, 32, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+
+        // Morning Window Light Shaft
+        const lightGrad = ctx.createLinearGradient(width, 0, 0, height);
+        lightGrad.addColorStop(0, "rgba(255, 230, 180, 0.25)");
+        lightGrad.addColorStop(0.5, "rgba(255, 200, 150, 0.08)");
+        lightGrad.addColorStop(1, "transparent");
+        ctx.fillStyle = lightGrad;
+        ctx.fillRect(0, 0, width, height);
+
+        // Chromatic Aberration & Dizziness Vertigo Blur Filter
+        const blurAmount = Math.max(0, 10 - elapsed * 2.2);
+        rig.style.filter = `blur(${blurAmount}px) hue-rotate(${Math.sin(elapsed * 4) * 25}deg) contrast(1.15)`;
+
+        if (elapsed < 3.8) {
+          dizzyAnimId = requestAnimationFrame(loop);
+        } else {
+          cancelAnimationFrame(dizzyAnimId);
+          // Vision suddenly snaps clear into focus on the Alarm Clock!
+          showScene("scene-alarm");
+          triggerCollegeAlarm();
+        }
+      }
+      loop();
+    }
+
+    // --- STEP 7: COLLEGE ALARM (03.mp3) WITH SUDDEN 4TH-WALL GLITCH ---
+    let alarmAudio = null;
+    function triggerCollegeAlarm() {
+      alarmAudio = new Audio("03.mp3");
+      alarmAudio.loop = true;
+      alarmAudio.play().catch(e => console.log("03.mp3 error:", e));
+
+      // After 3.5 seconds of alarm ringing, trigger the 4th-wall ghost break!
+      setTimeout(triggerFourthWallGhostBreak, 3500);
+    }
+
+    // --- STEP 8: 4TH-WALL BREAKING GHOST JUMPSCARE ---
+    let ghostAnimId;
+    function triggerFourthWallGhostBreak() {
+      if (alarmAudio) {
+        alarmAudio.pause();
+        alarmAudio = null;
+      }
+
+      const alarmScene = document.getElementById("scene-alarm");
+      alarmScene.classList.add("earthquake");
+      document.getElementById("alarmTimeText").textContent = "66:66";
+      document.getElementById("alarmAmPmText").textContent = "DIE";
+      document.getElementById("alarmNoticeText").textContent = "WAKE UP CANNOT HELP YOU";
+
+      AudioEngine.playGhostScreech();
+
+      if ("vibrate" in navigator) {
+        navigator.vibrate([200, 80, 400, 100, 800, 100, 1000]);
+      }
+
+      setTimeout(() => {
+        showScene("scene-ghost");
+        document.getElementById("scene-ghost").classList.add("earthquake");
+        document.getElementById("glassCracks").style.opacity = "1";
+        document.getElementById("dimensionText").style.opacity = "1";
+
+        startGhostRenderEngine();
+      }, 700);
+    }
+
+    function startGhostRenderEngine() {
+      const canvas = document.getElementById("ghostCanvas");
+      const { ctx, width, height } = setupRetinaCanvas(canvas);
+
+      const cx = width / 2;
+      const cy = height / 2;
+      let startTime = Date.now();
+
+      function loop() {
+        const elapsed = (Date.now() - startTime) / 1000;
+
+        ctx.fillStyle = "rgba(5, 0, 2, 0.45)";
+        ctx.fillRect(0, 0, width, height);
+
+        const imgData = ctx.getImageData(0, 0, width, height);
+        const d = imgData.data;
+        for (let i = 0; i < d.length; i += 16) {
+          const noise = Math.random() * 255;
+          d[i] = noise;
+          d[i + 1] = noise * 0.2;
+          d[i + 2] = noise * 0.2;
+        }
+        ctx.putImageData(imgData, 0, 0);
+
+        document.getElementById("glitchFlashIntense").style.opacity = Math.random() > 0.6 ? "0.85" : "0";
+
+        const zoom = Math.min(6.5, 0.8 + Math.pow(elapsed * 2.8, 2.5));
+
+        ctx.save();
+        ctx.translate(cx + (Math.random() - 0.5) * 15, cy + (Math.random() - 0.5) * 15);
+        ctx.scale(zoom, zoom);
+
+        // Ghost Head
+        ctx.fillStyle = "#000000";
+        ctx.shadowColor = "#ff0022";
+        ctx.shadowBlur = 40;
+        ctx.beginPath();
+        ctx.ellipse(0, -20, 60, 85, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Hollow Void Eyes
+        ctx.fillStyle = "#ffffff";
+        ctx.shadowColor = "#ffffff";
+        ctx.shadowBlur = 25;
+        ctx.beginPath();
+        ctx.ellipse(-24, -35, 14, 20, -0.15, 0, Math.PI * 2);
+        ctx.ellipse(24, -35, 14, 20, 0.15, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = "#000000";
+        ctx.beginPath();
+        ctx.arc(-24, -35, 4, 0, Math.PI * 2);
+        ctx.arc(24, -35, 4, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Unhinged Screaming Jaw
+        ctx.fillStyle = "#000000";
+        ctx.shadowColor = "#ff0000";
+        ctx.shadowBlur = 30;
+        ctx.beginPath();
+        ctx.ellipse(0, 25, 26, 48 + Math.sin(elapsed * 25) * 6, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Needle Teeth
+        ctx.fillStyle = "#e0e0e0";
+        for (let x = -20; x <= 20; x += 5) {
+          ctx.beginPath();
+          ctx.moveTo(x, -5);
+          ctx.lineTo(x + 2.5, 10);
+          ctx.lineTo(x + 5, -5);
+          ctx.fill();
+
+          ctx.beginPath();
+          ctx.moveTo(x, 55);
+          ctx.lineTo(x + 2.5, 40);
+          ctx.lineTo(x + 5, 55);
+          ctx.fill();
+        }
+
+        // Claws
+        ctx.strokeStyle = "#111111";
+        ctx.lineWidth = 6;
+        ctx.shadowColor = "#ff0000";
+        ctx.shadowBlur = 20;
+        ctx.beginPath();
+        ctx.moveTo(-75, 40); ctx.lineTo(-110, 10); ctx.lineTo(-135, -20);
+        ctx.moveTo(75, 40); ctx.lineTo(110, 10); ctx.lineTo(135, -20);
+        ctx.stroke();
+
+        ctx.restore();
+
+        if (elapsed < 3.8) {
+          ghostAnimId = requestAnimationFrame(loop);
+        } else {
+          cancelAnimationFrame(ghostAnimId);
+          ctx.fillStyle = "#000000";
+          ctx.fillRect(0, 0, width, height);
+          document.getElementById("dimensionText").textContent = "REALITY TERMINATED.";
+        }
+      }
+      loop();
     }
   </script>
 </body>
